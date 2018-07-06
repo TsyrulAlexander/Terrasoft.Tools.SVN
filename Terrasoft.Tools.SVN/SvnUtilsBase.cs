@@ -48,7 +48,7 @@
         protected SvnUtilsBase(IReadOnlyDictionary<string, string> options) {
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(options["svnuser"], options["svnpassword"]);
-            WorkingCopyPath = options["workingcopy"];
+            WorkingCopyPath = options["workingcopypath"];
             BranchReleaseUrl = options["branchreleaseurl"];
             FeatureName = options["featurename"];
             BranchFeatureUrl = options["branchfeatureurl"];
