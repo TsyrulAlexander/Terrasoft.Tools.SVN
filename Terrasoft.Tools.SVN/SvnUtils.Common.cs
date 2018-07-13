@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using SharpSvn;
+    using Terrasoft.Tools.SVN.Properties;
 
     /// <inheritdoc />
     /// <summary>
@@ -96,10 +97,10 @@
         /// <returns>Резальт фиксации изменений в хранилище</returns>
         public bool CommitChanges(bool checkEror = false) {
             if (checkEror && !CheckWorkingCopyForError(WorkingCopyPath)) {
-                throw new SvnRepositoryException("Sources not resolved");
+                throw new SvnRepositoryException(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
             }
 
-            var svnCommitArgs = new SvnCommitArgs { LogMessage = "Reintegrate base branch to feature" };
+            var svnCommitArgs = new SvnCommitArgs { LogMessage = Resources.SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature };
             svnCommitArgs.Committing += SvnCommitArgsOnCommitting;
             svnCommitArgs.Notify += SvnCommitArgsOnNotify;
             svnCommitArgs.Committed += SvnCommitArgsOnCommitted;

@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using SharpSvn;
+    using Terrasoft.Tools.SVN.Properties;
 
     public partial class SvnUtils
     {
@@ -14,7 +15,7 @@
         /// <returns>Результат</returns>
         private bool CopyBaseBranch(string featureName, string featureNewUrl) {
             var svnCopyArgs = new SvnCopyArgs {
-                LogMessage = string.Format("#0\nInit new feature {0} branch.\n", featureName)
+                LogMessage = string.Format(Resources.SvnUtils_CopyBaseBranch_Init_Feature, featureName)
             };
             svnCopyArgs.Notify += SvnCopyArgsOnNotify;
             try {
@@ -37,7 +38,7 @@
                 return false;
             }
 
-            string featureNewUrl = BranchFeatureUrl + "/" + Maintainer + "_" + FeatureName;
+            string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
             return CopyBaseBranch(FeatureName, featureNewUrl) &&
                    Switch(workingCopyPath, SvnUriTarget.FromString(featureNewUrl));
         }
@@ -62,10 +63,8 @@
             var svnCheckOutArgs = new SvnCheckOutArgs() { IgnoreExternals = false };
             svnCheckOutArgs.Notify += SvnCheckOutArgsOnNotify;
             try {
-                SvnUpdateResult checkoutResult;
                 string branchRelease = BranchReleaseUrl;
-                return CheckOut(SvnUriTarget.FromString(branchRelease), workingCopyPath, svnCheckOutArgs,
-                    out checkoutResult);
+                return CheckOut(SvnUriTarget.FromString(branchRelease), workingCopyPath, svnCheckOutArgs);
             } catch (Exception e) {
                 Console.WriteLine(e);
                 return false;
