@@ -86,7 +86,7 @@
             var svnLogArgs = new SvnLogArgs(new SvnRevisionRange(startRevision, SvnRevision.Head));
 
             Log(new Uri(basePath), svnLogArgs, (sender, args) => headRevision = args.Revision);
-            return headRevision;
+            return headRevision==0?startRevision:headRevision;
         }
 
         /// <summary>
