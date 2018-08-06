@@ -30,6 +30,7 @@
 
         private const string FeaturenameFeature1 = " -FeatureName=Feature1";
         private const string CommitifnoerrorTrue = " -CommitIfNoError=true";
+        private const string Maintainer = " -Maintainer=Partner1";
 
         private static readonly ConcurrentDictionary<string, string> _programOptions =
             new ConcurrentDictionary<string, string>();
@@ -140,6 +141,7 @@
             sample1.Append(BranchfeatureurlHttpSvnServerSvnProjectBranches);
             sample1.Append(BranchreleaseurlHttpSvnServerSvnProjectTrunkPackagestore);
             sample1.Append(FeaturenameFeature1);
+            sample1.Append(Maintainer);
             return sample1.ToString();
         }
 

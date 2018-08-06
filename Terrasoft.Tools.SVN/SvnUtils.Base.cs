@@ -10,8 +10,8 @@
     /// </summary>
     public abstract class SvnUtilsBase : SvnClient
     {
-        private string UserName { get; }
-        private string Password { get; }
+        private string UserName { get; set; }
+        private string Password { get; set; }
 
         /// <inheritdoc />
         /// <summary>
@@ -57,31 +57,31 @@
         /// <summary>
         ///     Название фитчи
         /// </summary>
-        protected string FeatureName { get; }
+        protected string FeatureName { get; set; }
 
         /// <summary>
         ///     URL Ветки с фитчами
         /// </summary>
-        protected string BranchFeatureUrl { get; }
+        protected string BranchFeatureUrl { get; set; }
 
         /// <summary>
         ///     Издатель
         /// </summary>
-        protected string Maintainer { get; }
+        protected string Maintainer { get; set; }
 
         /// <summary>
         ///     Базовая ветка, из которой выделяется фитча
         /// </summary>
-        protected string BranchReleaseUrl { get; }
+        protected string BranchReleaseUrl { get; set; }
 
         /// <summary>
         ///     Путь к рабочей копии
         /// </summary>
-        protected string WorkingCopyPath { get; }
+        protected string WorkingCopyPath { get; set; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
-        public string CommitIfNoError { get; }
+        public string CommitIfNoError { get; set; }
     }
 }

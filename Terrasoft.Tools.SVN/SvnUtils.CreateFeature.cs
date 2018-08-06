@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using SharpSvn;
-    using Terrasoft.Tools.SVN.Properties;
+    using Properties;
 
     public partial class SvnUtils
     {

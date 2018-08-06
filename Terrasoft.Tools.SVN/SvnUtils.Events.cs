@@ -16,7 +16,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs args) {
-            Console.WriteLine(args.Conflict.FullPath);
+            Console.WriteLine("Conflicted: {0}", args.Conflict.FullPath);
         }
 
         private void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
