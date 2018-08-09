@@ -1,4 +1,7 @@
-﻿namespace Terrasoft.Tools.SVN
+﻿using System;
+using SharpSvn.Security;
+
+namespace Terrasoft.Tools.SVN
 {
     using System.Collections.Generic;
     using System.Net;
@@ -10,8 +13,8 @@
     /// </summary>
     public abstract class SvnUtilsBase : SvnClient
     {
-        private string UserName { get; set; }
-        private string Password { get; set; }
+        private string UserName { get; }
+        private string Password { get; }
 
         /// <inheritdoc />
         /// <summary>
@@ -52,36 +55,47 @@
 
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Authentication.SslServerTrustHandlers+=AuthenticationOnSslServerTrustHandlers;
+        }
+
+        public new void Dispose() {
+            Authentication.SslServerTrustHandlers-=AuthenticationOnSslServerTrustHandlers;
+        }
+        
+        private static void AuthenticationOnSslServerTrustHandlers(object sender, SvnSslServerTrustEventArgs e) {
+            e.AcceptedFailures = e.Failures;
+            e.Save = true;
         }
 
         /// <summary>
         ///     Название фитчи
         /// </summary>
-        protected string FeatureName { get; set; }
+        protected string FeatureName { get; }
 
         /// <summary>
         ///     URL Ветки с фитчами
         /// </summary>
-        protected string BranchFeatureUrl { get; set; }
+        protected string BranchFeatureUrl { get; }
 
         /// <summary>
         ///     Издатель
         /// </summary>
-        protected string Maintainer { get; set; }
+        protected string Maintainer { get; }
 
         /// <summary>
         ///     Базовая ветка, из которой выделяется фитча
         /// </summary>
-        protected string BranchReleaseUrl { get; set; }
+        protected string BranchReleaseUrl { get; }
 
         /// <summary>
         ///     Путь к рабочей копии
         /// </summary>
-        protected string WorkingCopyPath { get; set; }
+        protected string WorkingCopyPath { get; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
-        public string CommitIfNoError { get; set; }
+        public string CommitIfNoError { get; }
     }
 }
