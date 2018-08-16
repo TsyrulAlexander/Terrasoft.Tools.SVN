@@ -1,14 +1,14 @@
-﻿namespace Terrasoft.Tools.SVN
-{
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.Win32;
-    using Terrasoft.Tools.SVN.Properties;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Win32;
+using Terrasoft.Tools.SVN.Properties;
 
+namespace Terrasoft.Tools.SVN
+{
     internal static class Program
     {
         private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
@@ -32,41 +32,48 @@
         private const string CommitifnoerrorTrue = " -CommitIfNoError=true";
         private const string Maintainer = " -Maintainer=Partner1";
 
-        private static readonly ConcurrentDictionary<string, string> _programOptions =
+        private static readonly ConcurrentDictionary<string, string> ProgramOptions =
             new ConcurrentDictionary<string, string>();
 
         public static int Main(string[] args) {
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyvalue => keyvalue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
-            if (!_programOptions.ContainsKey(@"operation")) {
+            if (!ProgramOptions.ContainsKey(@"operation")) {
                 Usage();
                 return 0;
             }
 
-            string programOption = _programOptions[@"operation"].ToLowerInvariant();
+            string programOption = ProgramOptions[@"operation"].ToLowerInvariant();
             switch (programOption) {
                 case "createfeature":
-                    using (var svnUtils = new SvnUtils(_programOptions)) {
+                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         return Convert.ToInt32(svnUtils.CreateFeature());
                     }
                 case "updatefeature":
-                    using (var svnUtils = new SvnUtils(_programOptions)) {
-                        if (svnUtils.UpdateFromReleaseBranch() && Convert.ToBoolean(svnUtils.CommitIfNoError)) {
+                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                        if (svnUtils.UpdateFromReleaseBranch() && Convert.ToBoolean(svnUtils.CommitIfNoError))
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
-                        }
                     }
 
                     break;
                 case "finishfeature":
-                    using (var svnUtils = new SvnUtils(_programOptions)) {
+                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         svnUtils.ReintegrationMergeToBaseBranch();
                     }
 
                     break;
                 case "closefeature":
-                    using (var svnUtils = new SvnUtils(_programOptions)) {
+                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         svnUtils.DeleteClosedFeature();
+                    }
+
+                    break;
+                case "fixfeature":
+                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                        if (svnUtils.SetPackagePropery()) {
+                            svnUtils.MakePropertiesCommit();
+                        }
                     }
 
                     break;
@@ -153,11 +160,10 @@
         }
 
         private static void FillParam(string key, string value) {
-            if (_programOptions.ContainsKey(key)) {
-                _programOptions[key] = value;
-            } else {
-                _programOptions.TryAdd(key, value);
-            }
+            if (ProgramOptions.ContainsKey(key))
+                ProgramOptions[key] = value;
+            else
+                ProgramOptions.TryAdd(key, value);
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using SharpSvn;
+﻿using System;
+using SharpSvn;
 
 namespace Terrasoft.Tools.SVN
 {
-    using System;
-
     public partial class SvnUtils : SvnUtilsBase
     {
-        
         /// <summary>
-        /// Реинтеграция фитчи в родительскую ветку
+        ///     Реинтеграция фитчи в родительскую ветку
         /// </summary>
         public void ReintegrationMergeToBaseBranch() {
             string baseWorkingCopyPath = WorkingCopyPath + "_Release";
@@ -18,14 +16,13 @@ namespace Terrasoft.Tools.SVN
             svnCheckOutArgs.Notify += SvnCheckOutArgsOnNotify;
             try {
                 CheckOut(SvnUriTarget.FromString(baseWorkingCopyUrl), baseWorkingCopyPath, svnCheckOutArgs);
-            } finally {
+            }
+            finally {
                 svnCheckOutArgs.Notify -= SvnCheckOutArgsOnNotify;
             }
 
             string featureRootUrl = string.Empty;
-            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => {
-                featureRootUrl = args.Uri.ToString();
-            });
+            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { featureRootUrl = args.Uri.ToString(); });
 
             var svnReintegrationMergeArgs = new SvnReintegrationMergeArgs();
             svnReintegrationMergeArgs.Notify += SvnReintegrationMergeArgsOnNotify;
@@ -34,18 +31,19 @@ namespace Terrasoft.Tools.SVN
             try {
                 ReintegrationMerge(baseWorkingCopyPath, SvnTarget.FromString(featureRootUrl),
                     svnReintegrationMergeArgs);
-            } finally {
+            }
+            finally {
                 svnReintegrationMergeArgs.Notify -= SvnReintegrationMergeArgsOnNotify;
                 svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;
             }
+
+            RemovePackagePropery(baseWorkingCopyPath);
         }
 
         public void DeleteClosedFeature() {
             string featureRootUrl = string.Empty;
-            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => {
-                featureRootUrl = args.Uri.ToString();
-            });
-            var svnDeleteArgs = new SvnDeleteArgs { LogMessage = "Remove closed feature branch" };
+            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { featureRootUrl = args.Uri.ToString(); });
+            var svnDeleteArgs = new SvnDeleteArgs {LogMessage = "Remove closed feature branch"};
             RemoteDelete(new Uri(featureRootUrl), svnDeleteArgs);
         }
     }

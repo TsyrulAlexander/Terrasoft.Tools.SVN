@@ -1,12 +1,12 @@
-﻿namespace Terrasoft.Tools.SVN
-{
-    using SharpSvn;
+﻿using SharpSvn;
 
+namespace Terrasoft.Tools.SVN
+{
     /// <inheritdoc />
     public partial class SvnUtils
     {
         /// <summary>
-        /// Интеграция родительской ветки в ветку фитчи
+        ///     Интеграция родительской ветки в ветку фитчи
         /// </summary>
         /// <returns>Результат успешности слияния</returns>
         public bool UpdateFromReleaseBranch() {
@@ -16,11 +16,12 @@
 
             long headRevision = GetBaseBranchHeadRevision(revision, basePath);
 
-            return MergeBaseBranchIntoFeature(revision, headRevision, WorkingCopyPath, basePath);
+            return MergeBaseBranchIntoFeature(revision, headRevision, WorkingCopyPath, basePath) &&
+                   SetPackagePropery(WorkingCopyPath);
         }
 
         /// <summary>
-        /// Слияние родительской ветки в ветку фитчи
+        ///     Слияние родительской ветки в ветку фитчи
         /// </summary>
         /// <param name="startRevision">Номер начальной ревизии</param>
         /// <param name="headRevision">Номер головной ревизии</param>
@@ -35,7 +36,8 @@
             var revs = new SvnRevisionRange(new SvnRevision(startRevision), new SvnRevision(headRevision));
             try {
                 return Merge(workingCopyPath, SvnTarget.FromString(basePathUrl), revs, svnMergeArgs);
-            } finally {
+            }
+            finally {
                 svnMergeArgs.Notify -= OnSvnMergeArgsOnNotify;
                 svnMergeArgs.Conflict -= OnSvnMergeArgsOnConflict;
             }

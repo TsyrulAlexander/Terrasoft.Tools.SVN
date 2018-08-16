@@ -1,28 +1,23 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Net;
+using SharpSvn;
 using SharpSvn.Security;
 
 namespace Terrasoft.Tools.SVN
 {
-    using System.Collections.Generic;
-    using System.Net;
-    using SharpSvn;
-
     /// <inheritdoc />
     /// <summary>
     ///     Абстрактный класс SVN клиента
     /// </summary>
     public abstract class SvnUtilsBase : SvnClient
     {
-        private string UserName { get; }
-        private string Password { get; }
-
         /// <inheritdoc />
         /// <summary>
         ///     Конструктор SVN клиента
         /// </summary>
         /// <param name="options">Коллекция параметров</param>
         protected SvnUtilsBase(IReadOnlyDictionary<string, string> options) {
-            foreach (KeyValuePair<string, string> option in options) {
+            foreach (KeyValuePair<string, string> option in options)
                 switch (option.Key) {
                     case "svnuser":
                         UserName = options["svnuser"];
@@ -51,22 +46,15 @@ namespace Terrasoft.Tools.SVN
                     default:
                         continue;
                 }
-            }
 
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            Authentication.SslServerTrustHandlers+=AuthenticationOnSslServerTrustHandlers;
+            Authentication.SslServerTrustHandlers += AuthenticationOnSslServerTrustHandlers;
         }
 
-        public new void Dispose() {
-            Authentication.SslServerTrustHandlers-=AuthenticationOnSslServerTrustHandlers;
-        }
-        
-        private static void AuthenticationOnSslServerTrustHandlers(object sender, SvnSslServerTrustEventArgs e) {
-            e.AcceptedFailures = e.Failures;
-            e.Save = true;
-        }
+        private string UserName { get; }
+        private string Password { get; }
 
         /// <summary>
         ///     Название фитчи
@@ -91,11 +79,20 @@ namespace Terrasoft.Tools.SVN
         /// <summary>
         ///     Путь к рабочей копии
         /// </summary>
-        protected string WorkingCopyPath { get; }
+        public string WorkingCopyPath { get; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
         public string CommitIfNoError { get; }
+
+        public new void Dispose() {
+            Authentication.SslServerTrustHandlers -= AuthenticationOnSslServerTrustHandlers;
+        }
+
+        private static void AuthenticationOnSslServerTrustHandlers(object sender, SvnSslServerTrustEventArgs e) {
+            e.AcceptedFailures = e.Failures;
+            e.Save = true;
+        }
     }
 }

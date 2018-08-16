@@ -1,14 +1,14 @@
-﻿namespace Terrasoft.Tools.SVN
-{
-    using System;
-    using System.IO;
-    using SharpSvn;
-    using Properties;
+﻿using System;
+using System.IO;
+using SharpSvn;
+using Terrasoft.Tools.SVN.Properties;
 
+namespace Terrasoft.Tools.SVN
+{
     public partial class SvnUtils
     {
         /// <summary>
-        /// Копирование базового ветки в ветку фитчи
+        ///     Копирование базового ветки в ветку фитчи
         /// </summary>
         /// <param name="featureName">Название фитчи</param>
         /// <param name="featureNewUrl">URL новой ветки фитчи</param>
@@ -33,39 +33,37 @@
         }
 
         /// <summary>
-        /// Создание нового ветки для фитчи из базовой
+        ///     Создание нового ветки для фитчи из базовой
         /// </summary>
         /// <returns>Результат</returns>
         public bool CreateFeature() {
             string workingCopyPath = WorkingCopyPath;
-            if (!ExtractWorkingCopy(workingCopyPath)) {
-                return false;
-            }
+            if (!ExtractWorkingCopy(workingCopyPath)) return false;
 
             long lastBranchRevision = GetBaseBranchHeadRevision(1, BranchReleaseUrl);
             string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
             return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision) &&
-                   Switch(workingCopyPath, SvnUriTarget.FromString(featureNewUrl));
+                   Switch(workingCopyPath, SvnUriTarget.FromString(featureNewUrl)) && SetPackagePropery(workingCopyPath);
         }
 
         /// <summary>
-        /// Выгрузить рабочую копия в локальную папку
+        ///     Выгрузить рабочую копия в локальную папку
         /// </summary>
         /// <param name="workingCopyPath">Путь к папке</param>
         /// <returns>Результат</returns>
         private bool ExtractWorkingCopy(string workingCopyPath) {
             return Directory.Exists(workingCopyPath)
                 ? UpdateWorkingCopy(workingCopyPath)
-                : CheckouWorkingCopy(workingCopyPath);
+                : CheckoutWorkingCopy(workingCopyPath);
         }
 
         /// <summary>
-        /// Выгрузка бранча в рабочую копию
+        ///     Выгрузка бранча в рабочую копию
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Результат</returns>
-        private bool CheckouWorkingCopy(string workingCopyPath) {
-            var svnCheckOutArgs = new SvnCheckOutArgs() {IgnoreExternals = false};
+        private bool CheckoutWorkingCopy(string workingCopyPath) {
+            var svnCheckOutArgs = new SvnCheckOutArgs {IgnoreExternals = false};
             svnCheckOutArgs.Notify += SvnCheckOutArgsOnNotify;
             try {
                 string branchRelease = BranchReleaseUrl;
@@ -81,7 +79,7 @@
         }
 
         /// <summary>
-        /// Обновить рабочую копию
+        ///     Обновить рабочую копию
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Результат</returns>
