@@ -17,7 +17,7 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <param name="options">Коллекция параметров</param>
         protected SvnUtilsBase(IReadOnlyDictionary<string, string> options) {
-            foreach (KeyValuePair<string, string> option in options)
+            foreach (KeyValuePair<string, string> option in options) {
                 switch (option.Key) {
                     case "svnuser":
                         UserName = options["svnuser"];
@@ -46,6 +46,7 @@ namespace Terrasoft.Tools.SVN
                     default:
                         continue;
                 }
+            }
 
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);

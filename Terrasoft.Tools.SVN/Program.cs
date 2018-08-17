@@ -52,8 +52,9 @@ namespace Terrasoft.Tools.SVN
                     }
                 case "updatefeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
-                        if (svnUtils.UpdateFromReleaseBranch() && Convert.ToBoolean(svnUtils.CommitIfNoError))
+                        if (svnUtils.UpdateFromReleaseBranch() && Convert.ToBoolean(svnUtils.CommitIfNoError)) {
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
+                        }
                     }
 
                     break;
@@ -160,10 +161,11 @@ namespace Terrasoft.Tools.SVN
         }
 
         private static void FillParam(string key, string value) {
-            if (ProgramOptions.ContainsKey(key))
+            if (ProgramOptions.ContainsKey(key)) {
                 ProgramOptions[key] = value;
-            else
+            } else {
                 ProgramOptions.TryAdd(key, value);
+            }
         }
     }
 }

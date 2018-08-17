@@ -36,8 +36,7 @@ namespace Terrasoft.Tools.SVN
             var revs = new SvnRevisionRange(new SvnRevision(startRevision), new SvnRevision(headRevision));
             try {
                 return Merge(workingCopyPath, SvnTarget.FromString(basePathUrl), revs, svnMergeArgs);
-            }
-            finally {
+            } finally {
                 svnMergeArgs.Notify -= OnSvnMergeArgsOnNotify;
                 svnMergeArgs.Conflict -= OnSvnMergeArgsOnConflict;
             }

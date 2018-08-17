@@ -43,7 +43,9 @@ namespace Terrasoft.Tools.SVN
         private bool CheckWorkingCopyForError(string workingCopyPath) {
             var result = true;
             Status(workingCopyPath, (sender, args) => {
-                if (result && args.Conflicted) result = !args.Conflicted;
+                if (result && args.Conflicted) {
+                    result = !args.Conflicted;
+                }
             });
             return result;
         }
@@ -58,10 +60,14 @@ namespace Terrasoft.Tools.SVN
             var svnLogArgs = new SvnLogArgs {StrictNodeHistory = true};
             svnLogArgs.Notify += SvnLogArgsOnNotify;
             Log(workingCopyPath, svnLogArgs, (sender, args) => {
-                if (args.ChangedPaths.Count <= 0) return;
+                if (args.ChangedPaths.Count <= 0) {
+                    return;
+                }
 
                 foreach (var changeItem in args.ChangedPaths) {
-                    if (string.IsNullOrEmpty(changeItem.CopyFromPath)) continue;
+                    if (string.IsNullOrEmpty(changeItem.CopyFromPath)) {
+                        continue;
+                    }
 
                     revision = changeItem.CopyFromRevision;
                 }
@@ -87,22 +93,26 @@ namespace Terrasoft.Tools.SVN
         ///     Зафиксировать изменения в хранилище
         /// </summary>
         /// <param name="checkEror">Проверить рабочую копию на ошибки перед фиксацией</param>
+        /// <param name="logMessage"></param>
         /// <exception cref="SvnRepositoryException">Исключение в случае не разрешенных конфилктов рабочей копии</exception>
         /// <returns>Резальт фиксации изменений в хранилище</returns>
-        public bool CommitChanges(bool checkEror = false) {
-            if (checkEror && !CheckWorkingCopyForError(WorkingCopyPath))
+        public bool CommitChanges(bool checkEror = false, string logMessage = "") {
+            if (checkEror && !CheckWorkingCopyForError(WorkingCopyPath)) {
                 throw new SvnRepositoryException(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
+            }
 
             var svnCommitArgs = new SvnCommitArgs {
-                LogMessage = Resources.SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature
+                LogMessage = string.IsNullOrEmpty(logMessage)
+                    ? Resources.SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature
+                    : logMessage
             };
+
             svnCommitArgs.Committing += SvnCommitArgsOnCommitting;
             svnCommitArgs.Notify += SvnCommitArgsOnNotify;
             svnCommitArgs.Committed += SvnCommitArgsOnCommitted;
             try {
                 return Commit(WorkingCopyPath, svnCommitArgs);
-            }
-            finally {
+            } finally {
                 svnCommitArgs.Committing -= SvnCommitArgsOnCommitting;
                 svnCommitArgs.Notify += SvnCommitArgsOnNotify;
             }
@@ -113,7 +123,10 @@ namespace Terrasoft.Tools.SVN
             IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packagePath in branchPackages) {
-                if (string.IsNullOrEmpty(packagePath)) continue;
+                if (string.IsNullOrEmpty(packagePath)) {
+                    continue;
+                }
+
                 int slashPosition = packagePath.LastIndexOf('\\');
                 string packageRootDir = packagePath.Substring(0, slashPosition);
                 SetProperty(packageRootDir, "PackageUpdateDate", DateTime.UtcNow.ToLongDateString());
@@ -122,23 +135,24 @@ namespace Terrasoft.Tools.SVN
             return true;
         }
 
-        public bool RemovePackagePropery(string workingCopyPath = "") {
+        private void RemovePackagePropery(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath) ? WorkingCopyPath : workingCopyPath;
             IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packagePath in branchPackages) {
-                if (string.IsNullOrEmpty(packagePath)) continue;
+                if (string.IsNullOrEmpty(packagePath)) {
+                    continue;
+                }
+
                 int slashPosition = packagePath.LastIndexOf('\\');
                 string packageRootDir = packagePath.Substring(0, slashPosition);
                 DeleteProperty(packageRootDir, "PackageUpdateDate");
             }
-
-            return true;
         }
 
-        public void MakePropertiesCommit() {
-            Commit(WorkingCopyPath,
-                new SvnCommitArgs() {LogMessage = "#0\nУстановка даты обновления пакетов из релиза."});
+        public bool MakePropertiesCommit() {
+            return Commit(WorkingCopyPath,
+                new SvnCommitArgs {LogMessage = "#0\nУстановка даты обновления пакетов из релиза."});
         }
     }
 }

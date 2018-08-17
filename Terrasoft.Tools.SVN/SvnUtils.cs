@@ -16,8 +16,7 @@ namespace Terrasoft.Tools.SVN
             svnCheckOutArgs.Notify += SvnCheckOutArgsOnNotify;
             try {
                 CheckOut(SvnUriTarget.FromString(baseWorkingCopyUrl), baseWorkingCopyPath, svnCheckOutArgs);
-            }
-            finally {
+            } finally {
                 svnCheckOutArgs.Notify -= SvnCheckOutArgsOnNotify;
             }
 
@@ -31,8 +30,7 @@ namespace Terrasoft.Tools.SVN
             try {
                 ReintegrationMerge(baseWorkingCopyPath, SvnTarget.FromString(featureRootUrl),
                     svnReintegrationMergeArgs);
-            }
-            finally {
+            } finally {
                 svnReintegrationMergeArgs.Notify -= SvnReintegrationMergeArgsOnNotify;
                 svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;
             }

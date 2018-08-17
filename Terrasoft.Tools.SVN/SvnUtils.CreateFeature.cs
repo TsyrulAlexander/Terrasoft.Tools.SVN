@@ -22,12 +22,10 @@ namespace Terrasoft.Tools.SVN
             svnCopyArgs.Notify += SvnCopyArgsOnNotify;
             try {
                 return RemoteCopy(SvnTarget.FromString(BranchReleaseUrl), new Uri(featureNewUrl), svnCopyArgs);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 return false;
-            }
-            finally {
+            } finally {
                 svnCopyArgs.Notify -= SvnCopyArgsOnNotify;
             }
         }
@@ -37,13 +35,15 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <returns>Результат</returns>
         public bool CreateFeature() {
-            string workingCopyPath = WorkingCopyPath;
-            if (!ExtractWorkingCopy(workingCopyPath)) return false;
+            if (!ExtractWorkingCopy(WorkingCopyPath)) {
+                return false;
+            }
 
             long lastBranchRevision = GetBaseBranchHeadRevision(1, BranchReleaseUrl);
             string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
             return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision) &&
-                   Switch(workingCopyPath, SvnUriTarget.FromString(featureNewUrl)) && SetPackagePropery(workingCopyPath);
+                   Switch(WorkingCopyPath, SvnUriTarget.FromString(featureNewUrl)) &&
+                   SetPackagePropery(WorkingCopyPath) && MakePropertiesCommit();
         }
 
         /// <summary>
@@ -68,12 +68,10 @@ namespace Terrasoft.Tools.SVN
             try {
                 string branchRelease = BranchReleaseUrl;
                 return CheckOut(SvnUriTarget.FromString(branchRelease), workingCopyPath, svnCheckOutArgs);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 return false;
-            }
-            finally {
+            } finally {
                 svnCheckOutArgs.Notify -= SvnCheckOutArgsOnNotify;
             }
         }
@@ -89,12 +87,10 @@ namespace Terrasoft.Tools.SVN
             svnUpdateArgs.Notify += SvnUpdateArgsOnNotify;
             try {
                 return Update(workingCopyPath, svnUpdateArgs);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 return false;
-            }
-            finally {
+            } finally {
                 svnUpdateArgs.Notify -= SvnUpdateArgsOnNotify;
             }
         }

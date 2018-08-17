@@ -1,45 +1,69 @@
-﻿using SharpSvn;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using SharpSvn;
+using Terrasoft.Tools.SVN.Properties;
 
 namespace Terrasoft.Tools.SVN
 {
-    using System;
-    using Terrasoft.Tools.SVN.Properties;
-
     public partial class SvnUtils
     {
-        private void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+        private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
         }
 
-        private void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+        private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
             Console.WriteLine(args.Path);
         }
 
-        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs args) {
-            Console.WriteLine("Conflicted: {0}", args.Conflict.FullPath);
+        private static void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs args) {
+            Console.WriteLine($@"Найден конфликт: {args.Conflict.FullPath}");
+            Console.WriteLine($@"Попытка разрешить конфликт...");
+            var process = new Process();
+            var startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Normal,
+                FileName = "TortoiseMerge.exe",
+                Arguments = $"/base:{args.Conflict.BaseFile} /theirs:{args.Conflict.TheirFile} " +
+                            $"/mine:{args.Conflict.MyFile} /merged:{args.Conflict.MergedFile} " +
+                            $"/basename:\"{args.Conflict.Name}: Working Base, rev {args.Conflict.LeftSource.Revision}\"" +
+                            $"/theirsname:\"{args.Conflict.Name}: Remote file, rev {args.Conflict.RightSource.Revision}\"" +
+                            $"/minename:\"{args.Conflict.Name}: Working Copy\"" +
+                            $"/mergedname:\"{args.Conflict.Name}: Merged file\" "
+            };
+            process.StartInfo = startInfo;
+            if (process.Start()) {
+                process.WaitForExit();
+            }
+
+            if (!File.Exists(args.Conflict.BaseFile) && !File.Exists(args.Conflict.TheirFile)) {
+                args.Choice = SvnAccept.Merged;
+            } else {
+                Console.WriteLine(
+                    @"Конфликт не был разрешен! Перед фиксацией изменений обязательно разрешите конфликты.");
+            }
         }
 
-        private void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
+        private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
             Console.WriteLine(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit, e.Items.Count);
         }
 
-        private void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+        private static void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
         }
 
-        private void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs e) {
+        private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs e) {
             Console.WriteLine(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision, e.Revision);
         }
 
-        private void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+        private static void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
         }
 
-        private void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+        private static void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
         }
 
-        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
+        private static void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
             while (e.Choice == SvnAccept.Unspecified) {
                 Console.WriteLine(Resources.SvnUtils_SvnReintegrationMergeArgsOnConflict_Conflict_in_file,
                     e.Conflict.FullPath);
@@ -79,7 +103,7 @@ namespace Terrasoft.Tools.SVN
             Console.WriteLine(e.Uri);
         }
 
-        private void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+        private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision, e.Path, e.Revision);
         }
     }
