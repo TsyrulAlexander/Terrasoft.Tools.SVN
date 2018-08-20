@@ -10,14 +10,18 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <returns>Результат успешности слияния</returns>
         public bool UpdateFromReleaseBranch() {
-            long revision = GetFeatureFirstRevisionNumber(WorkingCopyPath);
+            if (UpdateWorkingCopy(WorkingCopyPath)) {
+                long revision = GetFeatureFirstRevisionNumber(WorkingCopyPath);
 
-            string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
+                string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
 
-            long headRevision = GetBaseBranchHeadRevision(revision, basePath);
+                long headRevision = GetBaseBranchHeadRevision(revision, basePath);
 
-            return MergeBaseBranchIntoFeature(revision, headRevision, WorkingCopyPath, basePath) &&
-                   SetPackagePropery(WorkingCopyPath);
+                return MergeBaseBranchIntoFeature(revision, headRevision, WorkingCopyPath, basePath) &&
+                       SetPackagePropery(WorkingCopyPath);
+            } else {
+                throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
+            }
         }
 
         /// <summary>

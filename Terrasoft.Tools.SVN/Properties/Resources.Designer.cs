@@ -68,8 +68,7 @@ namespace Terrasoft.Tools.SVN.Properties {
         ///		CreateFeature :	Выделение новой ветки для фитчи на основании родительской
         ///		UpdateFeature :	Обновить ветку фитчи изменениями из родительской ветки
         ///		FinishFeature :	Завершить разработку фитчи, путем реинтеграции ветки фитчи в родительску ветку
-        ///		CloseFeature  :	Пометь фитчу как завершенную, и закрыть ветку
-        ///     FixFeature  :	Исправить ветку. Проставление ветке технического свойства, для исключения проблем при работе с веткой из bpm`online.
+        ///		CloseFeature  :	Пометь фитчу как завершенн [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Program_Usage {
             get {
@@ -87,7 +86,7 @@ namespace Terrasoft.Tools.SVN.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Исходные коды не разрешены.
+        ///   Looks up a localized string similar to Автоматическая фиксация невозможна, так присутсвуют не решенные конфликты..
         /// </summary>
         public static string SvnUtils_CommitChanges_Sources_not_resolved {
             get {

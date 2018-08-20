@@ -155,7 +155,7 @@
     <value>Файл {0} обновлен до ревизии №{1}</value>
   </data>
   <data name="SvnUtils_CommitChanges_Sources_not_resolved" xml:space="preserve">
-    <value>Исходные коды не разрешены</value>
+    <value>Автоматическая фиксация невозможна, так присутсвуют не решенные конфликты.</value>
   </data>
   <data name="SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature" xml:space="preserve">
     <value>Реинтеграция базовой ветки в ветку фитчи</value>

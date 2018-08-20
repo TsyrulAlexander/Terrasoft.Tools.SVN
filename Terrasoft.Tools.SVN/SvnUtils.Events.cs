@@ -18,7 +18,7 @@ namespace Terrasoft.Tools.SVN
 
         private static void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs args) {
             Console.WriteLine($@"Найден конфликт: {args.Conflict.FullPath}");
-            Console.WriteLine($@"Попытка разрешить конфликт...");
+            /*Console.WriteLine($@"Попытка разрешить конфликт...");
             var process = new Process();
             var startInfo = new ProcessStartInfo {
                 WindowStyle = ProcessWindowStyle.Normal,
@@ -40,7 +40,7 @@ namespace Terrasoft.Tools.SVN
             } else {
                 Console.WriteLine(
                     @"Конфликт не был разрешен! Перед фиксацией изменений обязательно разрешите конфликты.");
-            }
+            }*/
         }
 
         private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
