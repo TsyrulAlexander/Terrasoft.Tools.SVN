@@ -5,7 +5,7 @@ using Terrasoft.Tools.SVN.Properties;
 
 namespace Terrasoft.Tools.SVN
 {
-    public partial class SvnUtils
+    internal sealed partial class SvnUtils
     {
         /// <summary>
         ///     Копирование базового ветки в ветку фитчи
@@ -16,9 +16,10 @@ namespace Terrasoft.Tools.SVN
         /// <returns>Результат</returns>
         private bool CopyBaseBranch(string featureName, string featureNewUrl, long revision) {
             var svnCopyArgs = new SvnCopyArgs {
-                LogMessage = string.Format(Resources.SvnUtils_CopyBaseBranch_Init_Feature, featureName),
-                Revision = new SvnRevision(revision)
-            };
+                                                  LogMessage = string.Format(
+                                                      Resources.SvnUtils_CopyBaseBranch_Init_Feature, featureName)
+                                                , Revision = new SvnRevision(revision)
+                                              };
             svnCopyArgs.Notify += SvnCopyArgsOnNotify;
             try {
                 return RemoteCopy(SvnTarget.FromString(BranchReleaseUrl), new Uri(featureNewUrl), svnCopyArgs);
@@ -39,11 +40,11 @@ namespace Terrasoft.Tools.SVN
                 return false;
             }
 
-            long lastBranchRevision = GetBaseBranchHeadRevision(1, BranchReleaseUrl);
-            string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
+            long   lastBranchRevision = GetBaseBranchHeadRevision(1, BranchReleaseUrl);
+            string featureNewUrl      = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
             return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision) &&
                    Switch(WorkingCopyPath, SvnUriTarget.FromString(featureNewUrl)) &&
-                   SetPackagePropery(WorkingCopyPath) && MakePropertiesCommit();
+                   SetPackageProperty(WorkingCopyPath) && MakePropertiesCommit();
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace Terrasoft.Tools.SVN
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Результат</returns>
         private bool UpdateWorkingCopy(string workingCopyPath) {
-            Info(SvnTarget.FromString(workingCopyPath), (sender, args) => { Console.WriteLine(args); });
+            Info(SvnTarget.FromString(workingCopyPath), (sender, args) => Console.WriteLine(args));
             var svnUpdateArgs = new SvnUpdateArgs {IgnoreExternals = false};
             svnUpdateArgs.Notify += SvnUpdateArgsOnNotify;
             try {

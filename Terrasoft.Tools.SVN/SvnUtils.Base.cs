@@ -9,7 +9,7 @@ namespace Terrasoft.Tools.SVN
     /// <summary>
     ///     Абстрактный класс SVN клиента
     /// </summary>
-    public abstract class SvnUtilsBase : SvnClient
+    internal abstract class SvnUtilsBase : SvnClient
     {
         /// <inheritdoc />
         /// <summary>
@@ -80,12 +80,12 @@ namespace Terrasoft.Tools.SVN
         /// <summary>
         ///     Путь к рабочей копии
         /// </summary>
-        public string WorkingCopyPath { get; }
+        protected string WorkingCopyPath { get; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
-        public string CommitIfNoError { get; }
+        internal string CommitIfNoError { get; }
 
         public new void Dispose() {
             Authentication.SslServerTrustHandlers -= AuthenticationOnSslServerTrustHandlers;

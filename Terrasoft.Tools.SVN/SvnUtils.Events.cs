@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using SharpSvn;
 using Terrasoft.Tools.SVN.Properties;
 
 namespace Terrasoft.Tools.SVN
 {
-    public partial class SvnUtils
+    internal sealed partial class SvnUtils
     {
         private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
@@ -17,30 +15,26 @@ namespace Terrasoft.Tools.SVN
         }
 
         private static void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs args) {
-            Console.WriteLine($@"Найден конфликт: {args.Conflict.FullPath}");
-            /*Console.WriteLine($@"Попытка разрешить конфликт...");
-            var process = new Process();
-            var startInfo = new ProcessStartInfo {
-                WindowStyle = ProcessWindowStyle.Normal,
-                FileName = "TortoiseMerge.exe",
-                Arguments = $"/base:{args.Conflict.BaseFile} /theirs:{args.Conflict.TheirFile} " +
-                            $"/mine:{args.Conflict.MyFile} /merged:{args.Conflict.MergedFile} " +
-                            $"/basename:\"{args.Conflict.Name}: Working Base, rev {args.Conflict.LeftSource.Revision}\"" +
-                            $"/theirsname:\"{args.Conflict.Name}: Remote file, rev {args.Conflict.RightSource.Revision}\"" +
-                            $"/minename:\"{args.Conflict.Name}: Working Copy\"" +
-                            $"/mergedname:\"{args.Conflict.Name}: Merged file\" "
-            };
-            process.StartInfo = startInfo;
-            if (process.Start()) {
-                process.WaitForExit();
-            }
+            var defaultColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(@"Найден конфликт: ");
+            Console.ForegroundColor = defaultColor;
+            Console.WriteLine($@"{args.Conflict.FullPath}");
+            //Console.WriteLine(@"Попытка разрешить конфликт автоматически...");
+            //args.Choice = SvnAccept.TheirsFull;
 
-            if (!File.Exists(args.Conflict.BaseFile) && !File.Exists(args.Conflict.TheirFile)) {
-                args.Choice = SvnAccept.Merged;
-            } else {
-                Console.WriteLine(
-                    @"Конфликт не был разрешен! Перед фиксацией изменений обязательно разрешите конфликты.");
-            }*/
+//            var process = new Process();
+//            var startInfo = new ProcessStartInfo {
+//                WindowStyle = ProcessWindowStyle.Normal,
+//                FileName = "svn.exe",
+//                Arguments = $"resolve -R {args.Conflict.FullPath}"
+//            };
+//            process.StartInfo = startInfo;
+//            if (process.Start()) {
+//                process.WaitForExit();
+//            }
+//
+//            args.Choice = SvnAccept.Merged;
         }
 
         private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {

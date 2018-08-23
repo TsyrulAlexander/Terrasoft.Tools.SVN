@@ -72,7 +72,7 @@ namespace Terrasoft.Tools.SVN
                     break;
                 case "fixfeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
-                        if (svnUtils.SetPackagePropery()) {
+                        if (svnUtils.SetPackageProperty()) {
                             svnUtils.MakePropertiesCommit();
                         }
                     }
@@ -88,7 +88,7 @@ namespace Terrasoft.Tools.SVN
 
         private static void Usage() {
             string language = Registry.GetValue(@"HKEY_CURRENT_USER\", @"Software\Terrasoft\Tool\Svn", @"Rus")
-                .ToString();
+                                      .ToString();
             if (language == @"Rus") {
                 Console.WriteLine(Resources.Program_Usage);
                 string sample1 = GenerateSample1();
@@ -155,7 +155,9 @@ namespace Terrasoft.Tools.SVN
 
         private static void FillParamDelegate(string[] keyValueArray, ParallelLoopState arg2, long arg3) {
             string key = keyValueArray[0].Substring(1, keyValueArray[0].Length - 1);
-            int copyLength = keyValueArray.Length - 1 < 0 ? 1 : keyValueArray.Length - 1;
+            int copyLength = keyValueArray.Length - 1 < 0
+                ? 1
+                : keyValueArray.Length - 1;
             string value = string.Join(@"=", keyValueArray, 1, copyLength);
             FillParam(key.ToLowerInvariant(), value);
         }

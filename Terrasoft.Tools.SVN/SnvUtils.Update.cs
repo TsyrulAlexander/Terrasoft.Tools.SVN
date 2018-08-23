@@ -3,7 +3,7 @@
 namespace Terrasoft.Tools.SVN
 {
     /// <inheritdoc />
-    public partial class SvnUtils
+    internal sealed partial class SvnUtils
     {
         /// <summary>
         ///     Интеграция родительской ветки в ветку фитчи
@@ -15,10 +15,7 @@ namespace Terrasoft.Tools.SVN
 
                 string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
 
-                long headRevision = GetBaseBranchHeadRevision(revision, basePath);
-
-                return MergeBaseBranchIntoFeature(revision, headRevision, WorkingCopyPath, basePath) &&
-                       SetPackagePropery(WorkingCopyPath);
+                return MergeBaseBranchIntoFeature(WorkingCopyPath, basePath) && SetPackageProperty(WorkingCopyPath);
             } else {
                 throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
             }
@@ -27,21 +24,17 @@ namespace Terrasoft.Tools.SVN
         /// <summary>
         ///     Слияние родительской ветки в ветку фитчи
         /// </summary>
-        /// <param name="startRevision">Номер начальной ревизии</param>
-        /// <param name="headRevision">Номер головной ревизии</param>
         /// <param name="workingCopyPath">Рабочая папка</param>
         /// <param name="basePathUrl">URL родительской ветки</param>
         /// <returns>Результат слияния</returns>
-        private bool MergeBaseBranchIntoFeature(long startRevision, long headRevision, string workingCopyPath,
-            string basePathUrl) {
-            var svnMergeArgs = new SvnMergeArgs();
-            svnMergeArgs.Notify += OnSvnMergeArgsOnNotify;
+        private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl) {
+            var svnMergeArgs = new SvnReintegrationMergeArgs();
+            svnMergeArgs.Notify   += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
-            var revs = new SvnRevisionRange(new SvnRevision(startRevision), new SvnRevision(headRevision));
             try {
-                return Merge(workingCopyPath, SvnTarget.FromString(basePathUrl), revs, svnMergeArgs);
+                return ReintegrationMerge(workingCopyPath, SvnUriTarget.FromString(basePathUrl), svnMergeArgs);
             } finally {
-                svnMergeArgs.Notify -= OnSvnMergeArgsOnNotify;
+                svnMergeArgs.Notify   -= OnSvnMergeArgsOnNotify;
                 svnMergeArgs.Conflict -= OnSvnMergeArgsOnConflict;
             }
         }

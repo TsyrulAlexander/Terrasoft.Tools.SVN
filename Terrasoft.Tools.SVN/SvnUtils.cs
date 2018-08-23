@@ -3,7 +3,7 @@ using SharpSvn;
 
 namespace Terrasoft.Tools.SVN
 {
-    public partial class SvnUtils : SvnUtilsBase
+    internal sealed partial class SvnUtils : SvnUtilsBase
     {
         /// <summary>
         ///     Реинтеграция фитчи в родительскую ветку
@@ -20,27 +20,26 @@ namespace Terrasoft.Tools.SVN
                 svnCheckOutArgs.Notify -= SvnCheckOutArgsOnNotify;
             }
 
-            string featureRootUrl = string.Empty;
-            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { featureRootUrl = args.Uri.ToString(); });
+            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { });
 
             var svnReintegrationMergeArgs = new SvnReintegrationMergeArgs();
-            svnReintegrationMergeArgs.Notify += SvnReintegrationMergeArgsOnNotify;
+            svnReintegrationMergeArgs.Notify   += SvnReintegrationMergeArgsOnNotify;
             svnReintegrationMergeArgs.Conflict += SvnReintegrationMergeArgsOnConflict;
 
             try {
-                ReintegrationMerge(baseWorkingCopyPath, SvnTarget.FromString(featureRootUrl),
+                ReintegrationMerge(baseWorkingCopyPath, SvnTarget.FromString(WorkingCopyPath),
                     svnReintegrationMergeArgs);
             } finally {
-                svnReintegrationMergeArgs.Notify -= SvnReintegrationMergeArgsOnNotify;
+                svnReintegrationMergeArgs.Notify   -= SvnReintegrationMergeArgsOnNotify;
                 svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;
             }
 
-            RemovePackagePropery(baseWorkingCopyPath);
+            RemovePackageProperty(baseWorkingCopyPath);
         }
 
         public void DeleteClosedFeature() {
             string featureRootUrl = string.Empty;
-            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { featureRootUrl = args.Uri.ToString(); });
+            Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => featureRootUrl = args.Uri.ToString());
             var svnDeleteArgs = new SvnDeleteArgs {LogMessage = "Remove closed feature branch"};
             RemoteDelete(new Uri(featureRootUrl), svnDeleteArgs);
         }
