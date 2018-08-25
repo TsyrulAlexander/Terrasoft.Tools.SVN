@@ -32,11 +32,15 @@ namespace Terrasoft.Tools.SVN
             svnMergeArgs.Notify   += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
             try {
-                return ReintegrationMerge(workingCopyPath, SvnUriTarget.FromString(basePathUrl), svnMergeArgs);
+                return ReintegrationMerge(workingCopyPath, SvnUriTarget.FromString(basePathUrl, true), svnMergeArgs);
+            } catch (SvnException svnException) {
+                Logger.LogError(svnException.Message);
             } finally {
                 svnMergeArgs.Notify   -= OnSvnMergeArgsOnNotify;
                 svnMergeArgs.Conflict -= OnSvnMergeArgsOnConflict;
             }
+
+            return false;
         }
     }
 }

@@ -89,23 +89,25 @@ namespace Terrasoft.Tools.SVN
         private static void Usage() {
             string language = Registry.GetValue(@"HKEY_CURRENT_USER\", @"Software\Terrasoft\Tool\Svn", @"Rus")
                                       .ToString();
-            if (language == @"Rus") {
-                Console.WriteLine(Resources.Program_Usage);
-                string sample1 = GenerateSample1();
-                Console.WriteLine(sample1);
-                Console.WriteLine();
-                string sample2 = GenerateSample2();
-                Console.WriteLine();
-                Console.WriteLine(sample2);
-
-                string sample3 = GenerateSample3();
-                Console.WriteLine();
-                Console.WriteLine(sample3);
-
-                string sample4 = GenerateSample4();
-                Console.WriteLine();
-                Console.WriteLine(sample4);
+            if (language != @"Rus") {
+                return;
             }
+
+            Console.WriteLine(Resources.Program_Usage);
+            string sample1 = GenerateSample1();
+            Console.WriteLine(sample1);
+            Console.WriteLine();
+            string sample2 = GenerateSample2();
+            Console.WriteLine();
+            Console.WriteLine(sample2);
+
+            string sample3 = GenerateSample3();
+            Console.WriteLine();
+            Console.WriteLine(sample3);
+
+            string sample4 = GenerateSample4();
+            Console.WriteLine();
+            Console.WriteLine(sample4);
         }
 
         private static string GenerateSample4() {
