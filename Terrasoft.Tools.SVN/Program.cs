@@ -17,7 +17,7 @@ namespace Terrasoft.Tools.SVN
         private const string OperationFinishFeature = " -Operation=FinishFeature";
         private const string OperationCloseFeature = " -Operation=CloseFeature";
         private const string SvnuserSvnuser = " -SvnUser=SvnUser";
-        private const string SvnpasswordSnvpassword = " -SvnPassword=SnvPassword";
+        private const string SvnpasswordSvnpassword = " -SvnPassword=SvnPassword";
 
         private const string WorkingcopypathCSvnProjectTerrasoftFeature1 =
             @" -WorkingCopyPath=C:\SVN\Project\Terrasoft_Feature1";
@@ -115,7 +115,7 @@ namespace Terrasoft.Tools.SVN
             sample4.Append(TerrasoftToolsSvnExe);
             sample4.Append(OperationCloseFeature);
             sample4.Append(SvnuserSvnuser);
-            sample4.Append(SvnpasswordSnvpassword);
+            sample4.Append(SvnpasswordSvnpassword);
             sample4.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
             return sample4.ToString();
         }
@@ -125,7 +125,7 @@ namespace Terrasoft.Tools.SVN
             sample3.Append(TerrasoftToolsSvnExe);
             sample3.Append(OperationFinishFeature);
             sample3.Append(SvnuserSvnuser);
-            sample3.Append(SvnpasswordSnvpassword);
+            sample3.Append(SvnpasswordSvnpassword);
             sample3.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
             return sample3.ToString();
         }
@@ -135,7 +135,7 @@ namespace Terrasoft.Tools.SVN
             sample2.Append(TerrasoftToolsSvnExe);
             sample2.Append(OperationUpdateFeature);
             sample2.Append(SvnuserSvnuser);
-            sample2.Append(SvnpasswordSnvpassword);
+            sample2.Append(SvnpasswordSvnpassword);
             sample2.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
             sample2.Append(CommitifnoerrorTrue);
             return sample2.ToString();
@@ -146,7 +146,7 @@ namespace Terrasoft.Tools.SVN
             sample1.Append(TerrasoftToolsSvnExe);
             sample1.Append(OperationCreatefeature);
             sample1.Append(SvnuserSvnuser);
-            sample1.Append(SvnpasswordSnvpassword);
+            sample1.Append(SvnpasswordSvnpassword);
             sample1.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
             sample1.Append(BranchfeatureurlHttpSvnServerSvnProjectBranches);
             sample1.Append(BranchreleaseurlHttpSvnServerSvnProjectTrunkPackagestore);

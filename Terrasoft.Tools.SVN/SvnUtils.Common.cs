@@ -101,10 +101,7 @@ namespace Terrasoft.Tools.SVN
         /// <returns>Резальт фиксации изменений в хранилище</returns>
         internal bool CommitChanges(bool checkError = false, string logMessage = "") {
             if (checkError && !CheckWorkingCopyForError(WorkingCopyPath)) {
-                var defaultColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
-                Console.ForegroundColor = defaultColor;
+                Logger.LogError(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
                 return false;
             }
 
@@ -142,7 +139,7 @@ namespace Terrasoft.Tools.SVN
             return true;
         }
 
-        private void RemovePackageProperty(string workingCopyPath = "") {
+        private bool RemovePackageProperty(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
                 : workingCopyPath;
@@ -154,11 +151,17 @@ namespace Terrasoft.Tools.SVN
                                               select packagePath.Substring(0, slashPosition)) {
                 DeleteProperty(packageRootDir, "PackageUpdateDate");
             }
+
+            return true;
         }
 
-        public bool MakePropertiesCommit() {
+        public bool MakePropertiesCommit(string logMessage = "") {
             return Commit(WorkingCopyPath,
-                new SvnCommitArgs {LogMessage = "#0\nУстановка даты обновления пакетов из релиза."});
+                new SvnCommitArgs {
+                                      LogMessage = !string.IsNullOrEmpty(logMessage)
+                                          ? logMessage
+                                          : "#0\nУстановка даты обновления пакетов из релиза."
+                                  });
         }
     }
 }
