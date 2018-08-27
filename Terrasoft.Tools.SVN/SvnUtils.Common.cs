@@ -123,7 +123,7 @@ namespace Terrasoft.Tools.SVN
             }
         }
 
-        internal bool SetPackageProperty(string workingCopyPath = "") {
+        private bool SetPackageProperty(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
                 : workingCopyPath;
@@ -155,13 +155,21 @@ namespace Terrasoft.Tools.SVN
             return true;
         }
 
-        public bool MakePropertiesCommit(string logMessage = "") {
+        private bool MakePropertiesCommit(string logMessage = "") {
             return Commit(WorkingCopyPath,
                 new SvnCommitArgs {
                                       LogMessage = !string.IsNullOrEmpty(logMessage)
                                           ? logMessage
                                           : "#0\nУстановка даты обновления пакетов из релиза."
                                   });
+        }
+
+        internal bool FixBranch() {
+            return SetPackageProperty(WorkingCopyPath)
+                && MakePropertiesCommit()
+                && RemovePackageProperty(WorkingCopyPath)
+                && MakePropertiesCommit(
+                       "#0\nУдаление технического свойства: дата обновления пакетов из релиза.");
         }
     }
 }

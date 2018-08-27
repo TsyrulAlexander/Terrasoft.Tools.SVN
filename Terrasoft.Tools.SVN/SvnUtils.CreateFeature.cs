@@ -44,9 +44,7 @@ namespace Terrasoft.Tools.SVN
             string featureNewUrl      = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
             return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision)
                 && Switch(WorkingCopyPath, SvnUriTarget.FromString(featureNewUrl))
-                && SetPackageProperty(WorkingCopyPath) && MakePropertiesCommit()
-                && RemovePackageProperty(WorkingCopyPath) && MakePropertiesCommit(
-                       "#0\nУдаление технического свойства: дата обновления пакетов из релиза.");
+                && FixBranch();
         }
 
         /// <summary>

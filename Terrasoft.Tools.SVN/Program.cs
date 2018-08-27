@@ -72,12 +72,10 @@ namespace Terrasoft.Tools.SVN
                     break;
                 case "fixfeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
-                        if (svnUtils.SetPackageProperty()) {
-                            svnUtils.MakePropertiesCommit();
-                        }
+                        return Convert.ToInt32(
+                            svnUtils.FixBranch());
                     }
 
-                    break;
                 default:
                     Usage();
                     break;
