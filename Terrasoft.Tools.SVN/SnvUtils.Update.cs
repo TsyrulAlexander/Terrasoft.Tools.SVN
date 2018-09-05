@@ -28,11 +28,12 @@ namespace Terrasoft.Tools.SVN
         /// <param name="basePathUrl">URL родительской ветки</param>
         /// <returns>Результат слияния</returns>
         private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl) {
-            var svnMergeArgs = new SvnReintegrationMergeArgs();
+            var svnMergeArgs = new SvnMergeArgs();
             svnMergeArgs.Notify   += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
             try {
-                return ReintegrationMerge(workingCopyPath, SvnUriTarget.FromString(basePathUrl, true), svnMergeArgs);
+                return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl, true)
+                  , new SvnRevisionRange(SvnRevision.One, SvnRevision.Head), svnMergeArgs);
             } catch (SvnException svnException) {
                 Logger.LogError(svnException.Message);
             } finally {

@@ -59,14 +59,8 @@
       <HintPath>..\packages\SharpSvn.1.9-x86.1.9007.3987.251\lib\net40\SharpSvn.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpSvn.UI, Version=1.9007.3987.251, Culture=neutral, PublicKeyToken=33789aa53ca44aa9">
-      <HintPath>..\packages\SharpSvn.1.9-x86.1.9007.3987.251\lib\net40\SharpSvn.UI.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
       <Compile Include="Logger.cs"/>

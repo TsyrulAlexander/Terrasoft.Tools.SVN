@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using SharpSvn;
 using SharpSvn.Security;
@@ -38,10 +39,13 @@ namespace Terrasoft.Tools.SVN
                         Maintainer = options["maintainer"];
                         break;
                     case "commitifnoerror":
-                        CommitIfNoError = options["commitifnoerror"];
+                        CommitIfNoError = Convert.ToBoolean(options["commitifnoerror"]);
                         break;
                     case "svnpassword":
                         Password = options["svnpassword"];
+                        break;
+                    case "automerge":
+                        AutoMerge = Convert.ToBoolean(options["automerge"]);
                         break;
                     default:
                         continue;
@@ -49,10 +53,15 @@ namespace Terrasoft.Tools.SVN
             }
 
             Authentication.Clear();
-            Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
+            Authentication.DefaultCredentials                       =  new NetworkCredential(UserName, Password);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            Authentication.SslServerTrustHandlers += AuthenticationOnSslServerTrustHandlers;
+            Authentication.SslServerTrustHandlers += delegate(object o, SvnSslServerTrustEventArgs args) {
+                args.AcceptedFailures = args.Failures;
+                args.Save             = true;
+            };
         }
+
+        public bool AutoMerge { get; }
 
         private string UserName { get; }
         private string Password { get; }
@@ -85,15 +94,6 @@ namespace Terrasoft.Tools.SVN
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
-        internal string CommitIfNoError { get; }
-
-        public new void Dispose() {
-            Authentication.SslServerTrustHandlers -= AuthenticationOnSslServerTrustHandlers;
-        }
-
-        private static void AuthenticationOnSslServerTrustHandlers(object sender, SvnSslServerTrustEventArgs e) {
-            e.AcceptedFailures = e.Failures;
-            e.Save = true;
-        }
+        internal bool CommitIfNoError { get; set; }
     }
 }

@@ -22,13 +22,17 @@ namespace Terrasoft.Tools.SVN
 
             Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { });
 
-            var svnReintegrationMergeArgs = new SvnReintegrationMergeArgs();
+            var svnReintegrationMergeArgs = new SvnMergeArgs();
             svnReintegrationMergeArgs.Notify   += SvnReintegrationMergeArgsOnNotify;
             svnReintegrationMergeArgs.Conflict += SvnReintegrationMergeArgsOnConflict;
 
             try {
-                ReintegrationMerge(baseWorkingCopyPath, SvnTarget.FromString(WorkingCopyPath),
-                    svnReintegrationMergeArgs);
+                string workingCopyUrl = String.Empty;
+                Info(WorkingCopyPath, new SvnInfoArgs() {Revision = new SvnRevision(SvnRevisionType.Head)}
+                  , (sender, args) => workingCopyUrl = args.Uri.ToString());
+                Merge(baseWorkingCopyPath
+                  , SvnTarget.FromString(workingCopyUrl)
+                  , new SvnRevisionRange(SvnRevision.One, SvnRevision.Head), svnReintegrationMergeArgs);
             } finally {
                 svnReintegrationMergeArgs.Notify   -= SvnReintegrationMergeArgsOnNotify;
                 svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;

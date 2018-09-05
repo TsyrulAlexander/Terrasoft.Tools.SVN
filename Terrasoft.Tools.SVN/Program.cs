@@ -52,7 +52,7 @@ namespace Terrasoft.Tools.SVN
                     }
                 case "updatefeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
-                        if (svnUtils.UpdateFromReleaseBranch() && Convert.ToBoolean(svnUtils.CommitIfNoError)) {
+                        if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
                         }
                     }

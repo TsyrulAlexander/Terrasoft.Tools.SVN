@@ -14,27 +14,20 @@ namespace Terrasoft.Tools.SVN
             Console.WriteLine(args.Path);
         }
 
-        private static void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs args) {
-            var defaultColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(@"Найден конфликт: ");
-            Console.ForegroundColor = defaultColor;
-            Console.WriteLine($@"{args.Conflict.FullPath}");
-            //Console.WriteLine(@"Попытка разрешить конфликт автоматически...");
-            //args.Choice = SvnAccept.TheirsFull;
+        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
+            if (!AutoMerge) {
+                return;
+            }
 
-//            var process = new Process();
-//            var startInfo = new ProcessStartInfo {
-//                WindowStyle = ProcessWindowStyle.Normal,
-//                FileName = "svn.exe",
-//                Arguments = $"resolve -R {args.Conflict.FullPath}"
-//            };
-//            process.StartInfo = startInfo;
-//            if (process.Start()) {
-//                process.WaitForExit();
-//            }
-//
-//            args.Choice = SvnAccept.Merged;
+            Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
+              , $"\nАдрес бранчи\t{e.Conflict.LeftSource.Target}\nАдрес релиза\t{e.Conflict.RightSource.Target}");
+            e.Choice = e.Conflict.NodeKind == SvnNodeKind.File
+                ? SvnAccept.Theirs
+                : SvnAccept.Merged;
+            Logger.LogError("Производим автоматическое слияние: ", e.Choice == SvnAccept.Theirs
+                ? "принимаем входящие изменения как главные."
+                : "объеденяем папки.");
+            CommitIfNoError = false;
         }
 
         private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
@@ -57,40 +50,20 @@ namespace Terrasoft.Tools.SVN
             Console.WriteLine(e.Path);
         }
 
-        private static void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
-            while (e.Choice == SvnAccept.Unspecified) {
-                Console.WriteLine(Resources.SvnUtils_SvnReintegrationMergeArgsOnConflict_Conflict_in_file,
-                    e.Conflict.FullPath);
-                string resolveAction = Console.ReadLine();
-                if (resolveAction != null) {
-                    switch (resolveAction.ToLowerInvariant()) {
-                        case "m":
-                            e.Choice = SvnAccept.Mine;
-                            break;
-                        case "mf":
-                            e.Choice = SvnAccept.MineFull;
-                            break;
-                        case "t":
-                            e.Choice = SvnAccept.Theirs;
-                            break;
-                        case "tf":
-                            e.Choice = SvnAccept.TheirsFull;
-                            break;
-                        case "p":
-                            e.Choice = SvnAccept.Postpone;
-                            break;
-                        case "w":
-                            e.Choice = SvnAccept.Working;
-                            break;
-
-                        default:
-                            e.Choice = SvnAccept.Unspecified;
-                            break;
-                    }
-                } else {
-                    Console.WriteLine(Resources.SvnUtils_SvnReintegrationMergeArgsOnConflict_Action_Not_Selected);
-                }
+        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
+            if (!AutoMerge) {
+                return;
             }
+
+            Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
+              , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+            e.Choice = e.Conflict.NodeKind == SvnNodeKind.File
+                ? SvnAccept.Theirs
+                : SvnAccept.Merged;
+            Logger.LogError("Производим автоматическое слияние: ", e.Choice == SvnAccept.Theirs
+                ? "принимаем входящие изменения как главные."
+                : "объеденяем папки.");
+            CommitIfNoError = false;
         }
 
         private static void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs e) {
