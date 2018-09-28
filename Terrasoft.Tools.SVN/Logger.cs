@@ -11,6 +11,7 @@ namespace Terrasoft.Tools.SVN
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
+        
         internal static void LogInfo(string infoMessage, string message = "") {
             var defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -18,5 +19,14 @@ namespace Terrasoft.Tools.SVN
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
+
+        internal static void LogWarning(string infoMessage, string message = "") {
+            var defaultColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write($@"{infoMessage} ");
+            Console.ForegroundColor = defaultColor;
+            Console.WriteLine(message);
+        }
     }
 }
+
