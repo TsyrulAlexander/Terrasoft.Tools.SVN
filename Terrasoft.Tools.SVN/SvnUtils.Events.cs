@@ -17,17 +17,43 @@ namespace Terrasoft.Tools.SVN
 
         private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
             if (!AutoMerge) {
+                Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
+                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
                 return;
             }
 
-            Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
-                , $"\nАдрес бранчи\t{e.Conflict.LeftSource.Target}\nАдрес релиза\t{e.Conflict.RightSource.Target}");
-            e.Choice = e.Conflict.NodeKind == SvnNodeKind.File
-                ? SvnAccept.Theirs
-                : SvnAccept.Merged;
-            Logger.LogError("Производим автоматическое слияние: ", e.Choice == SvnAccept.Theirs
-                ? "принимаем входящие изменения как главные."
-                : "объеденяем папки.");
+            switch (e.ConflictAction) {
+                case SvnConflictAction.Add when e.ConflictType == SvnConflictType.Tree && e.NodeKind == SvnNodeKind.Directory && e.ConflictReason == SvnConflictReason.Obstructed && Directory.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка добавить папку, которая уже существует:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Производим автоматическое слияние:", "оставляем сущесвующую.");
+                    e.Choice = SvnAccept.Working;
+                    return;
+                case SvnConflictAction.Delete when e.ConflictReason == SvnConflictReason.Missing && e.NodeKind == SvnNodeKind.Directory && !Directory.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка удалить папку, которая уже удалена:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
+                    e.Choice = SvnAccept.Working;
+                    return;
+                case SvnConflictAction.Add when e.ConflictType == SvnConflictType.Tree && e.NodeKind == SvnNodeKind.File && e.ConflictReason == SvnConflictReason.Obstructed && File.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка добавить файл который уже существует:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Не возможно произвести автоматическое слияение:", "требуется провести слиение в ручном режиме.");
+                    e.Choice = SvnAccept.Postpone;
+                    CommitIfNoError = false;
+                    return;
+                case SvnConflictAction.Delete when e.ConflictReason == SvnConflictReason.Missing && e.NodeKind == SvnNodeKind.None && !Directory.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка удалить ветку, которая уже удалена:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
+                    e.Choice = SvnAccept.Working;
+                    return;
+                default:
+                    e.Choice = SvnAccept.Postpone;
+                    Logger.LogError("Не возможно произвести автоматическое слиение:", "не найдено подходящее правило.");
+                    break;
+            }
+
             CommitIfNoError = false;
         }
 
@@ -62,59 +88,38 @@ namespace Terrasoft.Tools.SVN
                 return;
             }
 
-            if (e.ConflictAction == SvnConflictAction.Add
-                && e.ConflictType == SvnConflictType.Tree
-                && e.NodeKind == SvnNodeKind.Directory
-                && e.ConflictReason == SvnConflictReason.Obstructed
-                && Directory.Exists(e.Conflict.FullPath)
-            ) {
-                Logger.LogError("Попытка добавить папку, которая уже существует:"
-                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                Logger.LogError("Производим автоматическое слияние:", "оставляем сущесвующую.");
-                e.Choice = SvnAccept.Working;
-                return;
+            switch (e.ConflictAction) {
+                case SvnConflictAction.Add when e.ConflictType == SvnConflictType.Tree && e.NodeKind == SvnNodeKind.Directory && e.ConflictReason == SvnConflictReason.Obstructed && Directory.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка добавить папку, которая уже существует:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Производим автоматическое слияние:", "оставляем сущесвующую.");
+                    e.Choice = SvnAccept.Working;
+                    return;
+                case SvnConflictAction.Delete when e.ConflictReason == SvnConflictReason.Missing && e.NodeKind == SvnNodeKind.Directory && !Directory.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка удалить папку, которая уже удалена:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
+                    e.Choice = SvnAccept.Working;
+                    return;
+                case SvnConflictAction.Add when e.ConflictType == SvnConflictType.Tree && e.NodeKind == SvnNodeKind.File && e.ConflictReason == SvnConflictReason.Obstructed && File.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка добавить файл который уже существует:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Не возможно произвести автоматическое слияение:", "требуется провести слиение в ручном режиме.");
+                    e.Choice = SvnAccept.Postpone;
+                    CommitIfNoError = false;
+                    return;
+                case SvnConflictAction.Delete when e.ConflictReason == SvnConflictReason.Missing && e.NodeKind == SvnNodeKind.None && !Directory.Exists(e.Conflict.FullPath):
+                    Logger.LogError("Попытка удалить ветку, которая уже удалена:"
+                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
+                    Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
+                    e.Choice = SvnAccept.Working;
+                    return;
+                default:
+                    e.Choice = SvnAccept.Postpone;
+                    Logger.LogError("Не возможно произвести автоматическое слиение:", "не найдено подходящее правило.");
+                    break;
             }
 
-            if (e.ConflictAction == SvnConflictAction.Delete
-                && e.ConflictReason == SvnConflictReason.Missing
-                && e.NodeKind == SvnNodeKind.Directory
-                && !Directory.Exists(e.Conflict.FullPath)
-            ) {
-                Logger.LogError("Попытка удалить папку, которая уже удалена:"
-                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
-                e.Choice = SvnAccept.Working;
-                return;
-            }
-
-            if (e.ConflictAction == SvnConflictAction.Add
-                && e.ConflictType == SvnConflictType.Tree
-                && e.NodeKind == SvnNodeKind.File
-                && e.ConflictReason == SvnConflictReason.Obstructed
-                && File.Exists(e.Conflict.FullPath)
-            ) {
-                Logger.LogError("Попытка добавить файл который уже существует:"
-                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                Logger.LogError("Не возможно произвести автоматическое слияение:", "требуется провести слиение в ручном режиме.");
-                e.Choice = SvnAccept.Postpone;
-                CommitIfNoError = false;
-                return;
-            }
-
-            if (e.ConflictAction == SvnConflictAction.Delete
-                && e.ConflictReason == SvnConflictReason.Missing
-                && e.NodeKind == SvnNodeKind.None
-                && !Directory.Exists(e.Conflict.FullPath)
-            ) {
-                Logger.LogError("Попытка удалить ветку, которая уже удалена:"
-                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
-                e.Choice = SvnAccept.Working;
-                return;
-            }
-
-            e.Choice = SvnAccept.Postpone;
-            Logger.LogError("Не возможно произвести автоматическое слиение:","не найдено подходящее правило.");
             CommitIfNoError = false;
         }
 

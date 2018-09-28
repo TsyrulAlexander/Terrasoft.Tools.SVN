@@ -22,19 +22,21 @@ namespace Terrasoft.Tools.SVN
 
             Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => { });
 
-            var svnReintegrationMergeArgs = new SvnMergeArgs();
-            svnReintegrationMergeArgs.Notify   += SvnReintegrationMergeArgsOnNotify;
+            var svnReintegrationMergeArgs = new SvnReintegrationMergeArgs();
+            svnReintegrationMergeArgs.Notify += SvnReintegrationMergeArgsOnNotify;
             svnReintegrationMergeArgs.Conflict += SvnReintegrationMergeArgsOnConflict;
 
             try {
                 string workingCopyUrl = String.Empty;
-                Info(WorkingCopyPath, new SvnInfoArgs() {Revision = new SvnRevision(SvnRevisionType.Head)}
-                  , (sender, args) => workingCopyUrl = args.Uri.ToString());
-                Merge(baseWorkingCopyPath
-                  , SvnTarget.FromString(workingCopyUrl)
-                  , new SvnRevisionRange(SvnRevision.One, SvnRevision.Head), svnReintegrationMergeArgs);
+                Info(WorkingCopyPath, new SvnInfoArgs {Revision = new SvnRevision(SvnRevisionType.Head)}
+                    , (sender, args) => workingCopyUrl = args.Uri.ToString());
+                ReintegrationMerge(baseWorkingCopyPath
+                    , SvnTarget.FromString(workingCopyUrl)
+                    , svnReintegrationMergeArgs);
+            } catch (SvnClientNotReadyToMergeException e) {
+                Logger.LogError(e.Message, e.Targets.ToString());
             } finally {
-                svnReintegrationMergeArgs.Notify   -= SvnReintegrationMergeArgsOnNotify;
+                svnReintegrationMergeArgs.Notify -= SvnReintegrationMergeArgsOnNotify;
                 svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;
             }
 
