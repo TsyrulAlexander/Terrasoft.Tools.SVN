@@ -12,24 +12,24 @@ namespace Terrasoft.Tools.SVN
     internal static class Program
     {
         private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
-        private const string OperationCreatefeature = " -Operation=CreateFeature";
+        private const string OperationCreateFeature = " -Operation=CreateFeature";
         private const string OperationUpdateFeature = " -Operation=UpdateFeature";
         private const string OperationFinishFeature = " -Operation=FinishFeature";
         private const string OperationCloseFeature = " -Operation=CloseFeature";
-        private const string SvnuserSvnuser = " -SvnUser=SvnUser";
-        private const string SvnpasswordSvnpassword = " -SvnPassword=SvnPassword";
+        private const string SvnUserSvnUser = " -SvnUser=SvnUser";
+        private const string SvnPasswordSvnPassword = " -SvnPassword=SvnPassword";
 
-        private const string WorkingcopypathCSvnProjectTerrasoftFeature1 =
+        private const string WorkingCopyPathCSvnProjectTerrasoftFeature1 =
             @" -WorkingCopyPath=C:\SVN\Project\Terrasoft_Feature1";
 
-        private const string BranchfeatureurlHttpSvnServerSvnProjectBranches =
+        private const string BranchFeatureUrlHttpSvnServerSvnProjectBranches =
             " -BranchFeatureUrl=http://Svn-Server/svn/Project/branches";
 
-        private const string BranchreleaseurlHttpSvnServerSvnProjectTrunkPackagestore =
+        private const string BranchReleaseUrlHttpSvnServerSvnProjectTrunkPackageStore =
             " -BranchReleaseUrl=http://Svn-Server/svn/Project/trunk/PackageStore";
 
-        private const string FeaturenameFeature1 = " -FeatureName=Feature1";
-        private const string CommitifnoerrorTrue = " -CommitIfNoError=true";
+        private const string FeatureNameFeature1 = " -FeatureName=Feature1";
+        private const string CommitIfNoErrorTrue = " -CommitIfNoError=true";
         private const string Maintainer = " -Maintainer=Partner1";
 
         private static readonly ConcurrentDictionary<string, string> ProgramOptions =
@@ -37,7 +37,7 @@ namespace Terrasoft.Tools.SVN
 
         public static int Main(string[] args) {
             IEnumerable<string[]> argsEnumerable =
-                args.Select(argument => argument.Split('=')).Where(keyvalue => keyvalue.Length == 2);
+                args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
             if (!ProgramOptions.ContainsKey(@"operation")) {
                 Usage();
@@ -46,10 +46,12 @@ namespace Terrasoft.Tools.SVN
 
             string programOption = ProgramOptions[@"operation"].ToLowerInvariant();
             switch (programOption) {
+                // ReSharper disable once StringLiteralTypo
                 case "createfeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         return Convert.ToInt32(svnUtils.CreateFeature());
                     }
+                // ReSharper disable once StringLiteralTypo
                 case "updatefeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
@@ -58,18 +60,21 @@ namespace Terrasoft.Tools.SVN
                     }
 
                     break;
+                // ReSharper disable once StringLiteralTypo
                 case "finishfeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         svnUtils.ReintegrationMergeToBaseBranch();
                     }
 
                     break;
+                // ReSharper disable once StringLiteralTypo
                 case "closefeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         svnUtils.DeleteClosedFeature();
                     }
 
                     break;
+                // ReSharper disable once StringLiteralTypo
                 case "fixfeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         return Convert.ToInt32(
@@ -112,9 +117,9 @@ namespace Terrasoft.Tools.SVN
             var sample4 = new StringBuilder();
             sample4.Append(TerrasoftToolsSvnExe);
             sample4.Append(OperationCloseFeature);
-            sample4.Append(SvnuserSvnuser);
-            sample4.Append(SvnpasswordSvnpassword);
-            sample4.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
+            sample4.Append(SvnUserSvnUser);
+            sample4.Append(SvnPasswordSvnPassword);
+            sample4.Append(WorkingCopyPathCSvnProjectTerrasoftFeature1);
             return sample4.ToString();
         }
 
@@ -122,9 +127,9 @@ namespace Terrasoft.Tools.SVN
             var sample3 = new StringBuilder();
             sample3.Append(TerrasoftToolsSvnExe);
             sample3.Append(OperationFinishFeature);
-            sample3.Append(SvnuserSvnuser);
-            sample3.Append(SvnpasswordSvnpassword);
-            sample3.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
+            sample3.Append(SvnUserSvnUser);
+            sample3.Append(SvnPasswordSvnPassword);
+            sample3.Append(WorkingCopyPathCSvnProjectTerrasoftFeature1);
             return sample3.ToString();
         }
 
@@ -132,23 +137,23 @@ namespace Terrasoft.Tools.SVN
             var sample2 = new StringBuilder();
             sample2.Append(TerrasoftToolsSvnExe);
             sample2.Append(OperationUpdateFeature);
-            sample2.Append(SvnuserSvnuser);
-            sample2.Append(SvnpasswordSvnpassword);
-            sample2.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
-            sample2.Append(CommitifnoerrorTrue);
+            sample2.Append(SvnUserSvnUser);
+            sample2.Append(SvnPasswordSvnPassword);
+            sample2.Append(WorkingCopyPathCSvnProjectTerrasoftFeature1);
+            sample2.Append(CommitIfNoErrorTrue);
             return sample2.ToString();
         }
 
         private static string GenerateSample1() {
             var sample1 = new StringBuilder();
             sample1.Append(TerrasoftToolsSvnExe);
-            sample1.Append(OperationCreatefeature);
-            sample1.Append(SvnuserSvnuser);
-            sample1.Append(SvnpasswordSvnpassword);
-            sample1.Append(WorkingcopypathCSvnProjectTerrasoftFeature1);
-            sample1.Append(BranchfeatureurlHttpSvnServerSvnProjectBranches);
-            sample1.Append(BranchreleaseurlHttpSvnServerSvnProjectTrunkPackagestore);
-            sample1.Append(FeaturenameFeature1);
+            sample1.Append(OperationCreateFeature);
+            sample1.Append(SvnUserSvnUser);
+            sample1.Append(SvnPasswordSvnPassword);
+            sample1.Append(WorkingCopyPathCSvnProjectTerrasoftFeature1);
+            sample1.Append(BranchFeatureUrlHttpSvnServerSvnProjectBranches);
+            sample1.Append(BranchReleaseUrlHttpSvnServerSvnProjectTrunkPackageStore);
+            sample1.Append(FeatureNameFeature1);
             sample1.Append(Maintainer);
             return sample1.ToString();
         }
