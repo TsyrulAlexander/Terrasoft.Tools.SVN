@@ -61,7 +61,7 @@ namespace Terrasoft.Tools.SVN
             };
         }
 
-        public bool AutoMerge { get; }
+        protected bool AutoMerge { get; }
 
         private string UserName { get; }
         private string Password { get; }
