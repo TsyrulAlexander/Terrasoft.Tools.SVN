@@ -26,6 +26,7 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <param name="workingCopyPath">Рабочая папка</param>
         /// <param name="basePathUrl">URL родительской ветки</param>
+        /// <param name="startRevision">Номер стартовой ревизии</param>
         /// <returns>Результат слияния</returns>
         private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl, long startRevision) {
             var svnMergeArgs = new SvnMergeArgs();
