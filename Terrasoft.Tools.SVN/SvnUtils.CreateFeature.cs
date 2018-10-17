@@ -35,7 +35,7 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <returns>Результат</returns>
         public bool CreateFeature() {
-            long lastBranchRevision = GetBaseBranchHeadRevision(1, BranchReleaseUrl);
+            long lastBranchRevision = GetBaseBranchHeadRevision(BranchReleaseUrl);
             string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
             return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision)
                    && ExtractWorkingCopy(WorkingCopyPath, featureNewUrl)
