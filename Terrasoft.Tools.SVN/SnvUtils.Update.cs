@@ -16,9 +16,9 @@ namespace Terrasoft.Tools.SVN
                 string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
 
                 return MergeBaseBranchIntoFeature(WorkingCopyPath, basePath, revision);
-            } else {
-                throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
             }
+
+            throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
         }
 
         /// <summary>
@@ -30,16 +30,16 @@ namespace Terrasoft.Tools.SVN
         /// <returns>Результат слияния</returns>
         private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl, long startRevision) {
             var svnMergeArgs = new SvnMergeArgs();
-            svnMergeArgs.Notify += OnSvnMergeArgsOnNotify;
-            svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
+            svnMergeArgs.Notify += OnSvnMergeNotify;
+            svnMergeArgs.Conflict += OnSvnMergeConflict;
             try {
                 return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl, true)
                     , new SvnRevisionRange(startRevision, SvnRevision.Head), svnMergeArgs);
             } catch (SvnException svnException) {
                 Logger.LogError(svnException.Message);
             } finally {
-                svnMergeArgs.Notify -= OnSvnMergeArgsOnNotify;
-                svnMergeArgs.Conflict -= OnSvnMergeArgsOnConflict;
+                svnMergeArgs.Notify -= OnSvnMergeNotify;
+                svnMergeArgs.Conflict -= OnSvnMergeConflict;
             }
 
             return false;

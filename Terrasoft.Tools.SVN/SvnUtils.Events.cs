@@ -11,11 +11,11 @@ namespace Terrasoft.Tools.SVN
             Console.WriteLine(e.Path);
         }
 
-        private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+        private static void OnSvnMergeNotify(object sender, SvnNotifyEventArgs args) {
             Logger.LogInfo(args.Action.ToString(), args.Path);
         }
 
-        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
+        private void OnSvnMergeConflict(object sender, SvnConflictEventArgs e) {
             if (!AutoMerge) {
                 Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
                     , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
