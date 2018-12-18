@@ -91,7 +91,7 @@ namespace Terrasoft.Tools.SVN
 
         private static void Usage() {
             string language = Registry.GetValue(@"HKEY_CURRENT_USER\", @"Software\Terrasoft\Tool\Svn", @"Rus")
-                                      .ToString();
+                .ToString();
             if (language != @"Rus") {
                 return;
             }

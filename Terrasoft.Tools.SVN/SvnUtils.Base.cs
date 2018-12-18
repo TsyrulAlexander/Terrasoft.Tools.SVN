@@ -26,6 +26,9 @@ namespace Terrasoft.Tools.SVN
                     case "workingcopypath":
                         WorkingCopyPath = options["workingcopypath"];
                         break;
+                    case "baseworkingcopypath":
+                        BaseWorkingCopyPath = options["baseworkingcopypath"];
+                        break;
                     case "branchreleaseurl":
                         BranchReleaseUrl = options["branchreleaseurl"];
                         break;
@@ -53,11 +56,11 @@ namespace Terrasoft.Tools.SVN
             }
 
             Authentication.Clear();
-            Authentication.DefaultCredentials                       =  new NetworkCredential(UserName, Password);
+            Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             Authentication.SslServerTrustHandlers += delegate(object o, SvnSslServerTrustEventArgs args) {
                 args.AcceptedFailures = args.Failures;
-                args.Save             = true;
+                args.Save = true;
             };
         }
 
@@ -90,6 +93,11 @@ namespace Terrasoft.Tools.SVN
         ///     Путь к рабочей копии
         /// </summary>
         protected string WorkingCopyPath { get; }
+
+        /// <summary>
+        ///     Путь к базовой рабочей копии (родитель)
+        /// </summary>
+        protected string BaseWorkingCopyPath { get; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок

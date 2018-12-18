@@ -9,7 +9,7 @@ namespace Terrasoft.Tools.SVN
         ///     Реинтеграция фитчи в родительскую ветку
         /// </summary>
         public void ReintegrationMergeToBaseBranch() {
-            string baseWorkingCopyPath = WorkingCopyPath + "_Release";
+            string baseWorkingCopyPath = BaseWorkingCopyPath ?? WorkingCopyPath + "_Release";
             string baseWorkingCopyUrl =
                 GetBaseBranchPath(GetFeatureFirstRevisionNumber(WorkingCopyPath), WorkingCopyPath);
             var svnCheckOutArgs = new SvnCheckOutArgs();
@@ -27,7 +27,7 @@ namespace Terrasoft.Tools.SVN
             svnReintegrationMergeArgs.Conflict += SvnReintegrationMergeArgsOnConflict;
 
             try {
-                string workingCopyUrl = String.Empty;
+                string workingCopyUrl = string.Empty;
                 Info(WorkingCopyPath, new SvnInfoArgs {Revision = new SvnRevision(SvnRevisionType.Head)}
                     , (sender, args) => workingCopyUrl = args.Uri.ToString());
                 ReintegrationMerge(baseWorkingCopyPath

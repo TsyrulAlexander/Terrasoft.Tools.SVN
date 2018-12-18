@@ -16,9 +16,9 @@ namespace Terrasoft.Tools.SVN
                 string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
 
                 return MergeBaseBranchIntoFeature(WorkingCopyPath, basePath, revision);
-            } else {
-                throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
             }
+
+            throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
         }
 
         /// <summary>
