@@ -65,7 +65,7 @@ namespace Terrasoft.Tools.SVN
                     return;
                 }
 
-                foreach (var changeItem in args.ChangedPaths) {
+                foreach (SvnChangeItem changeItem in args.ChangedPaths) {
                     if (string.IsNullOrEmpty(changeItem.CopyFromPath)) {
                         continue;
                     }
@@ -83,7 +83,7 @@ namespace Terrasoft.Tools.SVN
         /// <returns>Номер ревизии</returns>
         private long GetBaseBranchHeadRevision(string basePath) {
             long headRevision = 0;
-            var svnLogArgs = new SvnLogArgs() {
+            var svnLogArgs = new SvnLogArgs {
                 Limit = 1,
                 RetrieveAllProperties = false,
                 RetrieveChangedPaths = false,
@@ -146,7 +146,7 @@ namespace Terrasoft.Tools.SVN
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
                 : workingCopyPath;
-            var branchPackages =
+            IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packageRootDir in from packagePath in branchPackages
                 where !string.IsNullOrEmpty(packagePath)

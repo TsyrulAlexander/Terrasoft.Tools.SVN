@@ -78,6 +78,7 @@
     <Compile Include="SvnUtils.Base.cs" />
     <Compile Include="SvnUtils.Common.cs" />
     <Compile Include="SvnUtils.Events.cs" />
+    <Compile Include="SvnUtils.ShareSchemas.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

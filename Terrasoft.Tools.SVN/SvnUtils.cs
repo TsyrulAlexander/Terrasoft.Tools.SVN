@@ -27,7 +27,7 @@ namespace Terrasoft.Tools.SVN
             svnReintegrationMergeArgs.Conflict += SvnReintegrationMergeArgsOnConflict;
 
             try {
-                string workingCopyUrl = String.Empty;
+                string workingCopyUrl = string.Empty;
                 Info(WorkingCopyPath, new SvnInfoArgs {Revision = new SvnRevision(SvnRevisionType.Head)}
                     , (sender, args) => workingCopyUrl = args.Uri.ToString());
                 ReintegrationMerge(baseWorkingCopyPath

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ namespace Terrasoft.Tools.SVN
         private static readonly ConcurrentDictionary<string, string> ProgramOptions =
             new ConcurrentDictionary<string, string>();
 
+        [SuppressMessage("ReSharper", "StringLiteralTypo")]
         public static int Main(string[] args) {
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
@@ -45,45 +47,31 @@ namespace Terrasoft.Tools.SVN
             }
 
             string programOption = ProgramOptions[@"operation"].ToLowerInvariant();
-            switch (programOption) {
-                // ReSharper disable once StringLiteralTypo
-                case "createfeature":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+            using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                switch (programOption) {
+                    case "createfeature":
                         return Convert.ToInt32(svnUtils.CreateFeature());
-                    }
-                // ReSharper disable once StringLiteralTypo
-                case "updatefeature":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                    case "updatefeature":
                         if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
                         }
-                    }
 
-                    break;
-                // ReSharper disable once StringLiteralTypo
-                case "finishfeature":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                        break;
+                    case "finishfeature":
                         svnUtils.ReintegrationMergeToBaseBranch();
-                    }
-
-                    break;
-                // ReSharper disable once StringLiteralTypo
-                case "closefeature":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                        break;
+                    case "closefeature":
                         svnUtils.DeleteClosedFeature();
-                    }
-
-                    break;
-                // ReSharper disable once StringLiteralTypo
-                case "fixfeature":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                        break;
+                    case "fixfeature":
                         return Convert.ToInt32(
                             svnUtils.FixBranch());
-                    }
-
-                default:
-                    Usage();
-                    break;
+                    case "shareschemas":
+                        return Convert.ToInt32(svnUtils.ShareSchemas());
+                    default:
+                        Usage();
+                        break;
+                }
             }
 
             return 0;
@@ -91,7 +79,7 @@ namespace Terrasoft.Tools.SVN
 
         private static void Usage() {
             string language = Registry.GetValue(@"HKEY_CURRENT_USER\", @"Software\Terrasoft\Tool\Svn", @"Rus")
-                                      .ToString();
+                .ToString();
             if (language != @"Rus") {
                 return;
             }

@@ -33,7 +33,7 @@ namespace Terrasoft.Tools.SVN
             svnMergeArgs.Notify += OnSvnMergeNotify;
             svnMergeArgs.Conflict += OnSvnMergeConflict;
             try {
-                return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl, true)
+                return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl)
                     , new SvnRevisionRange(startRevision, SvnRevision.Head), svnMergeArgs);
             } catch (SvnException svnException) {
                 Logger.LogError(svnException.Message);

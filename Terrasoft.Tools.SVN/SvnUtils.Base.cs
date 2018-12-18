@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using SharpSvn;
 using SharpSvn.Security;
@@ -10,8 +11,11 @@ namespace Terrasoft.Tools.SVN
     /// <summary>
     ///     Абстрактный класс SVN клиента
     /// </summary>
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     internal abstract class SvnUtilsBase : SvnClient
     {
+        public List<string> ConflictCollection;
+
         /// <inheritdoc />
         /// <summary>
         ///     Конструктор SVN клиента
@@ -47,19 +51,30 @@ namespace Terrasoft.Tools.SVN
                     case "automerge":
                         AutoMerge = Convert.ToBoolean(options["automerge"]);
                         break;
+                    case "shareschemas":
+                        Schemas = options["shareschemas"].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                        break;
+                    case "schemasurl":
+                        SchemasUrl = options["schemasurl"];
+                        break;
                     default:
                         continue;
                 }
             }
 
             Authentication.Clear();
-            Authentication.DefaultCredentials                       =  new NetworkCredential(UserName, Password);
+            Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             Authentication.SslServerTrustHandlers += delegate(object o, SvnSslServerTrustEventArgs args) {
                 args.AcceptedFailures = args.Failures;
-                args.Save             = true;
+                args.Save = true;
             };
+            ConflictCollection = new List<string>();
         }
+
+        public string SchemasUrl { get; set; }
+
+        public string[] Schemas { get; }
 
         protected bool AutoMerge { get; }
 

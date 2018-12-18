@@ -64,7 +64,8 @@ namespace Terrasoft.Tools.SVN
         }
 
         private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            Console.WriteLine(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision, e.Path, e.Revision.ToString());
+            Console.WriteLine(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision, e.Path,
+                e.Revision.ToString());
         }
 
         private void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs e) {
