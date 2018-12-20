@@ -29,12 +29,14 @@ namespace Terrasoft.Tools.SVN
         /// <param name="startRevision">Номер стартовой ревизии</param>
         /// <returns>Результат слияния</returns>
         private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl, long startRevision) {
-            var svnMergeArgs = new SvnMergeArgs();
+            var svnMergeArgs = new SvnMergeArgs {
+                Force = true
+            };
             svnMergeArgs.Notify += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
             try {
-                return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl, true)
-                    , new SvnRevisionRange(startRevision, SvnRevision.Head), svnMergeArgs);
+                var mergeRange = new SvnRevisionRange(SvnRevision.Zero, SvnRevision.Head);
+                return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl), mergeRange, svnMergeArgs);
             } catch (SvnException svnException) {
                 Logger.LogError(svnException.Message);
             } finally {
