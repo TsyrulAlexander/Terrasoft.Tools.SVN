@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Win32;
 using Terrasoft.Tools.SVN.Properties;
 
 namespace Terrasoft.Tools.SVN
@@ -36,6 +36,7 @@ namespace Terrasoft.Tools.SVN
             new ConcurrentDictionary<string, string>();
 
         public static int Main(string[] args) {
+            Resources.Culture = CultureInfo.CurrentCulture;
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
@@ -90,12 +91,6 @@ namespace Terrasoft.Tools.SVN
         }
 
         private static void Usage() {
-            string language = Registry.GetValue(@"HKEY_CURRENT_USER\", @"Software\Terrasoft\Tool\Svn", @"Rus")
-                .ToString();
-            if (language != @"Rus") {
-                return;
-            }
-
             Console.WriteLine(Resources.Program_Usage);
             string sample1 = GenerateSample1();
             Console.WriteLine(sample1);

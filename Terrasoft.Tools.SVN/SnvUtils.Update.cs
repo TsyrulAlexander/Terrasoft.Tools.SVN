@@ -10,15 +10,15 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <returns>Результат успешности слияния</returns>
         public bool UpdateFromReleaseBranch() {
-            if (UpdateWorkingCopy(WorkingCopyPath)) {
-                long revision = GetFeatureFirstRevisionNumber(WorkingCopyPath);
-
-                string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
-
-                return MergeBaseBranchIntoFeature(WorkingCopyPath, basePath, revision);
+            if (!UpdateWorkingCopy(WorkingCopyPath)) {
+                return false;
             }
 
-            throw new SvnObstructedUpdateException("Ошибка обновления из репозитария.");
+            long revision = GetFeatureFirstRevisionNumber(WorkingCopyPath);
+
+            string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
+
+            return MergeBaseBranchIntoFeature(WorkingCopyPath, basePath);
         }
 
         /// <summary>
@@ -26,16 +26,15 @@ namespace Terrasoft.Tools.SVN
         /// </summary>
         /// <param name="workingCopyPath">Рабочая папка</param>
         /// <param name="basePathUrl">URL родительской ветки</param>
-        /// <param name="startRevision">Номер стартовой ревизии</param>
         /// <returns>Результат слияния</returns>
-        private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl, long startRevision) {
+        private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl) {
             var svnMergeArgs = new SvnMergeArgs {
                 Force = true
             };
             svnMergeArgs.Notify += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
             try {
-                var mergeRange = new SvnRevisionRange(SvnRevision.Zero, SvnRevision.Head);
+                var mergeRange = new SvnRevisionRange(SvnRevision.One, SvnRevision.Head);
                 return Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl), mergeRange, svnMergeArgs);
             } catch (SvnException svnException) {
                 Logger.LogError(svnException.Message);

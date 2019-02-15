@@ -69,7 +69,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         private void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs e) {
-            throw new NotImplementedException();
+            Logger.LogError(e.Exception.Message, e.Exception.SvnErrorCategory.ToString());
         }
 
         private void SvnUpdateArgsOnConflict(object sender, SvnConflictEventArgs e) {
