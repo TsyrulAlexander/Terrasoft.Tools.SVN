@@ -23,7 +23,7 @@ namespace Terrasoft.Tools.SVN
             try {
                 return RemoteCopy(SvnTarget.FromString(BranchReleaseUrl), new Uri(featureNewUrl), svnCopyArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.LogError(argumentNullException.Message,
+                Logger.Error(argumentNullException.Message,
                     $"Parameter {argumentNullException.ParamName} is empty.");
                 return false;
             } finally {
@@ -67,7 +67,7 @@ namespace Terrasoft.Tools.SVN
             try {
                 return CheckOut(SvnUriTarget.FromString(url), workingCopyPath, svnCheckOutArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.LogError(argumentNullException.Message,
+                Logger.Error(argumentNullException.Message,
                     $"Parameter {argumentNullException.ParamName} is empty.");
                 return false;
             } finally {
@@ -89,7 +89,7 @@ namespace Terrasoft.Tools.SVN
             try {
                 return Update(workingCopyPath, svnUpdateArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.LogError(argumentNullException.Message,
+                Logger.Error(argumentNullException.Message,
                     $"Parameter {argumentNullException.ParamName} is empty.");
                 return false;
             } finally {

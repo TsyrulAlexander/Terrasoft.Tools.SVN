@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SharpSvn;
 
 namespace Terrasoft.Tools.SVN
@@ -6,10 +7,24 @@ namespace Terrasoft.Tools.SVN
     internal sealed partial class SvnUtils : SvnUtilsBase
     {
         /// <summary>
+        /// Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
+        /// </summary>
+        private List<string> _needResolveList;
+
+        /// <summary>
+        /// Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
+        /// </summary>
+        private List<string> NeedResolveList => _needResolveList ?? (_needResolveList = new List<string>());
+
+        /// <summary>
         ///     Реинтеграция фитчи в родительскую ветку
         /// </summary>
         public void ReintegrationMergeToBaseBranch() {
-            string baseWorkingCopyPath = BaseWorkingCopyPath ?? WorkingCopyPath + "_Release";
+            string baseWorkingCopyPath = BaseWorkingCopyPath;
+            if (string.IsNullOrEmpty(baseWorkingCopyPath)) {
+                baseWorkingCopyPath = WorkingCopyPath + "_Release";
+            }
+
             string baseWorkingCopyUrl =
                 GetBaseBranchPath(GetFeatureFirstRevisionNumber(WorkingCopyPath), WorkingCopyPath);
             var svnCheckOutArgs = new SvnCheckOutArgs();
@@ -34,7 +49,7 @@ namespace Terrasoft.Tools.SVN
                     , SvnTarget.FromString(workingCopyUrl)
                     , svnReintegrationMergeArgs);
             } catch (SvnClientNotReadyToMergeException e) {
-                Logger.LogError(e.Message, e.Targets.ToString());
+                Logger.Error(e.Message, e.Targets.ToString());
             } finally {
                 svnReintegrationMergeArgs.Notify -= SvnReintegrationMergeArgsOnNotify;
                 svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;
@@ -43,6 +58,9 @@ namespace Terrasoft.Tools.SVN
             RemovePackageProperty(baseWorkingCopyPath);
         }
 
+        /// <summary>
+        /// Удаление закрытой фитчи
+        /// </summary>
         public void DeleteClosedFeature() {
             string featureRootUrl = string.Empty;
             Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => featureRootUrl = args.Uri.ToString());

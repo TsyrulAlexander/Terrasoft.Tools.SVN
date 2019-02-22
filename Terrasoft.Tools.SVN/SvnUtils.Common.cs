@@ -104,7 +104,7 @@ namespace Terrasoft.Tools.SVN
         /// <returns>Результат фиксации изменений в хранилище</returns>
         internal bool CommitChanges(bool checkError = false, string logMessage = "") {
             if (checkError && !CheckWorkingCopyForError(WorkingCopyPath)) {
-                Logger.LogError(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
+                Logger.Error(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
                 return false;
             }
 
@@ -126,6 +126,11 @@ namespace Terrasoft.Tools.SVN
             }
         }
 
+        /// <summary>
+        /// Установка технических свойств рабочей копии
+        /// </summary>
+        /// <param name="workingCopyPath">Путь к рабочей копии</param>
+        /// <returns></returns>
         private bool SetPackageProperty(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
@@ -142,6 +147,11 @@ namespace Terrasoft.Tools.SVN
             return true;
         }
 
+        /// <summary>
+        /// Удаление технических свойств
+        /// </summary>
+        /// <param name="workingCopyPath">Путь к рабочей копии</param>
+        /// <returns></returns>
         private bool RemovePackageProperty(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
@@ -158,6 +168,11 @@ namespace Terrasoft.Tools.SVN
             return true;
         }
 
+        /// <summary>
+        /// Фиксация технических свойств
+        /// </summary>
+        /// <param name="logMessage">Комментарий</param>
+        /// <returns>Результат выполнения</returns>
         private bool MakePropertiesCommit(string logMessage = "") {
             return Commit(WorkingCopyPath,
                 new SvnCommitArgs {
@@ -167,12 +182,102 @@ namespace Terrasoft.Tools.SVN
                 });
         }
 
+        /// <summary>
+        /// Исправление ветки путём добавления и удаления технического свойства
+        /// </summary>
+        /// <returns></returns>
         internal bool FixBranch() {
             return SetPackageProperty(WorkingCopyPath)
                    && MakePropertiesCommit()
                    && RemovePackageProperty(WorkingCopyPath)
                    && MakePropertiesCommit(
                        "#0\nУдаление технического свойства: дата обновления пакетов из релиза.");
+        }
+
+        /// <summary>
+        /// Поиск автора входящих изменений в истории
+        /// </summary>
+        /// <param name="targetPath">URL репозитория.</param>
+        /// <param name="conflictRelativePath">Относительный путь конфликтного контента.</param>
+        /// <returns>Результат</returns>
+        private static bool FindOwnerInLog(string targetPath, string conflictRelativePath) {
+            var fended = false;
+            using (var svnClient = new SvnClient()) {
+                void LogHandler(object sender, SvnLogEventArgs args) {
+                    if (args?.ChangedPaths == null) {
+                        return;
+                    }
+
+                    foreach (SvnChangeItem changeItem in args.ChangedPaths) {
+                        if (changeItem.Action != SvnChangeAction.Add) {
+                            continue;
+                        }
+
+                        if (!changeItem.Path.StartsWith(conflictRelativePath, StringComparison.Ordinal)) {
+                            continue;
+                        }
+
+                        Logger.Warning(changeItem.Path == conflictRelativePath
+                                ? "Folder already exists and would be backuped."
+                                : "Remote folder contains a files.",
+                            $"Folder was added by {args.Author} in revision {args.Revision}");
+                        fended = true;
+                    }
+                }
+
+                svnClient.Log(new Uri(targetPath),
+                    new SvnLogArgs {
+                        RetrieveChangedPaths = true,
+                        RetrieveMergedRevisions = false
+                    },
+                    LogHandler);
+                return fended;
+            }
+        }
+
+        /// <summary>
+        /// Выгрузка источника в указанную папку
+        /// </summary>
+        /// <param name="sourceRepository">URL источник</param>
+        /// <param name="destinationFolder">Папка получатель</param>
+        /// <returns>Результат</returns>
+        private static bool ExtractContentInMergedFolder(string sourceRepository, string destinationFolder) {
+            using (var client = new SvnClient()) {
+                var svnExportArgs = new SvnExportArgs {Overwrite = true};
+
+                void OnSvnExportArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+                    Logger.Info(args.Action.ToString("G"), args.FullPath);
+                }
+
+                svnExportArgs.Notify += OnSvnExportArgsOnNotify;
+                svnExportArgs.SvnError += (sender, args) => Logger.Error(args.Exception.Message);
+                bool exportResult = client.Export(SvnTarget.FromString(sourceRepository), destinationFolder,
+                    svnExportArgs);
+                return exportResult;
+            }
+        }
+
+        /// <summary>
+        /// Создание резервной копии указанной папки
+        /// </summary>
+        /// <param name="src"></param>
+        private static void BackupExistsFolder(string src) {
+            string[] files = Directory.GetFiles(src);
+            string targetPath = src + ".tmp";
+            if (!Directory.Exists(targetPath)) {
+                Directory.CreateDirectory(targetPath);
+            }
+
+            string[] directories = Directory.GetDirectories(src);
+            foreach (string directory in directories.Where(directory => !Directory.Exists(targetPath))) {
+                Directory.CreateDirectory(Path.Combine(targetPath, directory));
+            }
+
+            foreach (string file in files) {
+                string fileName = Path.GetFileName(file);
+                string destFile = Path.Combine(targetPath, fileName);
+                File.Copy(file, destFile, true);
+            }
         }
     }
 }
