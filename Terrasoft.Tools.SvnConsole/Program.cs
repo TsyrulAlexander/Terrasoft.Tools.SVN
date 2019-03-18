@@ -10,8 +10,7 @@ using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Tools.SvnConsole
 {
-	class Program
-	{
+	class Program {
 		private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
 		private const string OperationCreateFeature = " -Operation=CreateFeature";
 		private const string OperationUpdateFeature = " -Operation=UpdateFeature";
@@ -19,77 +18,74 @@ namespace Terrasoft.Tools.SvnConsole
 		private const string OperationCloseFeature = " -Operation=CloseFeature";
 		private const string SvnUserSvnUser = " -SvnUser=SvnUser";
 		private const string SvnPasswordSvnPassword = " -SvnPassword=SvnPassword";
-
 		private const string WorkingCopyPathCSvnProjectTerrasoftFeature1 =
 			@" -WorkingCopyPath=C:\SVN\Project\Terrasoft_Feature1";
-
 		private const string BranchFeatureUrlHttpSvnServerSvnProjectBranches =
 			" -BranchFeatureUrl=http://Svn-Server/svn/Project/branches";
-
 		private const string BranchReleaseUrlHttpSvnServerSvnProjectTrunkPackageStore =
 			" -BranchReleaseUrl=http://Svn-Server/svn/Project/trunk/PackageStore";
-
 		private const string FeatureNameFeature1 = " -FeatureName=Feature1";
 		private const string CommitIfNoErrorTrue = " -CommitIfNoError=true";
 		private const string Maintainer = " -Maintainer=Partner1";
 		private static readonly ConcurrentDictionary<string, string> ProgramOptions =
 			new ConcurrentDictionary<string, string>();
+		private static ILogger Logger { get; set; }
+
 		static int Main(string[] args) {
 			Resources.Culture = CultureInfo.CurrentCulture;
+			Logger = new ConsoleLogger();
 			IEnumerable<string[]> argsEnumerable =
 				args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
 			Parallel.ForEach(argsEnumerable, FillParamDelegate);
 			if (!ProgramOptions.ContainsKey(@"operation")) {
 				Usage();
-				System.Console.ReadLine();
+				Console.ReadLine();
 				return 0;
 			}
 			string programOption = ProgramOptions[@"operation"].ToLowerInvariant();
 			var result = StartOperation(programOption);
-			System.Console.ReadLine();
+			Console.ReadLine();
 			return result;
-		} 
+		}
 
 		private static int StartOperation(string operation) {
 			switch (operation) {
 				case Constant.CreateFeatureCommandName:
-					using (var svnUtils = new SvnUtils(ProgramOptions)) {
+					using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
 						return Convert.ToInt32(svnUtils.CreateFeature());
 					}
 				case Constant.UpdateFeatureCommandName:
-					using (var svnUtils = new SvnUtils(ProgramOptions)) {
+					using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
 						if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
 							return Convert.ToInt32(svnUtils.CommitChanges(true));
 						}
 					}
 					break;
 				case Constant.FinishFeatureCommandName:
-					using (var svnUtils = new SvnUtils(ProgramOptions)) {
+					using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
 						svnUtils.ReintegrationMergeToBaseBranch();
 					}
 					break;
 				case Constant.CloseFeatureCommandName:
-					using (var svnUtils = new SvnUtils(ProgramOptions)) {
+					using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
 						svnUtils.DeleteClosedFeature();
 					}
 					break;
 				case Constant.FixFeatureCommandName:
-					using (var svnUtils = new SvnUtils(ProgramOptions)) {
-						return Convert.ToInt32(
-							svnUtils.FixBranch());
+					using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
+						return Convert.ToInt32(svnUtils.FixBranch());
 					}
 				default:
 					Usage();
 					break;
 			}
+
 			return 0;
 		}
 
 		private static void FillParamDelegate(string[] keyValueArray, ParallelLoopState arg2, long arg3) {
 			string key = keyValueArray[0].Substring(1, keyValueArray[0].Length - 1);
-			int copyLength = keyValueArray.Length - 1 < 0
-				? 1
-				: keyValueArray.Length - 1;
+			int copyLength = keyValueArray.Length - 1 < 0 ? 1 : keyValueArray.Length - 1;
 			string value = string.Join(@"=", keyValueArray, 1, copyLength);
 			FillParam(key.ToLowerInvariant(), value);
 		}
@@ -103,19 +99,19 @@ namespace Terrasoft.Tools.SvnConsole
 		}
 
 		private static void Usage() {
-			System.Console.WriteLine(Resources.Program_Usage);
+			Console.WriteLine(Resources.Program_Usage);
 			string sample1 = GenerateSample1();
-			System.Console.WriteLine(sample1);
-			System.Console.WriteLine();
+			Console.WriteLine(sample1);
+			Console.WriteLine();
 			string sample2 = GenerateSample2();
-			System.Console.WriteLine();
-			System.Console.WriteLine(sample2);
+			Console.WriteLine();
+			Console.WriteLine(sample2);
 			string sample3 = GenerateSample3();
-			System.Console.WriteLine();
-			System.Console.WriteLine(sample3);
+			Console.WriteLine();
+			Console.WriteLine(sample3);
 			string sample4 = GenerateSample4();
-			System.Console.WriteLine();
-			System.Console.WriteLine(sample4);
+			Console.WriteLine();
+			Console.WriteLine(sample4);
 		}
 
 		private static string GenerateSample4() {

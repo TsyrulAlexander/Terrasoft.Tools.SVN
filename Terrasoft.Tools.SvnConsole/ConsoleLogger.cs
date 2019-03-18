@@ -3,30 +3,30 @@ using Terrasoft.Core.SVN;
 
 namespace Terrasoft.Tools.SvnConsole
 {
-	class ConsoleLogger: ILogger
+	internal class ConsoleLogger: ILogger
 	{
 		public void LogError(string warnMessage, string message = "") {
-			ConsoleColor defaultColor = System.Console.ForegroundColor;
-			System.Console.ForegroundColor = ConsoleColor.Red;
-			System.Console.Write($@"{warnMessage} ");
-			System.Console.ForegroundColor = defaultColor;
-			System.Console.WriteLine(message);
+			ConsoleColor defaultColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.Write($@"{warnMessage} ");
+			Console.ForegroundColor = defaultColor;
+			Console.WriteLine(message);
 		}
 
 		public void LogInfo(string infoMessage, string message = "") {
-			ConsoleColor defaultColor = System.Console.ForegroundColor;
-			System.Console.ForegroundColor = ConsoleColor.DarkGreen;
-			System.Console.Write($@"{infoMessage} ");
-			System.Console.ForegroundColor = defaultColor;
-			System.Console.WriteLine(message);
+			ConsoleColor defaultColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.DarkGreen;
+			Console.Write($@"{infoMessage} ");
+			Console.ForegroundColor = defaultColor;
+			Console.WriteLine(message);
 		}
 
 		public void LogWarning(string infoMessage, string message = "") {
-			ConsoleColor defaultColor = System.Console.ForegroundColor;
-			System.Console.ForegroundColor = ConsoleColor.DarkYellow;
-			System.Console.Write($@"{infoMessage} ");
-			System.Console.ForegroundColor = defaultColor;
-			System.Console.WriteLine(message);
+			ConsoleColor defaultColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.DarkYellow;
+			Console.Write($@"{infoMessage} ");
+			Console.ForegroundColor = defaultColor;
+			Console.WriteLine(message);
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace Terrasoft.Core.SVN
         ///     Конструктор SVN клиента
         /// </summary>
         /// <param name="programOptions">Словарь с параметрами</param>
-        public SvnUtils(IReadOnlyDictionary<string, string> programOptions) : base(programOptions) { }
+        public SvnUtils(IReadOnlyDictionary<string, string> programOptions, ILogger logger) : base(programOptions, logger) { }
 
         /// <summary>
         ///     Получить URL ветки из которой была выделена фитча

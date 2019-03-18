@@ -12,13 +12,17 @@ namespace Terrasoft.Core.SVN
     /// </summary>
     public abstract class SvnUtilsBase : SvnClient
     {
-        /// <inheritdoc />
-        /// <summary>
-        ///     Конструктор SVN клиента
-        /// </summary>
-        /// <param name="options">Коллекция параметров</param>
-        protected SvnUtilsBase(IReadOnlyDictionary<string, string> options) {
-            foreach (KeyValuePair<string, string> option in options) {
+	    public ILogger Logger { get; set; }
+
+	    /// <inheritdoc />
+	    /// <summary>
+	    ///     Конструктор SVN клиента
+	    /// </summary>
+	    /// <param name="options">Коллекция параметров</param>
+	    /// <param name="logger">Логгер</param>
+	    protected SvnUtilsBase(IReadOnlyDictionary<string, string> options, ILogger logger) {
+		    Logger = logger;
+		    foreach (KeyValuePair<string, string> option in options) {
                 switch (option.Key) {
                     case "svnuser":
                         UserName = options["svnuser"];

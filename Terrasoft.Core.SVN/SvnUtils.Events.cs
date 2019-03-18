@@ -5,13 +5,13 @@ using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
-	public sealed partial class SvnUtils
+	public partial class SvnUtils
     {
         private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
         }
 
-        private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+        private void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
             Logger.LogInfo(args.Action.ToString(), args.Path);
         }
 
@@ -37,11 +37,11 @@ namespace Terrasoft.Core.SVN
             Console.WriteLine(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision, e.Revision.ToString());
         }
 
-        private static void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+        private void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs args) {
             Logger.LogInfo(args.Action.ToString(), args.Path);
         }
 
-        private static void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+        private void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             if (e.Action == SvnNotifyAction.TreeConflict) {
                 Logger.LogError(e.Action.ToString(), e.FullPath);
             } else {
