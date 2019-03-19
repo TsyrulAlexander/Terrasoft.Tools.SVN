@@ -96,8 +96,10 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UILogger.cs" />
     <Compile Include="ViewModel\BaseSvnOperationViewModel.cs" />
+    <Compile Include="ViewModel\CloseFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\CreateFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\FinishFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\FixFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\UpdateFeatureSvnViewModel.cs" />

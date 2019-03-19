@@ -12,6 +12,8 @@ namespace Terrasoft.Tools.SvnUI.Ioc
 			Bind<CreateFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<UpdateFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<FinishFeatureSvnViewModel>().ToSelf().InTransientScope();
+			Bind<CloseFeatureSvnViewModel>().ToSelf().InTransientScope();
+			Bind<FixFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<LogViewModel>().ToSelf().InTransientScope();
 			Bind<IBrowserDialog>().To<BrowserDialog>();
 			Bind<ILogger>().To<UILogger>().InSingletonScope();

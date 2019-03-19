@@ -13,6 +13,8 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public CreateFeatureSvnViewModel CreateFeature => IocKernel.Get<CreateFeatureSvnViewModel>();
 		public UpdateFeatureSvnViewModel UpdateFeature => IocKernel.Get<UpdateFeatureSvnViewModel>();
 		public FinishFeatureSvnViewModel FinishFeature => IocKernel.Get<FinishFeatureSvnViewModel>();
+		public CloseFeatureSvnViewModel CloseFeature => IocKernel.Get<CloseFeatureSvnViewModel>();
+		public FixFeatureSvnViewModel FixFeature => IocKernel.Get<FixFeatureSvnViewModel>();
 		public LogViewModel Log => IocKernel.Get<LogViewModel>();
 		public static void Cleanup() {}
 	}
