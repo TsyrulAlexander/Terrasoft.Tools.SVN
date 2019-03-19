@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Program_Usage" xml:space="preserve">
-    <value>Использование:
-	Terrasoft.Tools.SVN.exe &amp;lt;команда&amp;gt; [аргументы]
+   <value>Использование:
+	Terrasoft.Tools.SVN.exe &lt;команда&gt; [аргументы]
 Команды:
 	-Operation:		В качестве операции выбрать одну из следующих операций: CreateFeature, UpdateFeature, FinishFeature, CloseFeature, ChangeLanguage
 		CreateFeature :	Выделение новой ветки для фитчи на основании родительской

@@ -11,6 +11,7 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>-Operation=UpdateFeature -SvnUser=BPMonlineBuild -SvnPassword=Terrasoft+ -WorkingCopyPath=c:\TEMP\mstby\branches\Terrasoft_TelecomProductCatalog\ -BranchFeatureUrl=http://ts1-def-svn02.tscrm.com:8050/svn/mstby/branches/ -BranchReleaseUrl=http://ts1-def-svn02.tscrm.com:8050/svn/mstby/trunk/PackageStore -FeatureName=IntegrationScore -Maintainer=Terrasoft</StartArguments>
+    <StartArguments>
+    </StartArguments>
   </PropertyGroup>
 </Project>

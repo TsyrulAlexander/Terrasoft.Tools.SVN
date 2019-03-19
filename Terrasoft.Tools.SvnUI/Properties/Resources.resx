@@ -117,26 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Program_Usage" xml:space="preserve">
-    <value>Использование:
-	Terrasoft.Tools.SVN.exe &amp;lt;команда&amp;gt; [аргументы]
-Команды:
-	-Operation:		В качестве операции выбрать одну из следующих операций: CreateFeature, UpdateFeature, FinishFeature, CloseFeature, ChangeLanguage
-		CreateFeature :	Выделение новой ветки для фитчи на основании родительской
-		UpdateFeature :	Обновить ветку фитчи изменениями из родительской ветки
-		FinishFeature :	Завершить разработку фитчи, путем реинтеграции ветки фитчи в родительску ветку
-		CloseFeature  :	Пометь фитчу как завершенную, и закрыть ветку
-        FixFeature  :	Исправить ветку. Проставление ветке технического свойства, для исключения проблем при работе с веткой из bpm`online.
-		ChangeLanguage:	Изменить язык уведомлений
-	Аргументы:
-		SvnUser         :	Имя пользователя SVN
-		SvnPassword     :	Пароль пользователя SVN
-		WorkingCopyPath :	Путь к локальной рабочей копии
-		CommitIfNoError :	Автоматически фиксировать изменения, в случае отсутсвия ошибок
-		BranchFeatureUrl:	Url в которой базируются все фитчи
-		BranchReleaseUrl:	Url в которой базируется релиз
-		Maintainer      :	Издатель, фигурирует в названии ветки
-		FeatureName     :	Название фитчи, фигурирует в названии ветки
-	Примеры использования:</value>
+  <data name="BranchFeatureUrl" xml:space="preserve">
+    <value>Url к Branches</value>
+  </data>
+  <data name="BranchFeatureUrlDescription" xml:space="preserve">
+    <value>Url в которой базируются все фитчи</value>
+  </data>
+  <data name="BranchReleaseUrl" xml:space="preserve">
+    <value>Url к PackageStore</value>
+  </data>
+  <data name="BranchReleaseUrlDescription" xml:space="preserve">
+    <value>Url в которой базируется релиз</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="CommitIfNoError" xml:space="preserve">
+    <value>Коммитить</value>
+  </data>
+  <data name="CommitIfNoErrorDescription" xml:space="preserve">
+    <value>Автоматически фиксировать изменения, в случае отсутсвия ошибок</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="CreateFeature" xml:space="preserve">
+    <value>Создать фичу</value>
+  </data>
+  <data name="FeatureName" xml:space="preserve">
+    <value>Название фитчи</value>
+  </data>
+  <data name="FeatureNameDescription" xml:space="preserve">
+    <value>Название фитчи, фигурирует в названии ветки</value>
+  </data>
+  <data name="IsEmpryPropertyValueMessage" xml:space="preserve">
+    <value>Поле {0} не может быть пустым</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Лог</value>
+  </data>
+  <data name="Maintainer" xml:space="preserve">
+    <value>Издатель</value>
+  </data>
+  <data name="MaintainerDescription" xml:space="preserve">
+    <value>Издатель, фигурирует в названии ветки</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Операция</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Запуск</value>
+  </data>
+  <data name="SvnPassword" xml:space="preserve">
+    <value>Пароль Svn</value>
+  </data>
+  <data name="SvnPasswordDescription" xml:space="preserve">
+    <value>Пароль пользователя SVN</value>
+  </data>
+  <data name="SvnUser" xml:space="preserve">
+    <value>Логин Svn</value>
+  </data>
+  <data name="SvnUserDescription" xml:space="preserve">
+    <value>Имя пользователя SVN</value>
+  </data>
+  <data name="WorkingCopyPath" xml:space="preserve">
+    <value>Путь к рабочей копии</value>
+  </data>
+  <data name="WorkingCopyPathDescription" xml:space="preserve">
+    <value>Путь к локальной рабочей копии</value>
   </data>
 </root>

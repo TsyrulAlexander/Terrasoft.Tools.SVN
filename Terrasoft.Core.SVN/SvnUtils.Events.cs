@@ -5,8 +5,7 @@ using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
-	public partial class SvnUtils
-    {
+	public partial class SvnUtils : IDisposable {
         private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
             Console.WriteLine(e.Path);
         }
@@ -122,5 +121,9 @@ namespace Terrasoft.Core.SVN
 
             CommitIfNoError = false;
         }
-    }
+
+        public void Dispose() {
+	        
+        }
+	}
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Core.SVN", "Terra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Tools.SvnConsole", "Terrasoft.Tools.SvnConsole\Terrasoft.Tools.SvnConsole.csproj", "{DCC998E1-9BC7-454F-9CF3-B42802C66D32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Tools.SvnUI", "Terrasoft.Tools.SvnUI\Terrasoft.Tools.SvnUI.csproj", "{C6007A3A-6506-49DD-9138-69170B849EE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DCC998E1-9BC7-454F-9CF3-B42802C66D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCC998E1-9BC7-454F-9CF3-B42802C66D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCC998E1-9BC7-454F-9CF3-B42802C66D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6007A3A-6506-49DD-9138-69170B849EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6007A3A-6506-49DD-9138-69170B849EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6007A3A-6506-49DD-9138-69170B849EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6007A3A-6506-49DD-9138-69170B849EE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

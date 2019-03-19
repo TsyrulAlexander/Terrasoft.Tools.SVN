@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DCC998E1-9BC7-454F-9CF3-B42802C66D32}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Terrasoft.Tools.Console</RootNamespace>
-    <AssemblyName>Terrasoft.Tools.Console</AssemblyName>
+    <RootNamespace>Terrasoft.Tools.SvnConsole</RootNamespace>
+    <AssemblyName>Terrasoft.Tools.SvnConsole</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -54,6 +54,11 @@
     <Compile Include="Constant.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -64,6 +69,12 @@
       <Project>{1d914e84-754f-4093-9c50-640b149bbe72}</Project>
       <Name>Terrasoft.Core.SVN</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

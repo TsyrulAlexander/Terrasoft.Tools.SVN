@@ -1,5 +1,6 @@
 ﻿using System;
 using Terrasoft.Core.SVN;
+using Console = System.Console;
 
 namespace Terrasoft.Tools.SvnConsole
 {
