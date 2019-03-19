@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Terrasoft.Tools.SVN.Properties {
+namespace Terrasoft.Tools.Svn.Properties {
     using System;
     
     

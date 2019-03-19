@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpSvn;
-using Terrasoft.Tools.SVN.Properties;
+using Terrasoft.Tools.Svn.Properties;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     /// <inheritdoc />
     /// <summary>
@@ -30,9 +30,10 @@ namespace Terrasoft.Tools.SVN
             string basePath = string.Empty;
             var svnInfoArgs = new SvnInfoArgs {Revision = new SvnRevision(revision)};
             Info(SvnTarget.FromString(workingCopyPath), svnInfoArgs, (sender, args) => {
-                basePath = args.Uri.ToString();
-                Console.WriteLine(args.Uri.ToString());
-            });
+                    basePath = args.Uri.ToString();
+                    Console.WriteLine(args.Uri.ToString());
+                }
+            );
             return basePath;
         }
 
@@ -44,10 +45,11 @@ namespace Terrasoft.Tools.SVN
         private bool CheckWorkingCopyForError(string workingCopyPath) {
             var result = true;
             Status(workingCopyPath, (sender, args) => {
-                if (result && args.Conflicted) {
-                    result = !args.Conflicted;
+                    if (result && args.Conflicted) {
+                        result = !args.Conflicted;
+                    }
                 }
-            });
+            );
             return result;
         }
 
@@ -61,18 +63,19 @@ namespace Terrasoft.Tools.SVN
             var svnLogArgs = new SvnLogArgs {StrictNodeHistory = true};
             svnLogArgs.Notify += SvnLogArgsOnNotify;
             Log(workingCopyPath, svnLogArgs, (sender, args) => {
-                if (args.ChangedPaths.Count <= 0) {
-                    return;
-                }
-
-                foreach (SvnChangeItem changeItem in args.ChangedPaths) {
-                    if (string.IsNullOrEmpty(changeItem.CopyFromPath)) {
-                        continue;
+                    if (args.ChangedPaths.Count <= 0) {
+                        return;
                     }
 
-                    revision = changeItem.CopyFromRevision;
+                    foreach (SvnChangeItem changeItem in args.ChangedPaths) {
+                        if (string.IsNullOrEmpty(changeItem.CopyFromPath)) {
+                            continue;
+                        }
+
+                        revision = changeItem.CopyFromRevision;
+                    }
                 }
-            });
+            );
             return revision;
         }
 
@@ -127,7 +130,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Установка технических свойств рабочей копии
+        ///     Установка технических свойств рабочей копии
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns></returns>
@@ -138,9 +141,9 @@ namespace Terrasoft.Tools.SVN
             IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packageRootDir in from packagePath in branchPackages
-                where !string.IsNullOrEmpty(packagePath)
-                let slashPosition = packagePath.LastIndexOf('\\')
-                select packagePath.Substring(0, slashPosition)) {
+                                              where !string.IsNullOrEmpty(packagePath)
+                                              let slashPosition = packagePath.LastIndexOf('\\')
+                                              select packagePath.Substring(0, slashPosition)) {
                 SetProperty(packageRootDir, "PackageUpdateDate", DateTime.UtcNow.ToLongDateString());
             }
 
@@ -148,7 +151,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Удаление технических свойств
+        ///     Удаление технических свойств
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns></returns>
@@ -159,9 +162,9 @@ namespace Terrasoft.Tools.SVN
             IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packageRootDir in from packagePath in branchPackages
-                where !string.IsNullOrEmpty(packagePath)
-                let slashPosition = packagePath.LastIndexOf('\\')
-                select packagePath.Substring(0, slashPosition)) {
+                                              where !string.IsNullOrEmpty(packagePath)
+                                              let slashPosition = packagePath.LastIndexOf('\\')
+                                              select packagePath.Substring(0, slashPosition)) {
                 DeleteProperty(packageRootDir, "PackageUpdateDate");
             }
 
@@ -169,7 +172,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Фиксация технических свойств
+        ///     Фиксация технических свойств
         /// </summary>
         /// <param name="logMessage">Комментарий</param>
         /// <returns>Результат выполнения</returns>
@@ -179,23 +182,25 @@ namespace Terrasoft.Tools.SVN
                     LogMessage = !string.IsNullOrEmpty(logMessage)
                         ? logMessage
                         : "#0\nУстановка даты обновления пакетов из релиза."
-                });
+                }
+            );
         }
 
         /// <summary>
-        /// Исправление ветки путём добавления и удаления технического свойства
+        ///     Исправление ветки путём добавления и удаления технического свойства
         /// </summary>
         /// <returns></returns>
         internal bool FixBranch() {
-            return SetPackageProperty(WorkingCopyPath)
-                   && MakePropertiesCommit()
-                   && RemovePackageProperty(WorkingCopyPath)
-                   && MakePropertiesCommit(
-                       "#0\nУдаление технического свойства: дата обновления пакетов из релиза.");
+            return SetPackageProperty(WorkingCopyPath) &&
+                   MakePropertiesCommit() &&
+                   RemovePackageProperty(WorkingCopyPath) &&
+                   MakePropertiesCommit(
+                       "#0\nУдаление технического свойства: дата обновления пакетов из релиза."
+                   );
         }
 
         /// <summary>
-        /// Поиск автора входящих изменений в истории
+        ///     Поиск автора входящих изменений в истории
         /// </summary>
         /// <param name="targetPath">URL репозитория.</param>
         /// <param name="conflictRelativePath">Относительный путь конфликтного контента.</param>
@@ -220,23 +225,22 @@ namespace Terrasoft.Tools.SVN
                         Logger.Warning(changeItem.Path == conflictRelativePath
                                 ? "Folder already exists and would be backuped."
                                 : "Remote folder contains a files.",
-                            $"Folder was added by {args.Author} in revision {args.Revision}");
+                            $"Folder was added by {args.Author} in revision {args.Revision}"
+                        );
                         fended = true;
                     }
                 }
 
                 svnClient.Log(new Uri(targetPath),
-                    new SvnLogArgs {
-                        RetrieveChangedPaths = true,
-                        RetrieveMergedRevisions = false
-                    },
-                    LogHandler);
+                    new SvnLogArgs {RetrieveChangedPaths = true, RetrieveMergedRevisions = false},
+                    LogHandler
+                );
                 return fended;
             }
         }
 
         /// <summary>
-        /// Выгрузка источника в указанную папку
+        ///     Выгрузка источника в указанную папку
         /// </summary>
         /// <param name="sourceRepository">URL источник</param>
         /// <param name="destinationFolder">Папка получатель</param>
@@ -252,13 +256,14 @@ namespace Terrasoft.Tools.SVN
                 svnExportArgs.Notify += OnSvnExportArgsOnNotify;
                 svnExportArgs.SvnError += (sender, args) => Logger.Error(args.Exception.Message);
                 bool exportResult = client.Export(SvnTarget.FromString(sourceRepository), destinationFolder,
-                    svnExportArgs);
+                    svnExportArgs
+                );
                 return exportResult;
             }
         }
 
         /// <summary>
-        /// Создание резервной копии указанной папки
+        ///     Создание резервной копии указанной папки
         /// </summary>
         /// <param name="src"></param>
         private static void BackupExistsFolder(string src) {

@@ -5,11 +5,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Terrasoft.Tools.SVN.Properties;
+using Terrasoft.Tools.Svn.Properties;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
-    internal static class Program
+    public static class Program
     {
         private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
         private const string OperationCreateFeature = " -Operation=CreateFeature";
@@ -79,7 +79,8 @@ namespace Terrasoft.Tools.SVN
                 case "fixfeature":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         return Convert.ToInt32(
-                            svnUtils.FixBranch());
+                            svnUtils.FixBranch()
+                        );
                     }
 
                 default:
@@ -158,7 +159,7 @@ namespace Terrasoft.Tools.SVN
             int copyLength = keyValueArray.Length - 1 < 0
                 ? 1
                 : keyValueArray.Length - 1;
-            string value = string.Join(@"=", keyValueArray, 1, copyLength);
+            string value = string.Join("=", keyValueArray, 1, copyLength);
             FillParam(key.ToLowerInvariant(), value);
         }
 

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IO;
 using SharpSvn;
-using Terrasoft.Tools.SVN.Properties;
+using Terrasoft.Tools.Svn.Properties;
+using Terrasoft.Tools.SVN;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     internal sealed partial class SvnUtils
     {
         /// <summary>
-        /// Отображение лога при работе с историей
+        ///     Отображение лога при работе с историей
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Элемент истории</param>
@@ -21,7 +22,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик слияния
+        ///     Обработчик слияния
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
@@ -30,7 +31,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик конфликтов при слиянии
+        ///     Обработчик конфликтов при слиянии
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
@@ -39,17 +40,18 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик фиксации изменений
+        ///     Обработчик фиксации изменений
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnCommittingEventArgs">Аргумент</param>
         private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs svnCommittingEventArgs) {
             Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit,
-                svnCommittingEventArgs.Items.Count.ToString());
+                svnCommittingEventArgs.Items.Count.ToString()
+            );
         }
 
         /// <summary>
-        /// Обработчик информации при фиксации изменений
+        ///     Обработчик информации при фиксации изменений
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
@@ -58,17 +60,18 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик после фиксации изменений
+        ///     Обработчик после фиксации изменений
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnCommittedEventArgs">Аргумент</param>
         private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs) {
             Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision,
-                svnCommittedEventArgs.Revision.ToString());
+                svnCommittedEventArgs.Revision.ToString()
+            );
         }
 
         /// <summary>
-        /// Обработчик выгрузки изменений в локальную копию
+        ///     Обработчик выгрузки изменений в локальную копию
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
@@ -77,7 +80,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик информирования об реинтеграции
+        ///     Обработчик информирования об ре интеграции
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
@@ -90,7 +93,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик конфликтов при реинтеграции
+        ///     Обработчик конфликтов при ре интеграции
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
@@ -99,7 +102,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик информации о копировании
+        ///     Обработчик информации о копировании
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
@@ -108,18 +111,20 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик информации об обновлении
+        ///     Обработчик информации об обновлении
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
         private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
             Logger.Info(string.Format(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision,
-                svnNotifyEventArgs.Path,
-                svnNotifyEventArgs.Revision.ToString()));
+                    svnNotifyEventArgs.Path,
+                    svnNotifyEventArgs.Revision.ToString()
+                )
+            );
         }
 
         /// <summary>
-        /// Обработчик ошибок при обновлении
+        ///     Обработчик ошибок при обновлении
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnErrorEventArgs">Аргумент</param>
@@ -128,7 +133,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик ошибок при обновлении
+        ///     Обработчик ошибок при обновлении
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
@@ -137,7 +142,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик конфликтов по типу
+        ///     Обработчик конфликтов по типу
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
@@ -158,7 +163,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработка конфликта по причине
+        ///     Обработка конфликта по причине
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
@@ -189,7 +194,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик конфликтов добавления
+        ///     Обработчик конфликтов добавления
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможная ошибка</exception>
@@ -212,7 +217,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработка конфликт существующей папки
+        ///     Обработка конфликт существующей папки
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         private void AddToExistsFolderConflict(SvnConflictEventArgs svnConflictEventArgs) {
@@ -225,15 +230,18 @@ namespace Terrasoft.Tools.SVN
                 svnConflictEventArgs.Conflict.RightSource.RepositoryPath.ToString();
             if (conflictRelativePath.EndsWith("/", StringComparison.Ordinal)) {
                 conflictRelativePath =
-                    "/" + conflictRelativePath.Remove(conflictRelativePath.Length - 1, 1);
+                    $"/{conflictRelativePath.Remove(conflictRelativePath.Length - 1, 1)}";
             }
 
             if (FindOwnerInLog(targetPath, conflictRelativePath)) {
                 string destinationFolder = svnConflictEventArgs.Conflict.FullPath.Clone().ToString();
                 BackupExistsFolder(destinationFolder);
-                ExtractContentInMergedFolder(svnConflictEventArgs.Conflict.RightSource.Uri.ToString(),
-                    destinationFolder);
-                svnConflictEventArgs.Choice = SvnAccept.Working;
+                svnConflictEventArgs.Choice = ExtractContentInMergedFolder(
+                    svnConflictEventArgs.Conflict.RightSource.Uri.ToString(),
+                    destinationFolder
+                )
+                    ? SvnAccept.Working
+                    : SvnAccept.Postpone;
             } else {
                 svnConflictEventArgs.Choice = SvnAccept.Postpone;
             }
@@ -241,7 +249,7 @@ namespace Terrasoft.Tools.SVN
 
 
         /// <summary>
-        /// Обработчик конфликта по действию
+        ///     Обработчик конфликта по действию
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможная ошибка</exception>
@@ -262,7 +270,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Обработчик ошибок по типу узла
+        ///     Обработчик ошибок по типу узла
         /// </summary>
         /// <param name="svnConflictEventArgs"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -282,17 +290,21 @@ namespace Terrasoft.Tools.SVN
                 case SvnNodeKind.None:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs.NodeKind));
             }
         }
 
 
         /// <summary>
-        /// Обработчик ошибки
+        ///     Обработчик ошибки
         /// </summary>
         /// <param name="e">Аргумент</param>
         private void AutoResolveConflict(SvnConflictEventArgs e) {
             ResolveConflictByType(e);
+            if (e.Choice == SvnAccept.Postpone) {
+                BugReporter.SendBugReport(e, e.GetType());
+            }
+
             /*switch (svnNotifyEventArgs.ConflictAction) {
                 case SvnConflictAction.Add when svnNotifyEventArgs.ConflictType == SvnConflictType.Tree &&
                                                 svnNotifyEventArgs.NodeKind == SvnNodeKind.Directory &&

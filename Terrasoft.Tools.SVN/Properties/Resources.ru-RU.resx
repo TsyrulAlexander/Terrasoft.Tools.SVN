@@ -164,4 +164,10 @@
     <value>#0
 Создание ветки для фитчи: {0}</value>
   </data>
+  <data name="ResolveConflictByNode_svnConflictEventArgs" xml:space="preserve">
+    <value>Параметр NodeKind неопределен</value>
+  </data>
+  <data name="SMTPCRD" xml:space="preserve">
+    <value>VGVycmFzb2Z0Kw</value>
+  </data>
 </root>

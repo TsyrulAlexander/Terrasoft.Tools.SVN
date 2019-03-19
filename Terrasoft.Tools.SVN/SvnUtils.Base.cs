@@ -4,7 +4,7 @@ using System.Net;
 using SharpSvn;
 using SharpSvn.Security;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     /// <inheritdoc />
     /// <summary>
@@ -48,7 +48,6 @@ namespace Terrasoft.Tools.SVN
                         Password = options["svnpassword"];
                         break;
                     case "automerge":
-                        AutoMerge = Convert.ToBoolean(options["automerge"]);
                         break;
                     default:
                         continue;
@@ -63,8 +62,6 @@ namespace Terrasoft.Tools.SVN
                 args.Save = true;
             };
         }
-
-        protected bool AutoMerge { get; }
 
         private string UserName { get; }
         private string Password { get; }
@@ -102,6 +99,6 @@ namespace Terrasoft.Tools.SVN
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
-        internal bool CommitIfNoError { get; set; }
+        internal bool CommitIfNoError { get; }
     }
 }

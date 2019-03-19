@@ -2,7 +2,7 @@
 using System.IO;
 using SharpSvn;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     /// <inheritdoc />
     internal sealed partial class SvnUtils
@@ -30,15 +30,14 @@ namespace Terrasoft.Tools.SVN
         /// <param name="basePathUrl">URL родительской ветки</param>
         /// <returns>Результат слияния</returns>
         private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl) {
-            var svnMergeArgs = new SvnMergeArgs {
-                Force = false
-            };
+            var svnMergeArgs = new SvnMergeArgs {Force = false};
             svnMergeArgs.Notify += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
             try {
                 var mergeRange = new SvnRevisionRange(SvnRevision.One, SvnRevision.Head);
                 bool mergeResult = Merge(workingCopyPath, SvnUriTarget.FromString(basePathUrl), mergeRange,
-                    svnMergeArgs);
+                    svnMergeArgs
+                );
                 if (mergeResult) {
                     foreach (string resolvePath in NeedResolveList) {
                         var mergeAppStartInfo = new ProcessStartInfo {

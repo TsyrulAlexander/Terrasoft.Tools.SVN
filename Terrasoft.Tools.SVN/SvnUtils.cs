@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using SharpSvn;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     internal sealed partial class SvnUtils : SvnUtilsBase
     {
         /// <summary>
-        /// Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
+        ///     Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
         /// </summary>
         private List<string> _needResolveList;
 
         /// <summary>
-        /// Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
+        ///     Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
         /// </summary>
         private List<string> NeedResolveList => _needResolveList ?? (_needResolveList = new List<string>());
 
@@ -44,10 +44,12 @@ namespace Terrasoft.Tools.SVN
             try {
                 string workingCopyUrl = string.Empty;
                 Info(WorkingCopyPath, new SvnInfoArgs {Revision = new SvnRevision(SvnRevisionType.Head)}
-                    , (sender, args) => workingCopyUrl = args.Uri.ToString());
+                    , (sender, args) => workingCopyUrl = args.Uri.ToString()
+                );
                 ReintegrationMerge(baseWorkingCopyPath
                     , SvnTarget.FromString(workingCopyUrl)
-                    , svnReintegrationMergeArgs);
+                    , svnReintegrationMergeArgs
+                );
             } catch (SvnClientNotReadyToMergeException e) {
                 Logger.Error(e.Message, e.Targets.ToString());
             } finally {
@@ -59,7 +61,7 @@ namespace Terrasoft.Tools.SVN
         }
 
         /// <summary>
-        /// Удаление закрытой фитчи
+        ///     Удаление закрытой фитчи
         /// </summary>
         public void DeleteClosedFeature() {
             string featureRootUrl = string.Empty;

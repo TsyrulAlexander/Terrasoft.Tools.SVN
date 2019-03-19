@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using SharpSvn;
-using Terrasoft.Tools.SVN.Properties;
+using Terrasoft.Tools.Svn.Properties;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     internal sealed partial class SvnUtils
     {
@@ -24,7 +24,8 @@ namespace Terrasoft.Tools.SVN
                 return RemoteCopy(SvnTarget.FromString(BranchReleaseUrl), new Uri(featureNewUrl), svnCopyArgs);
             } catch (ArgumentNullException argumentNullException) {
                 Logger.Error(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty.");
+                    $"Parameter {argumentNullException.ParamName} is empty."
+                );
                 return false;
             } finally {
                 svnCopyArgs.Notify -= SvnCopyArgsOnNotify;
@@ -38,9 +39,9 @@ namespace Terrasoft.Tools.SVN
         public bool CreateFeature() {
             long lastBranchRevision = GetBaseBranchHeadRevision(BranchReleaseUrl);
             string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
-            return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision)
-                   && ExtractWorkingCopy(WorkingCopyPath, featureNewUrl)
-                   && FixBranch();
+            return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision) &&
+                   ExtractWorkingCopy(WorkingCopyPath, featureNewUrl) &&
+                   FixBranch();
         }
 
         /// <summary>
@@ -68,7 +69,8 @@ namespace Terrasoft.Tools.SVN
                 return CheckOut(SvnUriTarget.FromString(url), workingCopyPath, svnCheckOutArgs);
             } catch (ArgumentNullException argumentNullException) {
                 Logger.Error(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty.");
+                    $"Parameter {argumentNullException.ParamName} is empty."
+                );
                 return false;
             } finally {
                 svnCheckOutArgs.Notify -= SvnCheckOutArgsOnNotify;
@@ -90,7 +92,8 @@ namespace Terrasoft.Tools.SVN
                 return Update(workingCopyPath, svnUpdateArgs);
             } catch (ArgumentNullException argumentNullException) {
                 Logger.Error(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty.");
+                    $"Parameter {argumentNullException.ParamName} is empty."
+                );
                 return false;
             } finally {
                 svnUpdateArgs.Notify -= SvnUpdateArgsOnNotify;

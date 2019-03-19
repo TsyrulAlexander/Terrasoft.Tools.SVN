@@ -1,13 +1,13 @@
 using System;
 
-namespace Terrasoft.Tools.SVN
+namespace Terrasoft.Tools.Svn
 {
     internal static class Logger
     {
-        internal static void Error(string warnMessage, string message = "") {
+        internal static void Error(string errorMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($@"{warnMessage} ");
+            Console.Write($@"{errorMessage} ");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
