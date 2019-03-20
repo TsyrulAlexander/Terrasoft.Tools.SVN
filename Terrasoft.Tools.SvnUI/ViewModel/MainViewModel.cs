@@ -53,6 +53,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			try {
 				SetProgressState(true);
 				using (var svnUtils = new SvnUtils(config.Arguments, Logger)) {
+					CheckoutWorkingCopy(svnUtils, config);
 					switch (config.SvnOperation) {
 						case Model.SvnOperation.CreateFeature:
 							svnUtils.CreateFeature();
@@ -80,6 +81,12 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			} finally {
 				SetProgressState(false);
 			}
+		}
+
+		protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, SvnOperationConfig config) {
+			var workingCopyPath = config.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
+			var repositoryPath = config.Arguments[SvnUtilsBase.BranchReleaseUrlOptionName];
+			svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
 		}
 
 		private void SetProgressState(bool state) {

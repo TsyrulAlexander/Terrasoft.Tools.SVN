@@ -61,6 +61,24 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SUCCESS.
+        /// </summary>
+        public static string BackgrountTextBottom {
+            get {
+                return ResourceManager.GetString("BackgrountTextBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CUSTOMER.
+        /// </summary>
+        public static string BackgrountTextTop {
+            get {
+                return ResourceManager.GetString("BackgrountTextTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Url к Branches.
         /// </summary>
         public static string BranchFeatureUrl {

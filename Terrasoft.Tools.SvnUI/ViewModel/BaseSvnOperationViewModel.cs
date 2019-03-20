@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
@@ -13,6 +15,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 		private StringProperty _svnUser;
 		private StringProperty _svnPassword;
 		private StringProperty _workingCopyPath;
+		private StringProperty _branchFeatureUrl;
 
 		public StringProperty SvnUser {
 			get => _svnUser;
@@ -36,25 +39,55 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			}
 		}
 
+		public StringProperty BranchFeatureUrl {
+			get => _branchFeatureUrl;
+			set {
+				_branchFeatureUrl = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public RelayCommand SelectWorkingCopyPathCommand { get; set; }
+		public RelayCommand WorkingCopyPathChangeCommand { get; set; }
 
 		public BaseSvnOperationViewModel(IBrowserDialog browserDialog) {
 			BrowserDialog = browserDialog;
-			SvnUser = new StringProperty(Resources.SvnUser, true, "SvnUser") {
-				Description = Resources.SvnUserDescription, Value = AppSetting.DefSvnUser
-			};
-			SvnPassword = new StringProperty(Resources.SvnPassword, true, "SvnPassword") {
-				Description = Resources.SvnPasswordDescription, Value = AppSetting.DefSvnPassword
-			};
-			;
-			WorkingCopyPath = new StringProperty(Resources.WorkingCopyPath, true, "WorkingCopyPath") {
-				Description = Resources.WorkingCopyPathDescription, Value = AppSetting.DefWorkingCopyPath
-			};
 			SelectWorkingCopyPathCommand = new RelayCommand(SelectWorkingCopyPath);
+			WorkingCopyPathChangeCommand = new RelayCommand(WorkingCopyPathChange);
 			Messenger.Default.Register<SvnOperation>(this, OnRunSvnOperation);
+			InitPropertyValues();
 		}
 
-		private void SelectWorkingCopyPath() {
+		private void InitPropertyValues() {
+			SvnUser = new StringProperty(Resources.SvnUser, true, SvnUtilsBase.SvnUserOptionName) {
+				Description = Resources.SvnUserDescription, Value = AppSetting.DefSvnUser
+			};
+			SvnPassword = new StringProperty(Resources.SvnPassword, true, SvnUtilsBase.SvnPasswordOptionName) {
+				Description = Resources.SvnPasswordDescription, Value = AppSetting.DefSvnPassword
+			};
+			WorkingCopyPath =
+				new StringProperty(Resources.WorkingCopyPath, true, SvnUtilsBase.WorkingCopyPathOptionName) {
+					Description = Resources.WorkingCopyPathDescription, Value = AppSetting.DefWorkingCopyPath
+				};
+			BranchFeatureUrl =
+				new StringProperty(Resources.BranchFeatureUrl, true, SvnUtilsBase.BranchFeatureUrlOptionName) {
+					Description = Resources.BranchFeatureUrlDescription
+				};
+			SetBranchFeatureUrlFromWorkingCopyPath();
+		}
+
+		protected virtual void WorkingCopyPathChange() {
+			SetBranchFeatureUrlFromWorkingCopyPath();
+		}
+
+		protected virtual void SetBranchFeatureUrlFromWorkingCopyPath() {
+			if (string.IsNullOrWhiteSpace(WorkingCopyPath.Value)) {
+				return;
+			}
+			BranchFeatureUrl.Value = SvnUtils.GetRepositoryPathWithFolder(WorkingCopyPath.Value);
+		}
+
+		protected virtual void SelectWorkingCopyPath() {
 			var path = BrowserDialog.SelectFilder(WorkingCopyPath.Value);
 			if (path != null) {
 				WorkingCopyPath.Value = path;
@@ -69,8 +102,13 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 				BrowserDialog.ShowModalBox(message);
 				return;
 			}
+			CreateIfNotExistWorkingCopyDirectory();
 			var svnArguments = GetSvnArguments();
 			StartSvnOperation(svnArguments);
+		}
+
+		protected virtual void CreateIfNotExistWorkingCopyDirectory() {
+			Directory.CreateDirectory(WorkingCopyPath.Value);
 		}
 
 		protected virtual void StartSvnOperation(Dictionary<string, string> args) {

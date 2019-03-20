@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
@@ -21,7 +19,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 		}
 
 		public UpdateFeatureSvnViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
-			CommitIfNoError = new BooleanProperty(Resources.CommitIfNoError, false, "CommitIfNoError") {
+			CommitIfNoError = new BooleanProperty(Resources.CommitIfNoError, false, SvnUtilsBase.CommitIfNoErrorOptionName) {
 				Description = Resources.CommitIfNoErrorDescription, Value = AppSetting.DefCommitIfNoError
 			};
 		}

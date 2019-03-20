@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
-namespace Terrasoft.Tools.SvnUI
-{
-	public static class AppSetting
-	{
+namespace Terrasoft.Tools.SvnUI {
+	public static class AppSetting {
 		public static string DefSvnUser => ConfigurationManager.AppSettings.Get("defSvnUser");
 		public static string DefSvnPassword => ConfigurationManager.AppSettings.Get("defSvnPassword");
 		public static string DefWorkingCopyPath => ConfigurationManager.AppSettings.Get("defWorkingCopyPath");
