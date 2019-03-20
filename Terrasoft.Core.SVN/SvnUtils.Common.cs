@@ -20,6 +20,13 @@ namespace Terrasoft.Core.SVN
         /// <param name="programOptions">Словарь с параметрами</param>
         public SvnUtils(IReadOnlyDictionary<string, string> programOptions, ILogger logger) : base(programOptions, logger) { }
 
+		public static string GetRepositoryPathWithFolder(string folderPath) {
+			using (var svnClient = new SvnClient()) {
+				svnClient.GetInfo(SvnTarget.FromString(folderPath), out var args);
+				return args?.Uri?.AbsoluteUri;
+			}
+		}
+
         /// <summary>
         ///     Получить URL ветки из которой была выделена фитча
         /// </summary>
@@ -31,7 +38,7 @@ namespace Terrasoft.Core.SVN
             var svnInfoArgs = new SvnInfoArgs {Revision = new SvnRevision(revision)};
             Info(SvnTarget.FromString(workingCopyPath), svnInfoArgs, (sender, args) => {
                 basePath = args.Uri.ToString();
-                Console.WriteLine(args.Uri.ToString());
+               Logger.LogInfo(args.Uri.ToString());
             });
             return basePath;
         }

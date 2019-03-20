@@ -61,7 +61,7 @@ namespace Terrasoft.Core.SVN
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <param name="url"></param>
         /// <returns>Результат</returns>
-        private bool CheckoutWorkingCopy(string workingCopyPath, string url) {
+		public bool CheckoutWorkingCopy(string workingCopyPath, string url) {
             var svnCheckOutArgs = new SvnCheckOutArgs {IgnoreExternals = false};
             svnCheckOutArgs.Notify += SvnCheckOutArgsOnNotify;
             try {

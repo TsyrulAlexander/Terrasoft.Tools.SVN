@@ -14,45 +14,56 @@ namespace Terrasoft.Core.SVN
     {
 	    public ILogger Logger { get; set; }
 
-	    /// <inheritdoc />
-	    /// <summary>
-	    ///     Конструктор SVN клиента
-	    /// </summary>
-	    /// <param name="options">Коллекция параметров</param>
-	    /// <param name="logger">Логгер</param>
-	    protected SvnUtilsBase(IReadOnlyDictionary<string, string> options, ILogger logger) {
+		public const string SvnUserOptionName = "svnuser";
+		public const string WorkingCopyPathOptionName = "workingcopypath";
+		public const string BaseWorkingCopyPathOptionName = "baseworkingcopypath";
+		public const string BranchReleaseUrlOptionName = "branchreleaseurl";
+		public const string FeatureNameOptionName = "featurename";
+		public const string BranchFeatureUrlOptionName = "branchfeatureurl";
+		public const string MaintainerOptionName = "maintainer";
+		public const string CommitIfNoErrorOptionName = "commitifnoerror";
+		public const string SvnPasswordOptionName = "svnpassword";
+		public const string AutoMergeOptionName = "automerge";
+
+		/// <inheritdoc />
+		/// <summary>
+		///     Конструктор SVN клиента
+		/// </summary>
+		/// <param name="options">Коллекция параметров</param>
+		/// <param name="logger">Логгер</param>
+		protected SvnUtilsBase(IReadOnlyDictionary<string, string> options, ILogger logger) {
 		    Logger = logger;
 		    foreach (KeyValuePair<string, string> option in options) {
                 switch (option.Key) {
-                    case "svnuser":
-                        UserName = options["svnuser"];
+                    case SvnUserOptionName:
+                        UserName = options[SvnUserOptionName];
                         break;
-                    case "workingcopypath":
-                        WorkingCopyPath = options["workingcopypath"];
+                    case WorkingCopyPathOptionName:
+                        WorkingCopyPath = options[WorkingCopyPathOptionName];
                         break;
-                    case "baseworkingcopypath":
-                        BaseWorkingCopyPath = options["baseworkingcopypath"];
+                    case BaseWorkingCopyPathOptionName:
+                        BaseWorkingCopyPath = options[BaseWorkingCopyPathOptionName];
                         break;
-                    case "branchreleaseurl":
-                        BranchReleaseUrl = options["branchreleaseurl"];
+                    case BranchReleaseUrlOptionName:
+                        BranchReleaseUrl = options[BranchReleaseUrlOptionName];
                         break;
-                    case "featurename":
-                        FeatureName = options["featurename"];
+                    case FeatureNameOptionName:
+                        FeatureName = options[FeatureNameOptionName];
                         break;
-                    case "branchfeatureurl":
-                        BranchFeatureUrl = options["branchfeatureurl"];
+                    case BranchFeatureUrlOptionName:
+                        BranchFeatureUrl = options[BranchFeatureUrlOptionName];
                         break;
-                    case "maintainer":
-                        Maintainer = options["maintainer"];
+                    case MaintainerOptionName:
+                        Maintainer = options[MaintainerOptionName];
                         break;
-                    case "commitifnoerror":
-                        CommitIfNoError = Convert.ToBoolean(options["commitifnoerror"]);
+                    case CommitIfNoErrorOptionName:
+                        CommitIfNoError = Convert.ToBoolean(options[CommitIfNoErrorOptionName]);
                         break;
-                    case "svnpassword":
-                        Password = options["svnpassword"];
+                    case SvnPasswordOptionName:
+                        Password = options[SvnPasswordOptionName];
                         break;
-                    case "automerge":
-                        AutoMerge = Convert.ToBoolean(options["automerge"]);
+                    case AutoMergeOptionName:
+                        AutoMerge = Convert.ToBoolean(options[AutoMergeOptionName]);
                         break;
                     default:
                         continue;
