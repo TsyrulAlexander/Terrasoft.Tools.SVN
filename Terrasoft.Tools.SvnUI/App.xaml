@@ -5,6 +5,7 @@
             <vm:EnumDescriptionConverter x:Key="EnumDescriptionConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
             <vm:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" d:IsDataSource="False"  />
+            <vm:InverseBooleanConverter x:Key="InverseBooleanConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

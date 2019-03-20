@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.Converter;
@@ -13,7 +14,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 	public class MainViewModel : ViewModelBase {
 		public ILogger Logger { get; }
 		private KeyValuePair<SvnOperation, string> _svnOperation;
-
+		private bool _inProgress;
 		public KeyValuePair<SvnOperation, string> SvnOperation {
 			get => _svnOperation;
 			set {
@@ -23,8 +24,14 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		public Dictionary<SvnOperation, string> SvnOperations { get; }
-
-	public RelayCommand RunCommand { get; set; }
+		public bool InProgress {
+			get => _inProgress;
+			set {
+				_inProgress = value;
+				RaisePropertyChanged();
+			}
+		}
+		public RelayCommand RunCommand { get; set; }
 		public MainViewModel(ILogger logger) {
 			Logger = logger;
 			RunCommand = new RelayCommand(Run, CanRun);
@@ -44,6 +51,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
 		private void StartSvnOperationAsync(SvnOperationConfig config) {
 			try {
+				SetProgressState(true);
 				using (var svnUtils = new SvnUtils(config.Arguments, Logger)) {
 					switch (config.SvnOperation) {
 						case Model.SvnOperation.CreateFeature:
@@ -69,11 +77,17 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 				}
 			} catch (Exception exception) {
 				Logger.LogError("Error: ", exception.Message);
+			} finally {
+				SetProgressState(false);
 			}
 		}
 
+		private void SetProgressState(bool state) {
+			DispatcherHelper.CheckBeginInvokeOnUI(() => InProgress = state);
+		}
+
 		private bool CanRun() {
-			return SvnOperation.Key != Model.SvnOperation.NaN;
+			return SvnOperation.Key != Model.SvnOperation.NaN && InProgress == false;
 		}
 
 		public void Run() {

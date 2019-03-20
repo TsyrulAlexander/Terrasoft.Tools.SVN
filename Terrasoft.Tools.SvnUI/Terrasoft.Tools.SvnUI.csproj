@@ -79,6 +79,7 @@
     <Compile Include="AppSetting.cs" />
     <Compile Include="Ioc\IocConfiguration.cs" />
     <Compile Include="Ioc\IocKernel.cs" />
+    <Compile Include="Model\Converter\InverseBooleanConverter.cs" />
     <Compile Include="Model\Property\BaseProperty.cs" />
     <Compile Include="Model\Property\BasePropertyT.cs" />
     <Compile Include="Model\Property\BooleanProperty.cs" />
