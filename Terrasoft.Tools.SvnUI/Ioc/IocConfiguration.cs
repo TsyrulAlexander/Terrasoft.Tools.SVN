@@ -3,10 +3,8 @@ using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.ViewModel;
 
-namespace Terrasoft.Tools.SvnUI.Ioc
-{
-	class IocConfiguration: NinjectModule
-	{
+namespace Terrasoft.Tools.SvnUI.Ioc {
+	class IocConfiguration : NinjectModule {
 		public override void Load() {
 			Bind<MainViewModel>().ToSelf().InTransientScope();
 			Bind<CreateFeatureSvnViewModel>().ToSelf().InTransientScope();

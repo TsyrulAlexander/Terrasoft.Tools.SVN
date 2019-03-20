@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
 
-namespace Terrasoft.Tools.SvnUI.ViewModel
-{
-    public class LogViewModel: ViewModelBase {
-	    private LogInfo _selected;
-	    public ILogger Logger { get; }
-	    public ObservableCollection<LogInfo> LogInfoCollection { get; }
+namespace Terrasoft.Tools.SvnUI.ViewModel {
+	public class LogViewModel : ViewModelBase {
+		private LogInfo _selected;
+		public ILogger Logger { get; }
+		public ObservableCollection<LogInfo> LogInfoCollection { get; }
 		public RelayCommand ClearCommand { get; set; }
 		public RelayCommand CopyCommand { get; set; }
 
@@ -27,7 +24,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
 		public LogViewModel(ILogger logger) {
 			Logger = logger;
-			((UILogger)logger).Execute += OnLogExecute;
+			((UILogger) logger).Execute += OnLogExecute;
 			LogInfoCollection = new ObservableCollection<LogInfo>();
 			ClearCommand = new RelayCommand(Clear);
 			CopyCommand = new RelayCommand(CopyLog);
@@ -51,5 +48,5 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public void Clear() {
 			LogInfoCollection.Clear();
 		}
-    }
+	}
 }

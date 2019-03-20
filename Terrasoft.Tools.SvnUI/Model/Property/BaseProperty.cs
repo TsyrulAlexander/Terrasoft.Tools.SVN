@@ -2,8 +2,7 @@
 using System.Runtime.CompilerServices;
 using Terrasoft.Tools.SvnUI.Annotations;
 
-namespace Terrasoft.Tools.SvnUI.Model.Property
-{
+namespace Terrasoft.Tools.SvnUI.Model.Property {
 	public abstract class BaseProperty : INotifyPropertyChanged {
 		private bool _isRequired;
 		private string _caption;
@@ -51,23 +50,6 @@ namespace Terrasoft.Tools.SvnUI.Model.Property
 		public virtual bool IsValid(out string message) {
 			message = string.Empty;
 			return true;
-		}
-	}
-
-	public abstract class BaseProperty<T> : BaseProperty {
-		
-		private T _value;
-		public T Value {
-			get => _value;
-			set {
-				_value = value;
-				OnPropertyChanged();
-			}
-		}
-
-		protected BaseProperty(string caption, bool isRequired = false, object tag = null) : base(caption, isRequired, tag) {}
-		public override string ToString() {
-			return Value.ToString();
 		}
 	}
 }

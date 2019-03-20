@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ninject;
+﻿using Ninject;
 using Ninject.Modules;
 
-namespace Terrasoft.Tools.SvnUI.Ioc
-{
-	public static class IocKernel
-	{
+namespace Terrasoft.Tools.SvnUI.Ioc {
+	public static class IocKernel {
 		private static StandardKernel _kernel;
 
 		public static T Get<T>() {

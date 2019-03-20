@@ -80,12 +80,10 @@
     <Compile Include="Ioc\IocConfiguration.cs" />
     <Compile Include="Ioc\IocKernel.cs" />
     <Compile Include="Model\Property\BaseProperty.cs" />
+    <Compile Include="Model\Property\BasePropertyT.cs" />
     <Compile Include="Model\Property\BooleanProperty.cs" />
-    <Compile Include="Model\Converter\ArithmeticConverter.cs" />
-    <Compile Include="Model\Converter\DictionaryValueConverter.cs" />
     <Compile Include="Model\Converter\EnumDescriptionConverter.cs" />
     <Compile Include="Model\Converter\EnumToVisibilityConverter.cs" />
-    <Compile Include="Model\Extension\EnumerationExtension.cs" />
     <Compile Include="Model\File\BrowserDialog.cs" />
     <Compile Include="Model\File\IBrowserDialog.cs" />
     <Compile Include="Model\LogInfo.cs" />

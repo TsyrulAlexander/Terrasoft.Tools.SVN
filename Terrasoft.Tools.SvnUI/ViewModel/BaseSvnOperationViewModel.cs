@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -11,11 +7,9 @@ using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
 using Terrasoft.Tools.SvnUI.Properties;
 
-namespace Terrasoft.Tools.SvnUI.ViewModel
-{
-	public abstract class BaseSvnOperationViewModel: ViewModelBase
-	{
-		public IBrowserDialog BrowserDialog { get; }
+namespace Terrasoft.Tools.SvnUI.ViewModel {
+	public abstract class BaseSvnOperationViewModel : ViewModelBase {
+		protected IBrowserDialog BrowserDialog { get; }
 		private StringProperty _svnUser;
 		private StringProperty _svnPassword;
 		private StringProperty _workingCopyPath;
@@ -47,17 +41,14 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public BaseSvnOperationViewModel(IBrowserDialog browserDialog) {
 			BrowserDialog = browserDialog;
 			SvnUser = new StringProperty(Resources.SvnUser, true, "SvnUser") {
-				Description = Resources.SvnUserDescription,
-				Value = AppSetting.DefSvnUser
+				Description = Resources.SvnUserDescription, Value = AppSetting.DefSvnUser
 			};
 			SvnPassword = new StringProperty(Resources.SvnPassword, true, "SvnPassword") {
-				Description = Resources.SvnPasswordDescription,
-				Value = AppSetting.DefSvnPassword
+				Description = Resources.SvnPasswordDescription, Value = AppSetting.DefSvnPassword
 			};
 			;
 			WorkingCopyPath = new StringProperty(Resources.WorkingCopyPath, true, "WorkingCopyPath") {
-				Description = Resources.WorkingCopyPathDescription,
-				Value = AppSetting.DefWorkingCopyPath
+				Description = Resources.WorkingCopyPathDescription, Value = AppSetting.DefWorkingCopyPath
 			};
 			SelectWorkingCopyPathCommand = new RelayCommand(SelectWorkingCopyPath);
 			Messenger.Default.Register<SvnOperation>(this, OnRunSvnOperation);
@@ -84,8 +75,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
 		protected virtual void StartSvnOperation(Dictionary<string, string> args) {
 			Messenger.Default.Send(new SvnOperationConfig {
-				SvnOperation = GetSvnOperation(),
-				Arguments = args
+				SvnOperation = GetSvnOperation(), Arguments = args
 			});
 		}
 
@@ -113,7 +103,9 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public abstract SvnOperation GetSvnOperation();
 
 		protected virtual IEnumerable<BaseProperty> GetOperationProperties() {
-			return new BaseProperty[] {SvnUser, SvnPassword, WorkingCopyPath};
+			return new BaseProperty[] {
+				SvnUser, SvnPassword, WorkingCopyPath
+			};
 		}
 	}
 }

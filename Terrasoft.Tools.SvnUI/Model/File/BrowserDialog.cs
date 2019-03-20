@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Terrasoft.Tools.SvnUI.Model.File
-{
+namespace Terrasoft.Tools.SvnUI.Model.File {
 	public class BrowserDialog : IBrowserDialog {
 		public string SelectFilder(string path) {
 			using (var dialog = new FolderBrowserDialog()) {

@@ -8,9 +8,8 @@ using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
 using Terrasoft.Tools.SvnUI.Properties;
 
-namespace Terrasoft.Tools.SvnUI.ViewModel
-{
-    public class UpdateFeatureSvnViewModel: BaseSvnOperationViewModel {
+namespace Terrasoft.Tools.SvnUI.ViewModel {
+	public class UpdateFeatureSvnViewModel : BaseSvnOperationViewModel {
 		private BooleanProperty _commitIfNoError;
 
 		public BooleanProperty CommitIfNoError {
@@ -23,19 +22,16 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
 		public UpdateFeatureSvnViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
 			CommitIfNoError = new BooleanProperty(Resources.CommitIfNoError, false, "CommitIfNoError") {
-				Description = Resources.CommitIfNoErrorDescription,
-				Value = AppSetting.DefCommitIfNoError
+				Description = Resources.CommitIfNoErrorDescription, Value = AppSetting.DefCommitIfNoError
 			};
 		}
 
 		protected override IEnumerable<BaseProperty> GetOperationProperties() {
-			return base.GetOperationProperties().Concat(new[] {
-				CommitIfNoError
-			});
+			return base.GetOperationProperties().Concat(new[] {CommitIfNoError});
 		}
 
 		public override SvnOperation GetSvnOperation() {
 			return SvnOperation.UpdateFeature;
 		}
-    }
+	}
 }
