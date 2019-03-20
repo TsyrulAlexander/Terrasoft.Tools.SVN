@@ -6,8 +6,8 @@ using Terrasoft.Core.SVN.Properties;
 namespace Terrasoft.Core.SVN
 {
 	public partial class SvnUtils : IDisposable {
-        private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            Console.WriteLine(e.Path);
+        private void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+	        Logger.LogInfo(e.Path);
         }
 
         private void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
@@ -24,16 +24,16 @@ namespace Terrasoft.Core.SVN
             AutoResolveConflict(e);
         }
 
-        private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
-            Console.WriteLine(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit, e.Items.Count.ToString());
+        private void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
+	        Logger.LogInfo(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit, e.Items.Count.ToString());
         }
 
-        private static void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            Console.WriteLine(e.Path);
+        private void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+           Logger.LogInfo(e.Path);
         }
 
-        private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs e) {
-            Console.WriteLine(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision, e.Revision.ToString());
+        private void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs e) {
+	        Logger.LogInfo(string.Format(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision, e.Revision.ToString()));
         }
 
         private void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs args) {
@@ -58,13 +58,13 @@ namespace Terrasoft.Core.SVN
             AutoResolveConflict(e);
         }
 
-        private static void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            Console.WriteLine(e.Uri);
+        private void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+	        Logger.LogInfo(e.Uri.ToString());
         }
 
-        private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            Console.WriteLine(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision, e.Path,
-                e.Revision.ToString());
+        private void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs e) {
+            Logger.LogInfo(string.Format(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision, e.Path,
+	            e.Revision.ToString()));
         }
 
         private void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs e) {
