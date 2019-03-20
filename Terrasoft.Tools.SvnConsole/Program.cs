@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terrasoft.Core.SVN;
-using Terrasoft.Core.SVN.Properties;
+using Terrasoft.Tools.SvnConsole.Properties;
 
 namespace Terrasoft.Tools.SvnConsole
 {
