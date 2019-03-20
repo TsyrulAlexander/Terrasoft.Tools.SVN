@@ -1,13 +1,10 @@
-<Application x:Class="Terrasoft.Tools.SvnUI.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Terrasoft.Tools.SvnUI" StartupUri="MainWindow.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:converter="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter">
-  <Application.Resources>
-    <ResourceDictionary>
-        <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.ViewModel" />
-        <vm:EnumDescriptionConverter x:Key="EnumDescriptionConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
-        <vm:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" d:IsDataSource="False"  />
-        <vm:ArithmeticConverter x:Key="ArithmeticConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter"/>
-        <vm:DictionaryValueConverter x:Key="DictionaryValueConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter"/>
-    </ResourceDictionary>
-  </Application.Resources>
+<Application x:Class="Terrasoft.Tools.SvnUI.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="MainWindow.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Application.Resources>
+        <ResourceDictionary>
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.ViewModel" />
+            <vm:EnumDescriptionConverter x:Key="EnumDescriptionConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
+            <vm:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" d:IsDataSource="False"  />
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
