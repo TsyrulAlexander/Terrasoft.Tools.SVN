@@ -8,19 +8,19 @@ namespace Terrasoft.Tools.SvnUI {
 
 		public void LogError(string warnMessage, string message = "") {
 			OnExecute(new LogInfo {
-				Message = message, Level = LogLevel.Error
+				Message = $"{warnMessage} {message}", Level = LogLevel.Error
 			});
 		}
 
 		public void LogInfo(string infoMessage, string message = "") {
 			OnExecute(new LogInfo {
-				Message = message, Level = LogLevel.Information
+				Message = $"{infoMessage} {message}", Level = LogLevel.Information
 			});
 		}
 
 		public void LogWarning(string infoMessage, string message = "") {
 			OnExecute(new LogInfo {
-				Message = message, Level = LogLevel.Warning
+				Message = $"{infoMessage} {message}", Level = LogLevel.Warning
 			});
 		}
 
