@@ -10,11 +10,14 @@ using GalaSoft.MvvmLight.Threading;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.Converter;
+using Terrasoft.Tools.SvnUI.Model.File;
+using Terrasoft.Tools.SvnUI.Properties;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
 	public class MainViewModel : ViewModelBase {
 		public ILogger Logger { get; }
+		public IBrowserDialog BrowserDialog { get; }
 		private KeyValuePair<SvnOperation, string> _svnOperation;
 		private bool _inProgress;
 		public KeyValuePair<SvnOperation, string> SvnOperation {
@@ -34,8 +37,9 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			}
 		}
 		public RelayCommand RunCommand { get; set; }
-		public MainViewModel(ILogger logger) {
+		public MainViewModel(ILogger logger, IBrowserDialog browserDialog) {
 			Logger = logger;
+			BrowserDialog = browserDialog;
 			RunCommand = new RelayCommand(Run, CanRun);
 			SvnOperations = new Dictionary<SvnOperation, string> {
 				{ Model.SvnOperation.CreateFeature, EnumDescriptionConverter.GetDescription(Model.SvnOperation.CreateFeature) },
@@ -84,8 +88,10 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 							throw new NotImplementedException(nameof(config.SvnOperation));
 					}
 				}
+				BrowserDialog.ShowModalBox(Resources.SvnOperationComplite);
 			} catch (Exception exception) {
 				Logger.LogError(exception.Message);
+				BrowserDialog.ShowModalBox(exception.Message, Resources.Error);
 			} finally {
 				SetProgressState(false);
 			}

@@ -19,7 +19,7 @@
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
         </Style>
     </Window.Resources>
-    <DockPanel LastChildFill="True" DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <DockPanel DataContext="{Binding Main, Source={StaticResource Locator}}">
         <Grid DockPanel.Dock="Top" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="157"></ColumnDefinition>
@@ -37,7 +37,7 @@
                 </ComboBox.ItemContainerStyle>
                 <ComboBox.Style>
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
-                        
+
                     </Style>
                 </ComboBox.Style>
             </ComboBox>
@@ -45,14 +45,13 @@
         <Grid DockPanel.Dock="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="4"></RowDefinition>
             </Grid.RowDefinitions>
-            <Expander Grid.Row="0" DataContext="{Binding Log, Source={StaticResource Locator}}">
+            <Expander Grid.Row="0" DataContext="{Binding Log, Source={StaticResource Locator}}" VerticalContentAlignment="Stretch">
                 <Expander.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock Text="{x:Static resx:Resources.Log}"></TextBlock>
-                        <TextBlock Text="{Binding StringFormat={}  {0}, Path=LogInfoCollection.Count}">
+                        <TextBlock Text="{x:Static resx:Resources.Log}" Foreground="White"></TextBlock>
+                        <TextBlock Text="{Binding StringFormat={}  {0}, Path=LogInfoCollection.Count}" Foreground="White">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Visible"></Setter>
@@ -66,38 +65,43 @@
                         </TextBlock>
                     </StackPanel>
                 </Expander.Header>
-                <ListBox ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding Selected}" Background="Transparent">
-                    <ListBox.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
-                            <MenuItem Header="{x:Static resx:Resources.ClearAll}" Command="{Binding ClearCommand}"/>
-                            <MenuItem Header="{x:Static resx:Resources.SaveLog}" Command="{Binding SaveLogCommand}"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Message}">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Background" Value="Transparent"></Setter>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Error}">
-                                                <Setter Property="Background" Value="{StaticResource ValidationErrorColor}"></Setter>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Warning}">
-                                                <Setter Property="Background" Value="#ffc83f"></Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <Expander.Style>
+                    <Style></Style>
+                </Expander.Style>
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ListBox  ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  SelectedItem="{Binding Selected}" Background="Transparent">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
+                                <MenuItem Header="{x:Static resx:Resources.ClearAll}" Command="{Binding ClearCommand}"/>
+                                <MenuItem Header="{x:Static resx:Resources.SaveLog}" Command="{Binding SaveLogCommand}"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Message}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Error}">
+                                                    <Setter Property="Background" Value="#fa5e5d"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Warning}">
+                                                    <Setter Property="Background" Value="#ffc83f"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
             </Expander>
-            <ProgressBar Grid.Row="2" Grid.Column="0" IsIndeterminate="{Binding InProgress}"/>
+            <ProgressBar Grid.Row="1" Grid.Column="0" IsIndeterminate="{Binding InProgress}"/>
         </Grid>
-        <Grid IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}" MinHeight="100">
+        <Grid IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -202,7 +206,7 @@
                 </StackPanel>
             </ScrollViewer>
             <Button Grid.Row="1" Command="{Binding RunCommand}" Margin="1">
-               <Button.Style>
+                <Button.Style>
                     <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
                         <Setter Property="Background">
                             <Setter.Value>
@@ -219,7 +223,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-               </Button.Style>
+                </Button.Style>
                 <TextBlock Text="{x:Static resx:Resources.Run}"></TextBlock>
             </Button>
         </Grid>

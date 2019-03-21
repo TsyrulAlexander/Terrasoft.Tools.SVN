@@ -170,6 +170,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Название фитчи.
         /// </summary>
         public static string FeatureName {
@@ -247,6 +256,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string SaveLog {
             get {
                 return ResourceManager.GetString("SaveLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Операция завершена.
+        /// </summary>
+        public static string SvnOperationComplite {
+            get {
+                return ResourceManager.GetString("SvnOperationComplite", resourceCulture);
             }
         }
         

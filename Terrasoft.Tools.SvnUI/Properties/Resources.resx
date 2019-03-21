@@ -199,4 +199,10 @@ SUCCESS</value>
   <data name="WorkingCopyPathDescription" xml:space="preserve">
     <value>Путь к локальной рабочей копии</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="SvnOperationComplite" xml:space="preserve">
+    <value>Операция завершена</value>
+  </data>
 </root>
