@@ -1,18 +1,23 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.File;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel {
 	public class LogViewModel : ViewModelBase {
 		private LogInfo _selected;
 		public ILogger Logger { get; }
+		public IBrowserDialog BrowserDialog { get; }
 		public ObservableCollection<LogInfo> LogInfoCollection { get; }
 		public RelayCommand ClearCommand { get; set; }
 		public RelayCommand CopyCommand { get; set; }
+		public RelayCommand SaveLogCommand { get; set; }
 
 		public LogInfo Selected {
 			get => _selected;
@@ -22,12 +27,36 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			}
 		}
 
-		public LogViewModel(ILogger logger) {
+		public LogViewModel(ILogger logger, IBrowserDialog browserDialog) {
 			Logger = logger;
+			BrowserDialog = browserDialog;
 			((UILogger) logger).Execute += OnLogExecute;
 			LogInfoCollection = new ObservableCollection<LogInfo>();
 			ClearCommand = new RelayCommand(Clear);
 			CopyCommand = new RelayCommand(CopyLog);
+			SaveLogCommand = new RelayCommand(SaveLog);
+		}
+
+		public void SaveLog() {
+			var path = BrowserDialog.SaveFile(null, "Text documents (.txt)|*.txt");
+			if (string.IsNullOrWhiteSpace(path)) {
+				return;
+			}
+			SaveLog(path);
+		}
+
+		private void SaveLog(string path) {
+			using (StreamWriter writer = new StreamWriter(path, false, Encoding.ASCII)) {
+				writer.Write(GetLogCollectionToString());
+			}
+		}
+
+		private string GetLogCollectionToString() {
+			var builder = new StringBuilder();
+			foreach (var logInfo in LogInfoCollection) {
+				builder.AppendLine(logInfo.ToString());
+			}
+			return builder.ToString();
 		}
 
 		private void OnLogExecute(LogInfo obj) {

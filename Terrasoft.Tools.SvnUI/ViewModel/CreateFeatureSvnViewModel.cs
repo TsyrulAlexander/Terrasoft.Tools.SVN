@@ -39,6 +39,8 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		public CreateFeatureSvnViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
+			BranchFeatureUrl.Caption = Resources.BranchesFeatureUrl;
+			BranchFeatureUrl.Description = Resources.BranchesFeatureUrlDescription;
 			BranchReleaseUrl = new StringProperty(Resources.BranchReleaseUrl, true, SvnUtilsBase.BranchReleaseUrlOptionName) {
 				Description = Resources.BranchReleaseUrlDescription, Value = AppSetting.DefBranchReleaseUrl
 			};
@@ -53,7 +55,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
 		protected override IEnumerable<BaseProperty> GetOperationProperties() {
 			return base.GetOperationProperties().Concat(new[] {
-				BranchFeatureUrl, BranchReleaseUrl, Maintainer, FeatureName
+				BranchReleaseUrl, Maintainer, FeatureName
 			});
 		}
 

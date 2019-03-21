@@ -10,7 +10,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Caption}" TextAlignment="Center" ToolTip="{Binding Description}"/>
+            <TextBlock Text="{Binding Caption}" TextAlignment="Center" ToolTip="{Binding Description}" FontSize="14"/>
             <TextBlock Text="*" Foreground="Red" Visibility="{Binding IsRequired, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top"/>
         </StackPanel>
         <CheckBox Grid.Column="1" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent"/>

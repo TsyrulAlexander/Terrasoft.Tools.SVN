@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -48,12 +49,10 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 		}
 
 		public RelayCommand SelectWorkingCopyPathCommand { get; set; }
-		public RelayCommand WorkingCopyPathChangeCommand { get; set; }
 
 		public BaseSvnOperationViewModel(IBrowserDialog browserDialog) {
 			BrowserDialog = browserDialog;
 			SelectWorkingCopyPathCommand = new RelayCommand(SelectWorkingCopyPath);
-			WorkingCopyPathChangeCommand = new RelayCommand(WorkingCopyPathChange);
 			Messenger.Default.Register<SvnOperation>(this, OnRunSvnOperation);
 			InitPropertyValues();
 		}
@@ -73,18 +72,23 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 				new StringProperty(Resources.BranchFeatureUrl, true, SvnUtilsBase.BranchFeatureUrlOptionName) {
 					Description = Resources.BranchFeatureUrlDescription
 				};
-			SetBranchFeatureUrlFromWorkingCopyPath();
-		}
-
-		protected virtual void WorkingCopyPathChange() {
+			WorkingCopyPath.PropertyChanged += (sender, args) => {
+				if (args.PropertyName == nameof(WorkingCopyPath.Value)) {
+					SetBranchFeatureUrlFromWorkingCopyPath();
+				}
+			};
 			SetBranchFeatureUrlFromWorkingCopyPath();
 		}
 
 		protected virtual void SetBranchFeatureUrlFromWorkingCopyPath() {
-			if (string.IsNullOrWhiteSpace(WorkingCopyPath.Value)) {
+			if (string.IsNullOrWhiteSpace(WorkingCopyPath?.Value) || !Directory.Exists(WorkingCopyPath.Value)) {
 				return;
 			}
-			BranchFeatureUrl.Value = SvnUtils.GetRepositoryPathWithFolder(WorkingCopyPath.Value);
+			try {
+				BranchFeatureUrl.Value = SvnUtils.GetRepositoryPathWithFolder(WorkingCopyPath.Value);
+			} catch {
+				BranchFeatureUrl.Value = string.Empty;
+			}
 		}
 
 		protected virtual void SelectWorkingCopyPath() {
@@ -142,7 +146,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 
 		protected virtual IEnumerable<BaseProperty> GetOperationProperties() {
 			return new BaseProperty[] {
-				SvnUser, SvnPassword, WorkingCopyPath
+				SvnUser, SvnPassword, WorkingCopyPath, BranchFeatureUrl
 			};
 		}
 	}

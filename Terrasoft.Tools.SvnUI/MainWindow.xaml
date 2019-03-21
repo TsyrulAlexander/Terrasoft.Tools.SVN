@@ -8,7 +8,7 @@
         xmlns:view="clr-namespace:Terrasoft.Tools.SvnUI.View"
         mc:Ignorable="d"
         x:Name="MainWindowControl"
-        Title="SVN tools" Height="450" Width="390">
+        Title="SVN tools" Height="450" Width="435">
     <Window.Resources>
         <Style x:Key="LogoTextStype" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Times New Roman" />
@@ -28,18 +28,34 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush>
+            <GradientStop Color="#FFE4E4F5" Offset="0" />
+            <GradientStop Color="White" Offset="1" />
+        </LinearGradientBrush>
+    </Window.Background>
     <DockPanel LastChildFill="True" DataContext="{Binding Main, Source={StaticResource Locator}}">
         <DockPanel.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="#FFE4E4F5" Offset="0" />
-                <GradientStop Color="White" Offset="1" />
-            </LinearGradientBrush>
+            <VisualBrush Stretch="Fill" TileMode="None" AlignmentX="Left" AlignmentY="Top">
+                <VisualBrush.Visual>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"></RowDefinition>
+                            <RowDefinition Height="50*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextTop}"/>
+                        <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype}" Text="{x:Static resx:Resources.BackgrountTextTop}" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextBottom}"/>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource LogoTextStype}" Text="{x:Static resx:Resources.BackgrountTextBottom}" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                    </Grid>
+                </VisualBrush.Visual>
+            </VisualBrush>
         </DockPanel.Background>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
             <StackPanel.Background>
-                <SolidColorBrush Color="#FFCFD3E0"></SolidColorBrush>
+                <SolidColorBrush Color="#FFCFD3E0" Opacity="0.7"></SolidColorBrush>
             </StackPanel.Background>
-            <TextBlock Text="{x:Static resx:Resources.Operation}" Margin="2" FontSize="1"></TextBlock>
+            <TextBlock Text="{x:Static resx:Resources.Operation}" Margin="2" FontSize="14" Style="{StaticResource LogoTextStype}"></TextBlock>
             <ComboBox SelectedItem="{Binding SvnOperation}" ItemsSource="{Binding SvnOperations}" DisplayMemberPath="Value" SelectedValuePath="Key" MinWidth="120"/>
         </StackPanel>
         <Grid DockPanel.Dock="Bottom">
@@ -65,11 +81,12 @@
                         </TextBlock>
                     </StackPanel>
                 </Expander.Header>
-                <ListBox ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding Selected}">
+                <ListBox ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding Selected}" Background="Transparent">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
                             <MenuItem Header="{x:Static resx:Resources.ClearAll}" Command="{Binding ClearCommand}"/>
+                            <MenuItem Header="{x:Static resx:Resources.SaveLog}" Command="{Binding SaveLogCommand}"/>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
@@ -99,33 +116,20 @@
                     <ColumnDefinition Width="224*"/>
                     <ColumnDefinition Width="100"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <ProgressBar Grid.Column="0" IsIndeterminate="{Binding InProgress}" Grid.ColumnSpan="2"/>
+                <ProgressBar Grid.Column="0" IsIndeterminate="{Binding InProgress}" Grid.ColumnSpan="2" Opacity="0.7"/>
                 <Button Grid.Column="2" Command="{Binding RunCommand}">
+                    <Button.Background>
+                        <SolidColorBrush Opacity="0.6"></SolidColorBrush>
+                    </Button.Background>
                     <TextBlock Text="{x:Static resx:Resources.Run}"></TextBlock>
                 </Button>
             </Grid>
         </Grid>
         <Grid IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}" MinHeight="100">
-            <Grid.Background>
-                <VisualBrush Stretch="Fill" TileMode="None" AlignmentX="Left" AlignmentY="Top">
-                    <VisualBrush.Visual>
-                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50*"></RowDefinition>
-                                <RowDefinition Height="50*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextTop}"/>
-                            <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype}" Text="{x:Static resx:Resources.BackgrountTextTop}" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
-                            <TextBlock Grid.Row="1" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextBottom}"/>
-                            <TextBlock Grid.Row="1" Style="{DynamicResource LogoTextStype}" Text="{x:Static resx:Resources.BackgrountTextBottom}" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
-                        </Grid>
-                    </VisualBrush.Visual>
-                </VisualBrush>
-            </Grid.Background>
             <ScrollViewer Visibility="{Binding SvnOperation.Key,
                         Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='CreateFeature'}" Grid.ColumnSpan="3">
-                <WrapPanel DataContext="{Binding CreateFeature, Source={StaticResource Locator}}" ItemWidth="Auto">
+                        ConverterParameter='CreateFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding CreateFeature, Source={StaticResource Locator}}">
                     <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
                     <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
                     <Grid>
@@ -133,8 +137,8 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="20"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Property="{Binding WorkingCopyPath}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
+                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <TextBlock Text="..."></TextBlock>
                         </Button>
                     </Grid>
@@ -142,12 +146,12 @@
                     <view:StringPropertyControl Property="{Binding BranchReleaseUrl}"></view:StringPropertyControl>
                     <view:StringPropertyControl Property="{Binding FeatureName}"></view:StringPropertyControl>
                     <view:StringPropertyControl Property="{Binding Maintainer}"></view:StringPropertyControl>
-                </WrapPanel>
+                </StackPanel>
             </ScrollViewer>
             <ScrollViewer Visibility="{Binding SvnOperation.Key,
                         Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='UpdateFeature'}" Grid.ColumnSpan="3">
-                <WrapPanel DataContext="{Binding UpdateFeature, Source={StaticResource Locator}}" ItemWidth="Auto">
+                        ConverterParameter='UpdateFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding UpdateFeature, Source={StaticResource Locator}}">
                     <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
                     <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
                     <Grid>
@@ -155,68 +159,71 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="20"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Property="{Binding WorkingCopyPath}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                    <view:BooleanPropertyControl Property="{Binding CommitIfNoError}"></view:BooleanPropertyControl>
-                </WrapPanel>
-            </ScrollViewer>
-            <ScrollViewer Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='FinishFeature'}" Grid.ColumnSpan="3">
-                <WrapPanel DataContext="{Binding FinishFeature, Source={StaticResource Locator}}" ItemWidth="400">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="20"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Property="{Binding WorkingCopyPath}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                </WrapPanel>
-            </ScrollViewer>
-            <ScrollViewer Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='CloseFeature'}" Grid.ColumnSpan="3">
-                <WrapPanel DataContext="{Binding CloseFeature, Source={StaticResource Locator}}" ItemWidth="400">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="20"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Property="{Binding WorkingCopyPath}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                </WrapPanel>
-            </ScrollViewer>
-            <ScrollViewer Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='FixFeature'}" Grid.ColumnSpan="3">
-                <WrapPanel DataContext="{Binding FixFeature, Source={StaticResource Locator}}" ItemWidth="400">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="20"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath}" Grid.ColumnSpan="2" ValueLostFocus="{Binding WorkingCopyPathChangeCommand}"></view:StringPropertyControl>
+                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
                         <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <TextBlock Text="..."></TextBlock>
                         </Button>
                     </Grid>
                     <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
-                </WrapPanel>
+                    <view:BooleanPropertyControl Property="{Binding CommitIfNoError}"></view:BooleanPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Visibility="{Binding SvnOperation.Key,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='FinishFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding FinishFeature, Source={StaticResource Locator}}">
+                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
+                    <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
+                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <TextBlock Text="..."></TextBlock>
+                        </Button>
+                    </Grid>
+                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Visibility="{Binding SvnOperation.Key,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='CloseFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding CloseFeature, Source={StaticResource Locator}}">
+                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
+                    <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
+                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <TextBlock Text="..."></TextBlock>
+                        </Button>
+                    </Grid>
+                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Visibility="{Binding SvnOperation.Key,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='FixFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding FixFeature, Source={StaticResource Locator}}">
+                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
+                    <view:StringPropertyControl Property="{Binding SvnPassword}"></view:StringPropertyControl>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
+                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <TextBlock Text="..."></TextBlock>
+                        </Button>
+                    </Grid>
+                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
+                </StackPanel>
             </ScrollViewer>
         </Grid>
     </DockPanel>

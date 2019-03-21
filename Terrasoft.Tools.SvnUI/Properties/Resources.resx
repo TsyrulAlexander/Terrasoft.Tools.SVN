@@ -123,11 +123,17 @@
   <data name="BackgrountTextTop" xml:space="preserve">
     <value>CUSTOMER</value>
   </data>
-  <data name="BranchFeatureUrl" xml:space="preserve">
+  <data name="BranchesFeatureUrl" xml:space="preserve">
     <value>Url к Branches</value>
   </data>
-  <data name="BranchFeatureUrlDescription" xml:space="preserve">
+  <data name="BranchesFeatureUrlDescription" xml:space="preserve">
     <value>Url в которой базируются все фитчи</value>
+  </data>
+  <data name="BranchFeatureUrl" xml:space="preserve">
+    <value>Url к фитче</value>
+  </data>
+  <data name="BranchFeatureUrlDescription" xml:space="preserve">
+    <value>Url в которой расположена фитча</value>
   </data>
   <data name="BranchReleaseUrl" xml:space="preserve">
     <value>Url к PackageStore</value>
@@ -173,6 +179,9 @@
   </data>
   <data name="Run" xml:space="preserve">
     <value>Запуск</value>
+  </data>
+  <data name="SaveLog" xml:space="preserve">
+    <value>Сохранить лог</value>
   </data>
   <data name="SvnPassword" xml:space="preserve">
     <value>Пароль Svn</value>

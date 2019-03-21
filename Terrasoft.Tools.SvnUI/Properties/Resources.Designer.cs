@@ -81,6 +81,24 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Url к Branches.
         /// </summary>
+        public static string BranchesFeatureUrl {
+            get {
+                return ResourceManager.GetString("BranchesFeatureUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Url в которой базируются все фитчи.
+        /// </summary>
+        public static string BranchesFeatureUrlDescription {
+            get {
+                return ResourceManager.GetString("BranchesFeatureUrlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Url к фитче.
+        /// </summary>
         public static string BranchFeatureUrl {
             get {
                 return ResourceManager.GetString("BranchFeatureUrl", resourceCulture);
@@ -88,7 +106,7 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Url в которой базируются все фитчи.
+        ///   Looks up a localized string similar to Url в которой расположена фитча.
         /// </summary>
         public static string BranchFeatureUrlDescription {
             get {
@@ -228,6 +246,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string Run {
             get {
                 return ResourceManager.GetString("Run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить лог.
+        /// </summary>
+        public static string SaveLog {
+            get {
+                return ResourceManager.GetString("SaveLog", resourceCulture);
             }
         }
         
