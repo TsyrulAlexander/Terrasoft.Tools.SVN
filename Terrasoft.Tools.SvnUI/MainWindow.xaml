@@ -51,13 +51,17 @@
                 </VisualBrush.Visual>
             </VisualBrush>
         </DockPanel.Background>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
-            <StackPanel.Background>
+        <Grid DockPanel.Dock="Top" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="157"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
                 <SolidColorBrush Color="#FFCFD3E0" Opacity="0.7"></SolidColorBrush>
-            </StackPanel.Background>
-            <TextBlock Text="{x:Static resx:Resources.Operation}" Margin="2" FontSize="14" Style="{StaticResource LogoTextStype}"></TextBlock>
-            <ComboBox SelectedItem="{Binding SvnOperation}" ItemsSource="{Binding SvnOperations}" DisplayMemberPath="Value" SelectedValuePath="Key" MinWidth="120"/>
-        </StackPanel>
+            </Grid.Background>
+            <TextBlock Grid.Column="0" Text="{x:Static resx:Resources.Operation}" FontSize="14" Width="150" TextAlignment="Right" Padding="0 0 7 0"></TextBlock>
+            <ComboBox Grid.Column="1" SelectedItem="{Binding SvnOperation}" ItemsSource="{Binding SvnOperations}" DisplayMemberPath="Value" SelectedValuePath="Key" MinWidth="120" Background="Transparent"/>
+        </Grid>
         <Grid DockPanel.Dock="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
@@ -117,7 +121,7 @@
                     <ColumnDefinition Width="100"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <ProgressBar Grid.Column="0" IsIndeterminate="{Binding InProgress}" Grid.ColumnSpan="2" Opacity="0.7"/>
-                <Button Grid.Column="2" Command="{Binding RunCommand}">
+                <Button Grid.Column="2" Command="{Binding RunCommand}" Margin="1">
                     <Button.Background>
                         <SolidColorBrush Opacity="0.6"></SolidColorBrush>
                     </Button.Background>

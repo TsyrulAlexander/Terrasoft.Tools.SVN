@@ -11,13 +11,14 @@
     <Grid Margin="1" DataContext="{Binding ElementName=Root, Path=Property}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
             <TextBlock Text="{Binding Caption}" TextAlignment="Center" ToolTip="{Binding Description}" FontSize="14"/>
             <TextBlock Text="*" Foreground="Red" Visibility="{Binding IsRequired, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top"/>
         </StackPanel>
-        <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" FontSize="14" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto">
+        <TextBox Grid.Column="2" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" FontSize="14" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto">
             <TextBox.Background>
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>
             </TextBox.Background>
