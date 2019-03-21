@@ -118,10 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BackgrountTextBottom" xml:space="preserve">
-    <value>SUCCESS</value>
+    <value>РУКОЖОП</value>
   </data>
   <data name="BackgrountTextTop" xml:space="preserve">
-    <value>CUSTOMER</value>
+    <value>CUSTOMER
+SUCCESS</value>
   </data>
   <data name="BranchesFeatureUrl" xml:space="preserve">
     <value>Url к Branches</value>

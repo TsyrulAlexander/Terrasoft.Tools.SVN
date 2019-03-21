@@ -61,16 +61,8 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SUCCESS.
-        /// </summary>
-        public static string BackgrountTextBottom {
-            get {
-                return ResourceManager.GetString("BackgrountTextBottom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CUSTOMER.
+        ///   Looks up a localized string similar to CUSTOMER
+        ///SUCCESS.
         /// </summary>
         public static string BackgrountTextTop {
             get {

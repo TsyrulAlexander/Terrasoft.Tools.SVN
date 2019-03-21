@@ -36,17 +36,14 @@
     </Window.Background>
     <DockPanel LastChildFill="True" DataContext="{Binding Main, Source={StaticResource Locator}}">
         <DockPanel.Background>
-            <VisualBrush Stretch="Fill" TileMode="None" AlignmentX="Left" AlignmentY="Top">
+            <VisualBrush Stretch="Fill" TileMode="None" AlignmentX="Left" AlignmentY="Top" Opacity="0.5">
                 <VisualBrush.Visual>
                     <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50*"></RowDefinition>
-                            <RowDefinition Height="50*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextTop}"/>
-                        <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype}" Text="{x:Static resx:Resources.BackgrountTextTop}" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
-                        <TextBlock Grid.Row="1" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextBottom}"/>
-                        <TextBlock Grid.Row="1" Style="{DynamicResource LogoTextStype}" Text="{x:Static resx:Resources.BackgrountTextBottom}" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                        <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype1}" Text="{x:Static resx:Resources.BackgrountTextTop}" TextAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Style="{DynamicResource LogoTextStype}"  Text="{x:Static resx:Resources.BackgrountTextTop}" TextAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"></TextBlock>
                     </Grid>
                 </VisualBrush.Visual>
             </VisualBrush>
