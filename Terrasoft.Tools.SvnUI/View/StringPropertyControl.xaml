@@ -5,9 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" d:DesignWidth="300" x:Name="Root">
-    <UserControl.Resources>
-       
-    </UserControl.Resources>
     <Grid Margin="1" DataContext="{Binding ElementName=Root, Path=Property}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"></ColumnDefinition>
@@ -15,18 +12,13 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Caption}" TextAlignment="Center" ToolTip="{Binding Description}" FontSize="14"/>
+            <TextBlock Text="{Binding Caption}" TextAlignment="Center" ToolTip="{Binding Description}"/>
             <TextBlock Text="*" Foreground="Red" Visibility="{Binding IsRequired, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top"/>
         </StackPanel>
         <TextBox Grid.Column="2" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" FontSize="14" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto">
             <TextBox.Background>
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>
             </TextBox.Background>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="LostFocus">
-                    <i:InvokeCommandAction Command="{Binding ElementName=Root, Path=ValueLostFocus}"></i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
         </TextBox>
     </Grid>
 </UserControl>

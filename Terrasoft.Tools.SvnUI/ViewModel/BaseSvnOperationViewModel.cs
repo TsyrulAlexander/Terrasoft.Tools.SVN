@@ -81,7 +81,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 		}
 
 		protected virtual void SetBranchFeatureUrlFromWorkingCopyPath() {
-			if (string.IsNullOrWhiteSpace(WorkingCopyPath?.Value) || !Directory.Exists(WorkingCopyPath.Value)) {
+			if (string.IsNullOrWhiteSpace(WorkingCopyPath?.Value) || !Directory.Exists(WorkingCopyPath.Value + @"\.svn")) {
 				return;
 			}
 			try {

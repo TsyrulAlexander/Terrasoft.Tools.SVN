@@ -25,7 +25,7 @@ namespace Terrasoft.Core.SVN
         }
 
         private void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
-	        Logger.LogInfo(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit, e.Items.Count.ToString());
+	        Logger.LogInfo(string.Format(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit, e.Items.Count.ToString()));
         }
 
         private void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs e) {
