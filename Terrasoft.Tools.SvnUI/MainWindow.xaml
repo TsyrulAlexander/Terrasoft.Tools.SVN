@@ -6,70 +6,48 @@
         xmlns:model="clr-namespace:Terrasoft.Tools.SvnUI.Model"
         xmlns:resx="clr-namespace:Terrasoft.Tools.SvnUI.Properties"
         xmlns:view="clr-namespace:Terrasoft.Tools.SvnUI.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         x:Name="MainWindowControl"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Title="SVN tools" Height="500" Width="700">
-    <Window.Resources>
-        <Style x:Key="SelectFolderButton" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Padding" Value="4"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-    </Window.Resources>
-    <DockPanel DataContext="{Binding Main, Source={StaticResource Locator}}">
-        <Grid DockPanel.Dock="Top" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="157"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.Background>
-                <SolidColorBrush Color="#FFCFD3E0" Opacity="0.7"></SolidColorBrush>
-            </Grid.Background>
-            <TextBlock Grid.Column="0" Text="{x:Static resx:Resources.Operation}" FontSize="14" Width="150" TextAlignment="Right" Padding="0 0 7 0" VerticalAlignment="Center"></TextBlock>
-            <ComboBox Grid.Column="1" SelectedItem="{Binding SvnOperation}" ItemsSource="{Binding SvnOperations}" DisplayMemberPath="Value">
-                <ComboBox.ItemContainerStyle>
-                    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}">
-                        <Setter Property="Background" Value="Black"></Setter>
-                    </Style>
-                </ComboBox.ItemContainerStyle>
-                <ComboBox.Style>
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
-
-                    </Style>
-                </ComboBox.Style>
-            </ComboBox>
-        </Grid>
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="4"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Expander Grid.Row="0" DataContext="{Binding Log, Source={StaticResource Locator}}" VerticalContentAlignment="Stretch">
-                <Expander.Header>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock Text="{x:Static resx:Resources.Log}" Foreground="White"></TextBlock>
-                        <TextBlock Text="{Binding StringFormat={}  {0}, Path=LogInfoCollection.Count}" Foreground="White">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Visible"></Setter>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding LogInfoCollection.Count}" Value="0">
-                                            <Setter Property="Visibility" Value="Hidden"></Setter>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </StackPanel>
-                </Expander.Header>
-                <Expander.Style>
-                    <Style></Style>
-                </Expander.Style>
-                <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <ListBox  ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  SelectedItem="{Binding Selected}" Background="Transparent">
+        Title="SVN tools" Height="500" Width="850">
+    <materialDesign:DrawerHost BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" DataContext="{Binding Main, Source={StaticResource Locator}}">
+        <materialDesign:DrawerHost.LeftDrawerContent>
+            <StackPanel Margin="16">
+                <TextBlock Margin="4" HorizontalAlignment="Center" Text="{x:Static resx:Resources.Operation}" Style="{DynamicResource HeaderTextBoxStyle}"></TextBlock>
+                <RadioButton
+                    Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="{Binding Path=OperationType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=SvnBranches, UpdateSourceTrigger=PropertyChanged}"
+                    Content="{x:Static resx:Resources.SvnBranches}" Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static model:OperationType.SvnBranches}"/>
+                <RadioButton
+                    Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="{Binding Path=OperationType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=DeployApp, UpdateSourceTrigger=PropertyChanged}" 
+                    Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static model:OperationType.DeployApp}" Height="Auto">
+                    <TextBlock Text="{x:Static resx:Resources.DeployApp}"></TextBlock>
+                </RadioButton>
+            </StackPanel>
+        </materialDesign:DrawerHost.LeftDrawerContent>
+        <materialDesign:DrawerHost.BottomDrawerContent>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="4" VerticalAlignment="Center" Text="{x:Static resx:Resources.Log}" Style="{DynamicResource HeaderTextBoxStyle}"/>
+                <Button Grid.Row="0" Grid.Column="1"  DockPanel.Dock="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        CommandParameter="{x:Static Dock.Bottom}" Style="{DynamicResource RunBotton}"
+                        Margin="4" VerticalAlignment="Top">
+                    <materialDesign:PackIcon Kind="ArrowDown"  />
+                </Button>
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="16" DataContext="{Binding Log, Source={StaticResource Locator}}">
+                    <ListBox ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  SelectedItem="{Binding Selected}" Background="Transparent">
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
@@ -97,135 +75,27 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </ScrollViewer>
-            </Expander>
-            <ProgressBar Grid.Row="1" Grid.Column="0" IsIndeterminate="{Binding InProgress}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:DrawerHost.BottomDrawerContent>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Background="#FF534D4D">
+                <Button Margin="1" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" Style="{DynamicResource RunBotton}"
+                        CommandParameter="{x:Static Dock.Left}"
+                        Height="Auto" Background="Transparent">
+                    <materialDesign:PackIcon Kind="HamburgerMenu" Width="35" Height="Auto"/>
+                </Button>
+                <Button Margin="1" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" Style="{DynamicResource RunBotton}"
+                         CommandParameter="{x:Static Dock.Bottom}"
+                         Height="Auto" Background="Transparent">
+                    <materialDesign:PackIcon Kind="CommentTextOutline" Width="35" Height="Auto"/>
+                </Button>
+            </StackPanel>
+            <view:SvnToolView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}"></view:SvnToolView>
         </Grid>
-        <Grid IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='CreateFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
-                <StackPanel DataContext="{Binding CreateFeature, Source={StaticResource Locator}}">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:PasswordPropertyControl Property="{Binding SvnPassword}"></view:PasswordPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource SelectFolderButton}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
-                    <view:StringPropertyControl Property="{Binding BranchReleaseUrl}"></view:StringPropertyControl>
-                    <view:StringPropertyControl Property="{Binding FeatureName}"></view:StringPropertyControl>
-                    <view:StringPropertyControl Property="{Binding Maintainer}"></view:StringPropertyControl>
-                </StackPanel>
-            </ScrollViewer>
-            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='UpdateFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
-                <StackPanel DataContext="{Binding UpdateFeature, Source={StaticResource Locator}}">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:PasswordPropertyControl Property="{Binding SvnPassword}"></view:PasswordPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource SelectFolderButton}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
-                    <view:BooleanPropertyControl Property="{Binding CommitIfNoError}"></view:BooleanPropertyControl>
-                </StackPanel>
-            </ScrollViewer>
-            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='FinishFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
-                <StackPanel DataContext="{Binding FinishFeature, Source={StaticResource Locator}}">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:PasswordPropertyControl Property="{Binding SvnPassword}"></view:PasswordPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource SelectFolderButton}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
-                </StackPanel>
-            </ScrollViewer>
-            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='CloseFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
-                <StackPanel DataContext="{Binding CloseFeature, Source={StaticResource Locator}}">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:PasswordPropertyControl Property="{Binding SvnPassword}"></view:PasswordPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource SelectFolderButton}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
-                </StackPanel>
-            </ScrollViewer>
-            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation.Key,
-                        Converter={StaticResource EnumToVisibilityConverter},
-                        ConverterParameter='FixFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
-                <StackPanel DataContext="{Binding FixFeature, Source={StaticResource Locator}}">
-                    <view:StringPropertyControl Property="{Binding SvnUser}"></view:StringPropertyControl>
-                    <view:PasswordPropertyControl Property="{Binding SvnPassword}"></view:PasswordPropertyControl>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <view:StringPropertyControl Grid.Column="0" Grid.Row="0" Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></view:StringPropertyControl>
-                        <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectWorkingCopyPathCommand}" Style="{StaticResource SelectFolderButton}">
-                            <TextBlock Text="..."></TextBlock>
-                        </Button>
-                    </Grid>
-                    <view:StringPropertyControl Property="{Binding BranchFeatureUrl}"></view:StringPropertyControl>
-                </StackPanel>
-            </ScrollViewer>
-            <Button Grid.Row="1" Command="{Binding RunCommand}" Margin="1">
-                <Button.Style>
-                    <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <SolidColorBrush Opacity="0.7"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="Red" Opacity="0.2"></SolidColorBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <TextBlock Text="{x:Static resx:Resources.Run}"></TextBlock>
-            </Button>
-        </Grid>
-    </DockPanel>
+    </materialDesign:DrawerHost>
 </Window>

@@ -12,7 +12,7 @@ namespace Terrasoft.Tools.SvnUI.View {
 		}
 
 		public StringPropertyControl() {
-			InitializeComponent();
+			InitializeComponent(); 
 		}
 	}
 }

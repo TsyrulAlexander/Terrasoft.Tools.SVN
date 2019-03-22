@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="Terrasoft.Tools.SvnUI.View.SvnToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Terrasoft.Tools.SvnUI.View"
+             xmlns:resx="clr-namespace:Terrasoft.Tools.SvnUI.Properties"
+
+             xmlns:model="clr-namespace:Terrasoft.Tools.SvnUI.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000" TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    <Grid DataContext="{Binding SvnTool, Source={StaticResource Locator}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
+            <StackPanel
+                    Orientation="Horizontal" Margin="2" CanHorizontallyScroll="True">
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CreateFeature}"
+                        Content="{x:Static resx:Resources.CreateFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static model:SvnOperation.CreateFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=UpdateFeature}"
+                        Content="{x:Static resx:Resources.UpdateFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static model:SvnOperation.UpdateFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=FinishFeature}"
+                        Content="{x:Static resx:Resources.FinishFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static model:SvnOperation.FinishFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CloseFeature}"
+                        Content="{x:Static resx:Resources.CloseFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static model:SvnOperation.CloseFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=FixFeature}"
+                        Content="{x:Static resx:Resources.FixFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static model:SvnOperation.FixFeature}"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='CreateFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding CreateFeature, Source={StaticResource Locator}}">
+                    <local:StringPropertyControl Property="{Binding SvnUser}"></local:StringPropertyControl>
+                    <local:PasswordPropertyControl Property="{Binding SvnPassword}"></local:PasswordPropertyControl>
+                    <local:SelectFolderControl Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" OpenCommand="{Binding SelectWorkingCopyPathCommand}"></local:SelectFolderControl>
+                    <local:StringPropertyControl Property="{Binding BranchFeatureUrl}"></local:StringPropertyControl>
+                    <local:StringPropertyControl Property="{Binding BranchReleaseUrl}"></local:StringPropertyControl>
+                    <local:StringPropertyControl Property="{Binding FeatureName}"></local:StringPropertyControl>
+                    <local:StringPropertyControl Property="{Binding Maintainer}"></local:StringPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='UpdateFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding UpdateFeature, Source={StaticResource Locator}}">
+                    <local:StringPropertyControl Property="{Binding SvnUser}"></local:StringPropertyControl>
+                    <local:PasswordPropertyControl Property="{Binding SvnPassword}"></local:PasswordPropertyControl>
+                    <local:SelectFolderControl Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" OpenCommand="{Binding SelectWorkingCopyPathCommand}"></local:SelectFolderControl>
+                    <local:StringPropertyControl Property="{Binding BranchFeatureUrl}"></local:StringPropertyControl>
+                    <local:BooleanPropertyControl Property="{Binding CommitIfNoError}"></local:BooleanPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='FinishFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding FinishFeature, Source={StaticResource Locator}}">
+                    <local:StringPropertyControl Property="{Binding SvnUser}"></local:StringPropertyControl>
+                    <local:PasswordPropertyControl Property="{Binding SvnPassword}"></local:PasswordPropertyControl>
+                    <local:SelectFolderControl Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" OpenCommand="{Binding SelectWorkingCopyPathCommand}"></local:SelectFolderControl>
+                    <local:StringPropertyControl Property="{Binding BranchFeatureUrl}"></local:StringPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='CloseFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding CloseFeature, Source={StaticResource Locator}}">
+                    <local:StringPropertyControl Property="{Binding SvnUser}"></local:StringPropertyControl>
+                    <local:PasswordPropertyControl Property="{Binding SvnPassword}"></local:PasswordPropertyControl>
+                    <local:SelectFolderControl Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" OpenCommand="{Binding SelectWorkingCopyPathCommand}"></local:SelectFolderControl>
+                    <local:StringPropertyControl Property="{Binding BranchFeatureUrl}"></local:StringPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Grid.Row="0" Visibility="{Binding SvnOperation,
+                        Converter={StaticResource EnumToVisibilityConverter},
+                        ConverterParameter='FixFeature'}" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel DataContext="{Binding FixFeature, Source={StaticResource Locator}}">
+                    <local:StringPropertyControl Property="{Binding SvnUser}"></local:StringPropertyControl>
+                    <local:PasswordPropertyControl Property="{Binding SvnPassword}"></local:PasswordPropertyControl>
+                    <local:SelectFolderControl Property="{Binding WorkingCopyPath, UpdateSourceTrigger=PropertyChanged}" OpenCommand="{Binding SelectWorkingCopyPathCommand}"></local:SelectFolderControl>
+                    <local:StringPropertyControl Property="{Binding BranchFeatureUrl}"></local:StringPropertyControl>
+                </StackPanel>
+            </ScrollViewer>
+            <Button Grid.Row="1" Command="{Binding RunCommand}" Margin="1" Style="{DynamicResource RunBotton}">
+                <StackPanel Orientation="Horizontal">
+                    <ProgressBar
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Value="50"
+                        IsIndeterminate="True" Visibility="{Binding InProgress, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <TextBlock Text="{x:Static resx:Resources.Run}" Foreground="{DynamicResource MaterialDesignBody}"></TextBlock>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

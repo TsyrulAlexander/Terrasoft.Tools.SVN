@@ -134,6 +134,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Закрыть ветку.
+        /// </summary>
+        public static string CloseFeature {
+            get {
+                return ResourceManager.GetString("CloseFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Коммитить.
         /// </summary>
         public static string CommitIfNoError {
@@ -170,6 +179,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to развернуть приложение.
+        /// </summary>
+        public static string DeployApp {
+            get {
+                return ResourceManager.GetString("DeployApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ошибка.
         /// </summary>
         public static string Error {
@@ -193,6 +211,24 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string FeatureNameDescription {
             get {
                 return ResourceManager.GetString("FeatureNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Завершить разработку.
+        /// </summary>
+        public static string FinishFeature {
+            get {
+                return ResourceManager.GetString("FinishFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Исправить ветку.
+        /// </summary>
+        public static string FixFeature {
+            get {
+                return ResourceManager.GetString("FixFeature", resourceCulture);
             }
         }
         
@@ -260,6 +296,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Svn.
+        /// </summary>
+        public static string SvnBranches {
+            get {
+                return ResourceManager.GetString("SvnBranches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Операция завершена.
         /// </summary>
         public static string SvnOperationComplite {
@@ -301,6 +346,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string SvnUserDescription {
             get {
                 return ResourceManager.GetString("SvnUserDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновить фичу.
+        /// </summary>
+        public static string UpdateFeature {
+            get {
+                return ResourceManager.GetString("UpdateFeature", resourceCulture);
             }
         }
         

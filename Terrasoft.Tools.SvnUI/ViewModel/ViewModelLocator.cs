@@ -10,6 +10,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		public MainViewModel Main => IocKernel.Get<MainViewModel>();
+		public SvnToolViewModel SvnTool => IocKernel.Get<SvnToolViewModel>();
 		public CreateFeatureSvnViewModel CreateFeature => IocKernel.Get<CreateFeatureSvnViewModel>();
 		public UpdateFeatureSvnViewModel UpdateFeature => IocKernel.Get<UpdateFeatureSvnViewModel>();
 		public FinishFeatureSvnViewModel FinishFeature => IocKernel.Get<FinishFeatureSvnViewModel>();

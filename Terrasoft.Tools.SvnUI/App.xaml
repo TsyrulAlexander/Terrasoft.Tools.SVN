@@ -2,6 +2,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style/MainStyle.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
@@ -12,6 +13,7 @@
             <vm:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" d:IsDataSource="False"  />
             <vm:InverseBooleanConverter x:Key="InverseBooleanConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
+            <vm:EnumBooleanConverter x:Key="EnumBooleanConverter" d:IsDataSource="False" xmlns:vm="clr-namespace:Terrasoft.Tools.SvnUI.Model.Converter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

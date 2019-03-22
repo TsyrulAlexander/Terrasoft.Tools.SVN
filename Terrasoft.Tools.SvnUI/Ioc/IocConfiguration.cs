@@ -7,6 +7,7 @@ namespace Terrasoft.Tools.SvnUI.Ioc {
 	class IocConfiguration : NinjectModule {
 		public override void Load() {
 			Bind<MainViewModel>().ToSelf().InTransientScope();
+			Bind<SvnToolViewModel>().ToSelf().InTransientScope();
 			Bind<CreateFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<UpdateFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<FinishFeatureSvnViewModel>().ToSelf().InTransientScope();

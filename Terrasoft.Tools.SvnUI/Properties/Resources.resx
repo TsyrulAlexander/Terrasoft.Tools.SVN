@@ -205,4 +205,23 @@ SUCCESS</value>
   <data name="SvnOperationComplite" xml:space="preserve">
     <value>Операция завершена</value>
   </data>
+  <data name="CloseFeature" xml:space="preserve">
+    <value>Закрыть ветку</value>
+  </data>
+  <data name="DeployApp" xml:space="preserve">
+    <value>Развернуть
+приложение</value>
+  </data>
+  <data name="FinishFeature" xml:space="preserve">
+    <value>Завершить разработку</value>
+  </data>
+  <data name="FixFeature" xml:space="preserve">
+    <value>Исправить ветку</value>
+  </data>
+  <data name="SvnBranches" xml:space="preserve">
+    <value>Svn</value>
+  </data>
+  <data name="UpdateFeature" xml:space="preserve">
+    <value>Обновить фичу</value>
+  </data>
 </root>
