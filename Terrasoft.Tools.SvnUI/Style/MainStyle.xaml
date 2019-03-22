@@ -33,45 +33,4 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="TabControl">
-        <Setter Property="Background" Value="Transparent"></Setter>
-    </Style>
-    <Style x:Key="VerticalTabItem" TargetType="{x:Type TabItem}">
-        <Setter Property="HeaderTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <ContentPresenter Content="{TemplateBinding Content}">
-                        <ContentPresenter.LayoutTransform>
-                            <RotateTransform Angle="270" />
-                        </ContentPresenter.LayoutTransform>
-                    </ContentPresenter>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Padding" Value="3" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Grid Name="Panel">
-                        <Border BorderBrush="{StaticResource BorderBrush}" Background="{StaticResource BackgrountBrush}" BorderThickness="1" >
-                            <ContentPresenter x:Name="ContentSite"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"
-                                          ContentSource="Header"
-                                          Margin="10,2"/>
-                        </Border>
-
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Panel" Property="Background" Value="Transparent" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Panel" Property="Background" Value="White" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

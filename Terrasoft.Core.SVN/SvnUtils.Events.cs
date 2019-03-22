@@ -121,9 +121,5 @@ namespace Terrasoft.Core.SVN
 
             CommitIfNoError = false;
         }
-
-        public void Dispose() {
-	        
-        }
 	}
 }
