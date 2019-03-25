@@ -1,5 +1,5 @@
 ﻿using System;
-using Terrasoft.Core.SVN;
+using Terrasoft.Core;
 using Terrasoft.Tools.SvnUI.Model;
 
 namespace Terrasoft.Tools.SvnUI {

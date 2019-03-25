@@ -69,6 +69,10 @@
       <Project>{1d914e84-754f-4093-9c50-640b149bbe72}</Project>
       <Name>Terrasoft.Core.SVN</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terrasoft.Core\Terrasoft.Core.csproj">
+      <Project>{F8543735-3733-4E82-BE03-C2A84D2910AC}</Project>
+      <Name>Terrasoft.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

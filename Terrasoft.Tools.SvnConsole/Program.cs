@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terrasoft.Core;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnConsole.Properties;
 

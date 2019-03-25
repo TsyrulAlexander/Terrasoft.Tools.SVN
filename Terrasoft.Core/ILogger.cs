@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Terrasoft.Core.SVN
+﻿namespace Terrasoft.Core
 {
 	public interface ILogger {
 		void LogError(string warnMessage, string message = "");

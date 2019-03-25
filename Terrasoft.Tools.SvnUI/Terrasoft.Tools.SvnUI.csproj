@@ -134,10 +134,12 @@
     <Compile Include="ViewModel\BaseSvnOperationViewModel.cs" />
     <Compile Include="ViewModel\CloseFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\CreateFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\DeployAppViewModel.cs" />
     <Compile Include="ViewModel\FinishFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\FixFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\RestoreDatabaseViewModel.cs" />
     <Compile Include="ViewModel\SvnToolViewModel.cs" />
     <Compile Include="ViewModel\UpdateFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -147,8 +149,14 @@
     <Compile Include="View\CreateFeatureSvnView.xaml.cs">
       <DependentUpon>CreateFeatureSvnView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DeployAppView.xaml.cs">
+      <DependentUpon>DeployAppView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PasswordPropertyControl.xaml.cs">
       <DependentUpon>PasswordPropertyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RestoreDatabaseView.xaml.cs">
+      <DependentUpon>RestoreDatabaseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SelectFolderControl.xaml.cs">
       <DependentUpon>SelectFolderControl.xaml</DependentUpon>
@@ -183,7 +191,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\DeployAppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PasswordPropertyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RestoreDatabaseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,9 +245,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Terrasoft.Core.DeployApp\Terrasoft.Core.DeployApp.csproj">
+      <Project>{57b3d7eb-c4fa-4e3a-a239-38855e8c1dc2}</Project>
+      <Name>Terrasoft.Core.DeployApp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terrasoft.Core.SVN\Terrasoft.Core.SVN.csproj">
       <Project>{1d914e84-754f-4093-9c50-640b149bbe72}</Project>
       <Name>Terrasoft.Core.SVN</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terrasoft.Core\Terrasoft.Core.csproj">
+      <Project>{F8543735-3733-4E82-BE03-C2A84D2910AC}</Project>
+      <Name>Terrasoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

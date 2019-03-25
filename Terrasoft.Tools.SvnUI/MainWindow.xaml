@@ -46,36 +46,34 @@
                         Margin="4" VerticalAlignment="Top">
                     <materialDesign:PackIcon Kind="ArrowDown"  />
                 </Button>
-                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="16" DataContext="{Binding Log, Source={StaticResource Locator}}">
-                    <ListBox ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  SelectedItem="{Binding Selected}" Background="Transparent">
-                        <ListBox.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
-                                <MenuItem Header="{x:Static resx:Resources.ClearAll}" Command="{Binding ClearCommand}"/>
-                                <MenuItem Header="{x:Static resx:Resources.SaveLog}" Command="{Binding SaveLogCommand}"/>
-                            </ContextMenu>
-                        </ListBox.ContextMenu>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Message}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Background" Value="Transparent"></Setter>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Error}">
-                                                    <Setter Property="Background" Value="#fa5e5d"></Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Warning}">
-                                                    <Setter Property="Background" Value="#ffc83f"></Setter>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </StackPanel>
+                <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  SelectedItem="{Binding Selected}" Background="Transparent" DataContext="{Binding Log, Source={StaticResource Locator}}">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
+                            <MenuItem Header="{x:Static resx:Resources.ClearAll}" Command="{Binding ClearCommand}"/>
+                            <MenuItem Header="{x:Static resx:Resources.SaveLog}" Command="{Binding SaveLogCommand}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Background" Value="Transparent"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Error}">
+                                                <Setter Property="Background" Value="#fa5e5d"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Warning}">
+                                                <Setter Property="Background" Value="#ffc83f"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </materialDesign:DrawerHost.BottomDrawerContent>
         <Grid>
@@ -96,6 +94,7 @@
                 </Button>
             </StackPanel>
             <view:SvnToolView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}"></view:SvnToolView>
+            <view:DeployAppView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='DeployApp'}"></view:DeployAppView>
         </Grid>
     </materialDesign:DrawerHost>
 </Window>

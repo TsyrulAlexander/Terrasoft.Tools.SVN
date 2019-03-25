@@ -1,4 +1,5 @@
 ﻿using System;
+using Terrasoft.Core;
 using Terrasoft.Core.SVN;
 using Console = System.Console;
 

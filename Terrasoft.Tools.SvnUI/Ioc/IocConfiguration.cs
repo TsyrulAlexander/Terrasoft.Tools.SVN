@@ -1,5 +1,5 @@
 ﻿using Ninject.Modules;
-using Terrasoft.Core.SVN;
+using Terrasoft.Core;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.ViewModel;
 
@@ -13,6 +13,8 @@ namespace Terrasoft.Tools.SvnUI.Ioc {
 			Bind<FinishFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<CloseFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<FixFeatureSvnViewModel>().ToSelf().InTransientScope();
+			Bind<DeployAppViewModel>().ToSelf().InTransientScope();
+			Bind<RestoreDatabaseViewModel>().ToSelf().InTransientScope();
 			Bind<LogViewModel>().ToSelf().InTransientScope();
 			Bind<IBrowserDialog>().To<BrowserDialog>();
 			Bind<ILogger>().To<UILogger>().InSingletonScope();
