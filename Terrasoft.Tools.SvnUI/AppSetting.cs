@@ -2,6 +2,7 @@
 
 namespace Terrasoft.Tools.SvnUI {
 	public static class AppSetting {
+		public static string LatestVersionId => ConfigurationManager.AppSettings.Get("latestVersionId");
 		public static string DefSvnUser => ConfigurationManager.AppSettings.Get("defSvnUser");
 		public static string DefSvnPassword => ConfigurationManager.AppSettings.Get("defSvnPassword");
 		public static string DefWorkingCopyPath => ConfigurationManager.AppSettings.Get("defWorkingCopyPath");
