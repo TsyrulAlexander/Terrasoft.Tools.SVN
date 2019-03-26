@@ -15,7 +15,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 	public class MainViewModel : ViewModelBase {
 		public IBrowserDialog BrowserDialog { get; }
 		private OperationType _operationType;
-		private bool _isActualVersion = false;
+		private bool _isActualVersion = true;
 		public OperationType OperationType {
 			get => _operationType;
 			set {
@@ -37,9 +37,9 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			BrowserDialog = browserDialog;
 			SetOperationTypeCommand = new RelayCommand<OperationType>(SetOperationType);
 			UpdateAppCommand = new RelayCommand(UpdateApp);
-			//if (AppSetting.CheckNewVersionIsAppStart) {
-			//	SetIsActualVersion();
-			//}
+			if (AppSetting.CheckNewVersionIsAppStart) {
+				SetIsActualVersion();
+			}
 		}
 
 		private async void SetIsActualVersion() {

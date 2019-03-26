@@ -12,36 +12,41 @@ namespace Terrasoft.Core.Version
 		public static async Task<long> GetVersionIdAsync(string appName = null) {
 			var info = await GetLatestReleaseInfoAsync();
 			if (!string.IsNullOrWhiteSpace(appName)) {
-				UpdateApp(info, appName);
+				UpdateApp(appName, info);
 			}
 			return info.Id;
 		}
 
-		public static void UpdateApp(GitReleaseInfo releaseInfo, string appName) {
-			//var fileInfo = releaseInfo.Assets.FirstOrDefault(info => info.Name.StartsWith(appName));
-			//if (fileInfo == null) {
-			//	throw new NullReferenceException(nameof(appName));
-			//}
-			//var file = NetworkUtilities.DownloadFileFromUrl(fileInfo.DownloadUrl);
-			//FileUtilities.UnZip(file, AppSetting.TempFolder);
-			StartPs();
+		public static void DownloadNewVersionApp(GitReleaseInfo releaseInfo, string appName) {
+			var fileInfo = releaseInfo.Assets.FirstOrDefault(info => info.Name.StartsWith(appName));
+			if (fileInfo == null) {
+				throw new NullReferenceException(nameof(appName));
+			}
+			var file = NetworkUtilities.DownloadFileFromUrl(fileInfo.DownloadUrl);
+			FileUtilities.UnZip(file, AppSetting.TempFolder);
 		}
 
-		internal static void StartPs() {
-			var args = GetCmdArguments();
+		public static void ReplaceAppFiles() {
+			var args = GetPsArguments();
 			Process.Start("powershell.exe", args);
 		}
 
-		internal static string GetCmdArguments() {
+		internal static string GetPsArguments() {
 			var currentDirectory = Directory.GetCurrentDirectory();
 			var currentProcess = Process.GetCurrentProcess();
-			var psPath = AppSetting.TempFolder + @"\UpdateApp.ps1";
-			return $"& -NoExit '{psPath}' -ProcessName {currentProcess.ProcessName} -AppFolder {currentDirectory} -NewAppFolder {AppSetting.TempFolder}";
+			var psPath = AppSetting.TempFolder + @"\" + AppSetting.ReplaceAppFilesPsFileName;
+			return $"& '{psPath}' -ProcessName {currentProcess.ProcessName} -AppFolder {currentDirectory} -NewAppFolder {AppSetting.TempFolder}";
 		}
 
 		public static async Task UpdateApp(string appName) {
-			var info = await GetLatestReleaseInfoAsync();
-			UpdateApp(info, appName);
+			var	releaseInfo = await GetLatestReleaseInfoAsync();
+			UpdateApp(appName, releaseInfo);
+		}
+
+
+		public static void UpdateApp(string appName, GitReleaseInfo releaseInfo) {
+			DownloadNewVersionApp(releaseInfo, appName);
+			ReplaceAppFiles();
 		}
 
 		private static async Task<GitReleaseInfo> GetLatestReleaseInfoAsync() {
