@@ -5,6 +5,7 @@ using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Views;
+using Terrasoft.Core;
 using Terrasoft.Core.Version;
 using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.File;
@@ -14,6 +15,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 {
 	public class MainViewModel : ViewModelBase {
 		public IBrowserDialog BrowserDialog { get; }
+		public ILogger Logger { get; }
 		private OperationType _operationType;
 		private bool _isActualVersion = true;
 		public OperationType OperationType {
@@ -33,8 +35,9 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			}
 		}
 
-		public MainViewModel(IBrowserDialog browserDialog) {
+		public MainViewModel(IBrowserDialog browserDialog, ILogger logger) {
 			BrowserDialog = browserDialog;
+			Logger = logger;
 			SetOperationTypeCommand = new RelayCommand<OperationType>(SetOperationType);
 			UpdateAppCommand = new RelayCommand(UpdateApp);
 			if (AppSetting.CheckNewVersionIsAppStart) {
@@ -43,7 +46,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		private async void SetIsActualVersion() {
-			IsActualVersion = await GetIsCurrentVersionIsActual();
+			try {
+				IsActualVersion = await GetIsCurrentVersionIsActual();
+			} catch (Exception ex) {
+				Logger.LogError(ex.Message);
+			}
 		}
 
 		private void UpdateApp() {
@@ -58,7 +65,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 					BrowserDialog.ShowInformationMessage(Resources.CurrentVersionIsActual);
 					return;
 				}
-				await AppVersionUtilities.UpdateApp("Terrasoft.Tools.SvnUI");
+				await AppVersionUtilities.UpdateApp();
 				Application.Current.Shutdown();
 			} catch (Exception ex) {
 				BrowserDialog.ShowErrorMessage(ex.Message);

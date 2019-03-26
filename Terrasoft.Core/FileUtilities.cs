@@ -11,6 +11,7 @@ namespace Terrasoft.Core {
 				using (var archive = new ZipArchive(zippedStream)) {
 					foreach (var zipArchiveEntry in archive.Entries) {
 						var entryFile = GetArchiveEntryToFile(zipArchiveEntry);
+						Directory.CreateDirectory(directory);
 						Save(entryFile, directory + @"\" + zipArchiveEntry.Name);
 					}
 				}

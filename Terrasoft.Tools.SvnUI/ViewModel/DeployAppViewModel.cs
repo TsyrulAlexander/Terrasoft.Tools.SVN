@@ -9,8 +9,7 @@ using Terrasoft.Core.DeployApp.Database;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
-    public class DeployAppViewModel: ViewModelBase
-    {
+	public class DeployAppViewModel : ViewModelBase {
 		private bool _inProgress;
 		public bool InProgress {
 			get => _inProgress;
@@ -19,9 +18,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 				RaisePropertyChanged();
 			}
 		}
-		public RelayCommand ExecuteCommand {
-			get; set;
-		}
+		public RelayCommand ExecuteCommand { get; set; }
 
 		public DeployAppViewModel() {
 			ExecuteCommand = new RelayCommand(Execute);
@@ -33,7 +30,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		private void Callback() {
-			
+
 		}
 	}
 }

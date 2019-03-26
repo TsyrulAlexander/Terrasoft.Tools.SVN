@@ -11,9 +11,6 @@ namespace Terrasoft.Core.Version
 		public static string RepositoryOwner => GetAppSetting("repositoryOwner");
 		public static string RepositoryName => GetAppSetting("repositoryName");
 		public static string RepositoryToken => GetAppSetting("repositoryToken");
-		public static string ReplaceAppFilesPsFileName => GetAppSetting("replaceAppFilesPsFileName");
-		public static string TempFolder => GetAppSetting("tempFolder") ??
-			Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "AppVersion";
 
 		private static string GetAppSetting(string key) {
 			var exeConfigPath = typeof(AppSetting).Assembly.Location;

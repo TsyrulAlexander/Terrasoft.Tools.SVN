@@ -2,52 +2,61 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 using Terrasoft.Core.Git;
+using Terrasoft.Core.Version.Properties;
 
-namespace Terrasoft.Core.Version
-{
+namespace Terrasoft.Core.Version {
 	public static class AppVersionUtilities {
-		public static async Task<long> GetVersionIdAsync(string appName = null) {
+		public static async Task<long> GetVersionIdAsync(bool isUpdateApp = false) {
 			var info = await GetLatestReleaseInfoAsync();
-			if (!string.IsNullOrWhiteSpace(appName)) {
-				UpdateApp(appName, info);
+			if (isUpdateApp) {
+				UpdateApp(info);
 			}
 			return info.Id;
 		}
 
-		public static void DownloadNewVersionApp(GitReleaseInfo releaseInfo, string appName) {
-			var fileInfo = releaseInfo.Assets.FirstOrDefault(info => info.Name.StartsWith(appName));
+		public static string DownloadNewVersionApp(GitReleaseInfo releaseInfo) {
+			var fileInfo = releaseInfo.Assets.FirstOrDefault();
 			if (fileInfo == null) {
-				throw new NullReferenceException(nameof(appName));
+				throw new NullReferenceException(nameof(releaseInfo.Assets));
 			}
 			var file = NetworkUtilities.DownloadFileFromUrl(fileInfo.DownloadUrl);
-			FileUtilities.UnZip(file, AppSetting.TempFolder);
+			var tempFolderName = $"{Path.GetTempPath()}\\{Path.GetRandomFileName()}";
+			FileUtilities.UnZip(file, tempFolderName);
+			return tempFolderName;
 		}
 
-		public static void ReplaceAppFiles() {
-			var args = GetPsArguments();
-			Process.Start("powershell.exe", args);
+		public static void ReplaceAppFiles(string tempFolderName, string tempScriptPath) {
+			var psi = new ProcessStartInfo {
+				FileName = "powershell.exe",
+				Arguments = GetPsArguments(tempFolderName, tempScriptPath)
+			};
+			Process.Start(psi);
 		}
 
-		internal static string GetPsArguments() {
+		internal static string GetPsArguments(string tempFolderPath, string tempScriptPath) {
 			var currentDirectory = Directory.GetCurrentDirectory();
 			var currentProcess = Process.GetCurrentProcess();
-			var psPath = AppSetting.TempFolder + @"\" + AppSetting.ReplaceAppFilesPsFileName;
-			return $"& '{psPath}' -ProcessName {currentProcess.ProcessName} -AppFolder {currentDirectory} -NewAppFolder {AppSetting.TempFolder}";
+			return
+				$"-ExecutionPolicy bypass -File {tempScriptPath} -ProcessName \"{currentProcess.ProcessName}\" -AppFolder \"{currentDirectory}\" -TempAppFolder \"{tempFolderPath}\"";
 		}
 
-		public static async Task UpdateApp(string appName) {
-			var	releaseInfo = await GetLatestReleaseInfoAsync();
-			UpdateApp(appName, releaseInfo);
+		public static async Task UpdateApp() {
+			var releaseInfo = await GetLatestReleaseInfoAsync();
+			UpdateApp(releaseInfo);
 		}
 
-
-		public static void UpdateApp(string appName, GitReleaseInfo releaseInfo) {
-			DownloadNewVersionApp(releaseInfo, appName);
-			ReplaceAppFiles();
+		public static void UpdateApp(GitReleaseInfo releaseInfo) {
+			var tempFolderName = DownloadNewVersionApp(releaseInfo);
+			var tempFileName = Path.GetTempPath()+"\\updateApp.ps1";
+			var scriptContent = Encoding.UTF8.GetString(Resources.UpdateApp);
+			File.WriteAllText(tempFileName, scriptContent);
+			ReplaceAppFiles(tempFolderName, tempFileName);
 		}
+
+		//private string GetScript
 
 		private static async Task<GitReleaseInfo> GetLatestReleaseInfoAsync() {
 			return await GitRepository.GetLatestReleaseInfoAsync(AppSetting.RepositoryOwner, AppSetting.RepositoryName,
