@@ -38,8 +38,13 @@ function UpdateAppVersion {
 	UpdateAppSetting $configPath "latestVersionId" $NewVersionId;
 }
 
-cd $TempAppFolder
+function ReopenApp {
+	$appFileName = $ProcessName + ".exe";
+	Start-Process -FilePath $appFileName -WorkingDirectory $AppFolder;
+}
+
 WaitingCloseProcess;
 ClearAppFolder;
 MoveDirectory;
 UpdateAppVersion;
+ReopenApp;
