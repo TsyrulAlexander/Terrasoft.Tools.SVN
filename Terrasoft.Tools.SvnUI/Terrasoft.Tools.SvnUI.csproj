@@ -26,7 +26,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -242,7 +242,10 @@
     <None Include="Terrasoft.Tools.SvnUI_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terrasoft.Core.DeployApp\Terrasoft.Core.DeployApp.csproj">
@@ -252,6 +255,10 @@
     <ProjectReference Include="..\Terrasoft.Core.SVN\Terrasoft.Core.SVN.csproj">
       <Project>{1d914e84-754f-4093-9c50-640b149bbe72}</Project>
       <Name>Terrasoft.Core.SVN</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terrasoft.Core.Version\Terrasoft.Core.Version.csproj">
+      <Project>{edc1df55-c32f-40af-a835-a61e364d4f25}</Project>
+      <Name>Terrasoft.Core.Version</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terrasoft.Core\Terrasoft.Core.csproj">
       <Project>{F8543735-3733-4E82-BE03-C2A84D2910AC}</Project>

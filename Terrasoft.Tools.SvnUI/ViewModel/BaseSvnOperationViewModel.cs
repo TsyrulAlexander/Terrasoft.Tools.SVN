@@ -103,7 +103,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 				return;
 			}
 			if (!ValidateParameters(out string message)) {
-				BrowserDialog.ShowModalBox(message);
+				BrowserDialog.ShowInformationMessage(message);
 				return;
 			}
 			CreateIfNotExistWorkingCopyDirectory();

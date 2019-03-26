@@ -179,7 +179,17 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to развернуть приложение.
+        ///   Looks up a localized string similar to Ваша версия актуальная.
+        /// </summary>
+        public static string CurrentVersionIsActual {
+            get {
+                return ResourceManager.GetString("CurrentVersionIsActual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Развернуть
+        ///приложение.
         /// </summary>
         public static string DeployApp {
             get {
@@ -346,6 +356,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string SvnUserDescription {
             get {
                 return ResourceManager.GetString("SvnUserDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновить приложение?.
+        /// </summary>
+        public static string UpdateAppText {
+            get {
+                return ResourceManager.GetString("UpdateAppText", resourceCulture);
             }
         }
         

@@ -224,4 +224,10 @@ SUCCESS</value>
   <data name="UpdateFeature" xml:space="preserve">
     <value>Обновить фичу</value>
   </data>
+  <data name="CurrentVersionIsActual" xml:space="preserve">
+    <value>Ваша версия актуальная</value>
+  </data>
+  <data name="UpdateAppText" xml:space="preserve">
+    <value>Обновить приложение?</value>
+  </data>
 </root>

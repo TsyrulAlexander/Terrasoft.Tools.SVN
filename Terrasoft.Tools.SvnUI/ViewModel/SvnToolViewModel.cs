@@ -82,10 +82,10 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 							throw new NotImplementedException(nameof(config.SvnOperation));
 					}
 				}
-				BrowserDialog.ShowModalBox(Resources.SvnOperationComplite);
+				BrowserDialog.ShowInformationMessage(Resources.SvnOperationComplite);
 			} catch (Exception exception) {
 				Logger.LogError(exception.Message);
-				BrowserDialog.ShowModalBox(exception.Message, Resources.Error);
+				BrowserDialog.ShowInformationMessage(exception.Message, Resources.Error);
 			} finally {
 				SetProgressState(false);
 			}

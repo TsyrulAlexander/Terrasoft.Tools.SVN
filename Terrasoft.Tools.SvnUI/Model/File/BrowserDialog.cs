@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using GalaSoft.MvvmLight.Views;
 
 namespace Terrasoft.Tools.SvnUI.Model.File {
 	public class BrowserDialog : IBrowserDialog {
 		public string SelectFilder(string path) {
 			using (var dialog = new FolderBrowserDialog()) {
 				dialog.SelectedPath = path;
-				DialogResult result = dialog.ShowDialog();
+				var result = dialog.ShowDialog();
 				if (result == DialogResult.OK) {
 					return dialog.SelectedPath;
 				}
@@ -14,8 +15,16 @@ namespace Terrasoft.Tools.SvnUI.Model.File {
 			return null;
 		}
 
-		public void ShowModalBox(string message, string caption = "") {
-			MessageBox.Show(message, caption);
+		public void ShowInformationMessage(string message, string caption = "") {
+			MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		public void ShowErrorMessage(string message, string caption = "") {
+			MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		public bool ShowModalYesNo(string message, string caption = "") {
+			return MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
 		}
 
 		public string SaveFile(string directory = "", string filter = "") {

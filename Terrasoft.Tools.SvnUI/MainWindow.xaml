@@ -78,9 +78,9 @@
         </materialDesign:DrawerHost.BottomDrawerContent>
         <Grid>
             <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Background="#FF534D4D">
                 <Button Margin="1" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" Style="{DynamicResource RunBotton}"
                         CommandParameter="{x:Static Dock.Left}"
@@ -91,6 +91,29 @@
                          CommandParameter="{x:Static Dock.Bottom}"
                          Height="Auto" Background="Transparent">
                     <materialDesign:PackIcon Kind="CommentTextOutline" Width="35" Height="Auto"/>
+                </Button>
+                <Button Margin="1" Command="{Binding UpdateAppCommand}"
+                            Height="Auto" Background="Transparent">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource RunBotton}" TargetType="Button">
+                           <Style.Triggers>
+                               <DataTrigger Binding="{Binding IsActualVersion}" Value="False">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation To="#C0F0F388" AutoReverse="True"
+                                                                Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
+                                                                FillBehavior="HoldEnd" 
+                                                                Duration="0:0:3" RepeatBehavior="Forever"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                               </DataTrigger>
+                           </Style.Triggers>
+                        </Style>
+                       
+                    </Button.Style>
+                    <materialDesign:PackIcon Kind="Update" Width="35" Height="Auto"/>
                 </Button>
             </StackPanel>
             <view:SvnToolView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}"></view:SvnToolView>

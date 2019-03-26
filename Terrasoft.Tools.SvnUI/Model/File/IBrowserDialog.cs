@@ -3,7 +3,9 @@
 namespace Terrasoft.Tools.SvnUI.Model.File {
 	public interface IBrowserDialog {
 		string SelectFilder(string path);
-		void ShowModalBox(string message, string caption = "");
+		void ShowInformationMessage(string message, string caption = "");
+		void ShowErrorMessage(string message, string caption = "");
+		bool ShowModalYesNo(string message, string caption = "");
 		string SaveFile(string directory = "", string filter = "");
 	}
 }

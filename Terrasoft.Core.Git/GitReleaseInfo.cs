@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 namespace Terrasoft.Core.Git
 {
 	public class GitReleaseInfo {
+		[JsonProperty("id")]
+		public long Id { get; set; }
 		[JsonProperty("url")]
 		public string Url { get; set; }
 		[JsonProperty("name")]

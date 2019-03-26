@@ -13,7 +13,7 @@ namespace Terrasoft.Core.Git {
 		public string Name { get; set; }
 		[JsonProperty("content_type")]
 		public string ContentType { get; set; }
-		[JsonProperty("download_url")]
+		[JsonProperty("browser_download_url")]
 		public string DownloadUrl { get; set; }
 	}
 }
