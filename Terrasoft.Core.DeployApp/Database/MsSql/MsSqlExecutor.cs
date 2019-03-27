@@ -1,43 +1,54 @@
-﻿namespace Terrasoft.Core.DeployApp.Database.MsSql
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Linq;
+
+namespace Terrasoft.Core.DeployApp.Database.MsSql
 {
-	//public class MsSqlExecutor : IDbExecutor {
-	//	public string DbName { get; set; }
-	//	public string ServerName { get; }
-	//	public string Login { get; }
-	//	public string Password { get; }
+	public class MsSqlExecutor : IDbExecutor {
+		public string ServerName { get; }
+		public string Login { get; }
+		public string Password { get; }
 
-	//	public MsSqlExecutor(string dbName, string serverName, string login, string password) {
-	//		DbName = dbName;
-	//		ServerName = serverName;
-	//		Login = login;
-	//		Password = password;
-	//	}
+		private const string DefaultDbName = "master";
 
-	//	public void RestoreDb(string backupPath, Action callback) {
-	//		var server = GetServer();
-	//		var restore = GetRestore(backupPath, callback);
-	//		restore.SqlRestore(server);
-	//	}
+		public MsSqlExecutor(string serverName, string login, string password) {
+			ServerName = serverName;
+			Login = login;
+			Password = password;
+		}
 
-	//	protected virtual Restore GetRestore(string backupPath, Action callback) {
-	//		var restore = new Restore {
-	//			Database = DbName, Action = RestoreActionType.Database, ReplaceDatabase = true, NoRecovery = false
-	//		};
-	//		restore.Devices.AddDevice(backupPath, DeviceType.File);
-	//		void OnComplite(object sender, ServerMessageEventArgs e) {
-	//			restore.Complete -= OnComplite;
-	//			callback?.Invoke();
-	//		}
-	//		restore.Complete += OnComplite;
-	//		return restore;
-	//	}
+		public void RestoreDb(string databaseName, string backupPath) {
+			var connectionStringBuilder = GetConnectionString(DefaultDbName);
+			using (var connection = new SqlConnection(connectionStringBuilder.ConnectionString)) {
+				connection.Open();
+				using (var command = GetUseCommand(connection, DefaultDbName)) {
+					command.ExecuteNonQuery();
+				}
+				using (var command = GetRestoreCommand(connection, databaseName, backupPath)) {
+					command.ExecuteNonQuery();
+				}
+			}
+		}
 
-	//	protected virtual ServerConnection GetConnection() {
-	//		return new ServerConnection(ServerName, Login, Password);
-	//	}
+		private SqlConnectionStringBuilder GetConnectionString(string dbName) {
+			return new SqlConnectionStringBuilder {
+				DataSource = ServerName,
+				InitialCatalog = dbName,
+				PersistSecurityInfo = true,
+				MultipleActiveResultSets = true,
+				UserID = Login,
+				Password = Password
+			};
+		}
 
-	//	protected virtual Server GetServer() {
-	//		return new Server(GetConnection());
-	//	}
-	//}
+		private SqlCommand GetUseCommand(SqlConnection connection, string dataBaseName) {
+			return new SqlCommand($"USE [{dataBaseName}]", connection);
+		}
+
+		private SqlCommand GetRestoreCommand(SqlConnection connection, string dataBaseName, string backPath) {
+			return new SqlCommand($"RESTORE DATABASE [{dataBaseName}] FROM DISK = '{backPath}' WITH  FILE = 1", connection);
+		}
+	}
 }

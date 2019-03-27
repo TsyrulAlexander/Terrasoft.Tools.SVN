@@ -2,6 +2,7 @@
 using System.Linq;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
 using Terrasoft.Tools.SvnUI.Properties;
@@ -24,8 +25,8 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			};
 		}
 
-		protected override IEnumerable<BaseProperty> GetOperationProperties() {
-			return base.GetOperationProperties().Concat(new[] {CommitIfNoError});
+		protected override IEnumerable<BaseProperty> GetProperties() {
+			return base.GetProperties().Concat(new[] {CommitIfNoError});
 		}
 
 		public override SvnOperation GetSvnOperation() {

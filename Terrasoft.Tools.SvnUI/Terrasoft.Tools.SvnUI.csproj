@@ -112,11 +112,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppSetting.cs" />
+    <Compile Include="Constant\DeployArgumentNameConstant.cs" />
     <Compile Include="Ioc\IocConfiguration.cs" />
     <Compile Include="Ioc\IocKernel.cs" />
     <Compile Include="Model\Converter\EnumBooleanConverter.cs" />
     <Compile Include="Model\Converter\InverseBooleanConverter.cs" />
-    <Compile Include="Model\OperationType.cs" />
+    <Compile Include="Model\Enums\DeployOperation.cs" />
+    <Compile Include="Model\EventArgs\StartDeployOperationEventArgs.cs" />
+    <Compile Include="Model\Enums\OperationType.cs" />
     <Compile Include="Model\Property\BaseProperty.cs" />
     <Compile Include="Model\Property\BasePropertyT.cs" />
     <Compile Include="Model\Property\BooleanProperty.cs" />
@@ -124,14 +127,16 @@
     <Compile Include="Model\Converter\EnumToVisibilityConverter.cs" />
     <Compile Include="Model\File\BrowserDialog.cs" />
     <Compile Include="Model\File\IBrowserDialog.cs" />
-    <Compile Include="Model\LogInfo.cs" />
-    <Compile Include="Model\LogLevel.cs" />
+    <Compile Include="Model\Log\LogInfo.cs" />
+    <Compile Include="Model\Enums\LogLevel.cs" />
     <Compile Include="Model\Property\StringProperty.cs" />
-    <Compile Include="Model\SvnOperation.cs" />
-    <Compile Include="Model\SvnOperationConfig.cs" />
+    <Compile Include="Model\Enums\SvnOperation.cs" />
+    <Compile Include="Model\EventArgs\StartSvnOperationEventArgs.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="UILogger.cs" />
+    <Compile Include="Model\Log\UILogger.cs" />
+    <Compile Include="ViewModel\BaseDeployViewModel.cs" />
     <Compile Include="ViewModel\BaseSvnOperationViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CloseFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\CreateFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\DeployAppViewModel.cs" />
@@ -146,11 +151,20 @@
     <Compile Include="View\BooleanPropertyControl.xaml.cs">
       <DependentUpon>BooleanPropertyControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CreateFeatureSvnView.xaml.cs">
-      <DependentUpon>CreateFeatureSvnView.xaml</DependentUpon>
+    <Compile Include="View\CloseSvnFeatureView.xaml.cs">
+      <DependentUpon>CloseSvnFeatureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CreateSvnFeatureView.xaml.cs">
+      <DependentUpon>CreateSvnFeatureView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DeployAppView.xaml.cs">
       <DependentUpon>DeployAppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FinishSvnFeatureView.xaml.cs">
+      <DependentUpon>FinishSvnFeatureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FixSvnFeatureView.xaml.cs">
+      <DependentUpon>FixSvnFeatureView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PasswordPropertyControl.xaml.cs">
       <DependentUpon>PasswordPropertyControl.xaml</DependentUpon>
@@ -158,14 +172,17 @@
     <Compile Include="View\RestoreDatabaseView.xaml.cs">
       <DependentUpon>RestoreDatabaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SelectFolderControl.xaml.cs">
-      <DependentUpon>SelectFolderControl.xaml</DependentUpon>
+    <Compile Include="View\SelectItemControl.xaml.cs">
+      <DependentUpon>SelectItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StringPropertyControl.xaml.cs">
       <DependentUpon>StringPropertyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SvnToolView.xaml.cs">
       <DependentUpon>SvnToolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UpdateSvnFeatureView.xaml.cs">
+      <DependentUpon>UpdateSvnFeatureView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -187,11 +204,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CreateFeatureSvnView.xaml">
+    <Page Include="View\CloseSvnFeatureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CreateSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DeployAppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FinishSvnFeatureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FixSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -203,7 +232,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SelectFolderControl.xaml">
+    <Page Include="View\SelectItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SvnToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UpdateSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -277,5 +310,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

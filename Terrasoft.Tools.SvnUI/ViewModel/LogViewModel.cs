@@ -9,6 +9,7 @@ using Terrasoft.Core;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.File;
+using Terrasoft.Tools.SvnUI.Model.Log;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel {
 	public class LogViewModel : ViewModelBase {

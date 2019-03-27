@@ -15,14 +15,13 @@ using System.Windows.Shapes;
 
 namespace Terrasoft.Tools.SvnUI.View
 {
-    /// <summary>
-    /// Interaction logic for CreateFeatureSvnView.xaml
-    /// </summary>
-    public partial class CreateFeatureSvnView : UserControl
-    {
-        public CreateFeatureSvnView()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for UpdateSvnFeatureView.xaml
+	/// </summary>
+	public partial class UpdateSvnFeatureView : UserControl
+	{
+		public UpdateSvnFeatureView() {
+			InitializeComponent();
+		}
+	}
 }

@@ -1,4 +1,5 @@
 ﻿using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.File;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel

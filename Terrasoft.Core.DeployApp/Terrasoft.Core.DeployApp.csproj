@@ -43,10 +43,9 @@
   <ItemGroup>
     <Compile Include="Database\IDbExecutor.cs" />
     <Compile Include="Database\MsSql\MsSqlExecutor.cs" />
+    <Compile Include="Database\Oracle\OracleExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\Oracle\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

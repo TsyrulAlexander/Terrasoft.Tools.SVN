@@ -1,5 +1,4 @@
-﻿namespace Terrasoft.Tools.SvnUI.Model
-{
+﻿namespace Terrasoft.Tools.SvnUI.Model.Enums {
 	public enum LogLevel {
 		Information,
 		Warning,

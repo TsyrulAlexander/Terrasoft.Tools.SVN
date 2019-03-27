@@ -230,4 +230,28 @@ SUCCESS</value>
   <data name="UpdateAppText" xml:space="preserve">
     <value>Обновить приложение?</value>
   </data>
+  <data name="DeployApplication" xml:space="preserve">
+    <value>Развернуть приложение</value>
+  </data>
+  <data name="ExpandDatabase" xml:space="preserve">
+    <value>Развернуть базу данных</value>
+  </data>
+  <data name="ExpandSite" xml:space="preserve">
+    <value>Развернуть сайт</value>
+  </data>
+  <data name="BackupPath" xml:space="preserve">
+    <value>Путь к бэкапу</value>
+  </data>
+  <data name="DatabaseName" xml:space="preserve">
+    <value>Название бд</value>
+  </data>
+  <data name="ServerName" xml:space="preserve">
+    <value>Название сервера</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Логин сервера</value>
+  </data>
+  <data name="UserPassword" xml:space="preserve">
+    <value>Пароль сервера</value>
+  </data>
 </root>

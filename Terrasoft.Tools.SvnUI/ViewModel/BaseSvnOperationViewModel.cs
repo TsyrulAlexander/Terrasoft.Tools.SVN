@@ -6,12 +6,14 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Enums;
+using Terrasoft.Tools.SvnUI.Model.EventArgs;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
 using Terrasoft.Tools.SvnUI.Properties;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel {
-	public abstract class BaseSvnOperationViewModel : ViewModelBase {
+	public abstract class BaseSvnOperationViewModel : BaseViewModel {
 		protected IBrowserDialog BrowserDialog { get; }
 		private StringProperty _svnUser;
 		private StringProperty _svnPassword;
@@ -102,49 +104,30 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			if (operation != GetSvnOperation()) {
 				return;
 			}
-			if (!ValidateParameters(out string message)) {
+			if (!ValidateProperties(out string message)) {
 				BrowserDialog.ShowInformationMessage(message);
 				return;
 			}
 			CreateIfNotExistWorkingCopyDirectory();
-			var svnArguments = GetSvnArguments();
-			StartSvnOperation(svnArguments);
+			StartSvnOperation();
 		}
 
 		protected virtual void CreateIfNotExistWorkingCopyDirectory() {
 			Directory.CreateDirectory(WorkingCopyPath.Value);
 		}
 
-		protected virtual void StartSvnOperation(Dictionary<string, string> args) {
-			Messenger.Default.Send(new SvnOperationConfig {
-				SvnOperation = GetSvnOperation(), Arguments = args
+		protected virtual void StartSvnOperation() {
+			var svnArguments = GetPropertiesToArguments();
+			Messenger.Default.Send(new StartSvnOperationEventArgs {
+				SvnOperation = GetSvnOperation(), Arguments = svnArguments
 			});
 		}
 
-		protected virtual bool ValidateParameters(out string message) {
-			var properties = GetOperationProperties();
-			foreach (var property in properties) {
-				if (!property.IsValid(out message)) {
-					return false;
-				}
-			}
-			message = string.Empty;
-			return true;
-		}
-
-		protected virtual Dictionary<string, string> GetSvnArguments() {
-			var args = new Dictionary<string, string>();
-			var properties = GetOperationProperties();
-			foreach (var property in properties) {
-				var operationKey = (string) property.Tag;
-				args.Add(operationKey.ToLower(), property.ToString());
-			}
-			return args;
-		}
+		
 
 		public abstract SvnOperation GetSvnOperation();
 
-		protected virtual IEnumerable<BaseProperty> GetOperationProperties() {
+		protected override IEnumerable<BaseProperty> GetProperties() {
 			return new BaseProperty[] {
 				SvnUser, SvnPassword, WorkingCopyPath, BranchFeatureUrl
 			};

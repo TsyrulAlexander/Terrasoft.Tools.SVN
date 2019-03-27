@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:model="clr-namespace:Terrasoft.Tools.SvnUI.Model"
         xmlns:resx="clr-namespace:Terrasoft.Tools.SvnUI.Properties"
         xmlns:view="clr-namespace:Terrasoft.Tools.SvnUI.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:enums="clr-namespace:Terrasoft.Tools.SvnUI.Model.Enums"
         mc:Ignorable="d"
         x:Name="MainWindowControl"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -20,12 +20,12 @@
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
                     IsChecked="{Binding Path=OperationType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=SvnBranches, UpdateSourceTrigger=PropertyChanged}"
-                    Content="{x:Static resx:Resources.SvnBranches}" Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static model:OperationType.SvnBranches}"/>
+                    Content="{x:Static resx:Resources.SvnBranches}" Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static enums:OperationType.SvnBranches}"/>
                 <RadioButton
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
                     IsChecked="{Binding Path=OperationType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=DeployApp, UpdateSourceTrigger=PropertyChanged}" 
-                    Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static model:OperationType.DeployApp}" Height="Auto">
+                    Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static enums:OperationType.DeployApp}" Height="Auto">
                     <TextBlock Text="{x:Static resx:Resources.DeployApp}"></TextBlock>
                 </RadioButton>
             </StackPanel>
@@ -61,10 +61,10 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Background" Value="Transparent"></Setter>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Error}">
+                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static enums:LogLevel.Error}">
                                                 <Setter Property="Background" Value="#fa5e5d"></Setter>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static model:LogLevel.Warning}">
+                                            <DataTrigger Binding="{Binding Level}" Value="{x:Static enums:LogLevel.Warning}">
                                                 <Setter Property="Background" Value="#ffc83f"></Setter>
                                             </DataTrigger>
                                         </Style.Triggers>

@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Views;
 using Terrasoft.Core;
 using Terrasoft.Core.Version;
 using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Properties;
 

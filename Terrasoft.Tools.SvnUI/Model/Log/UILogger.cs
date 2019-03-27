@@ -1,8 +1,8 @@
 ﻿using System;
 using Terrasoft.Core;
-using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Enums;
 
-namespace Terrasoft.Tools.SvnUI {
+namespace Terrasoft.Tools.SvnUI.Model.Log {
 	public class UILogger : ILogger {
 		public event Action<LogInfo> Execute;
 

@@ -71,6 +71,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Путь к бэкапу.
+        /// </summary>
+        public static string BackupPath {
+            get {
+                return ResourceManager.GetString("BackupPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Url к Branches.
         /// </summary>
         public static string BranchesFeatureUrl {
@@ -188,6 +197,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Название бд.
+        /// </summary>
+        public static string DatabaseName {
+            get {
+                return ResourceManager.GetString("DatabaseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Развернуть
         ///приложение.
         /// </summary>
@@ -198,11 +216,38 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Развернуть приложение.
+        /// </summary>
+        public static string DeployApplication {
+            get {
+                return ResourceManager.GetString("DeployApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ошибка.
         /// </summary>
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Развернуть базу данных.
+        /// </summary>
+        public static string ExpandDatabase {
+            get {
+                return ResourceManager.GetString("ExpandDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Развернуть сайт.
+        /// </summary>
+        public static string ExpandSite {
+            get {
+                return ResourceManager.GetString("ExpandSite", resourceCulture);
             }
         }
         
@@ -306,6 +351,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Название сервера.
+        /// </summary>
+        public static string ServerName {
+            get {
+                return ResourceManager.GetString("ServerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Svn.
         /// </summary>
         public static string SvnBranches {
@@ -374,6 +428,24 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string UpdateFeature {
             get {
                 return ResourceManager.GetString("UpdateFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Логин сервера.
+        /// </summary>
+        public static string UserLogin {
+            get {
+                return ResourceManager.GetString("UserLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароль сервера.
+        /// </summary>
+        public static string UserPassword {
+            get {
+                return ResourceManager.GetString("UserPassword", resourceCulture);
             }
         }
         

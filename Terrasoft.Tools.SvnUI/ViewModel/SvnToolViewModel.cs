@@ -8,6 +8,8 @@ using GalaSoft.MvvmLight.Threading;
 using Terrasoft.Core;
 using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Enums;
+using Terrasoft.Tools.SvnUI.Model.EventArgs;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Properties;
 
@@ -39,47 +41,47 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			BrowserDialog = browserDialog;
 			RunCommand = new RelayCommand(Run, CanRun);
 			SetSvnOperationCommand = new RelayCommand<SvnOperation>(SetSvnOperation);
-			Messenger.Default.Register<SvnOperationConfig>(this, StartSvnOperation);
+			Messenger.Default.Register<StartSvnOperationEventArgs>(this, StartSvnOperation);
 		}
 
 		private void SetSvnOperation(SvnOperation operation) {
 			SvnOperation = operation;
 		}
 
-		public async void StartSvnOperation(SvnOperationConfig config) {
-			await Task.Run(() => StartSvnOperationAsync(config));
+		public async void StartSvnOperation(StartSvnOperationEventArgs eventArgs) {
+			await Task.Run(() => StartSvnOperationAsync(eventArgs));
 		}
 
-		private void StartSvnOperationAsync(SvnOperationConfig config) {
+		private void StartSvnOperationAsync(StartSvnOperationEventArgs eventArgs) {
 			try {
 				SetProgressState(true);
-				using (var svnUtils = new SvnUtils(config.Arguments, Logger)) {
-					switch (config.SvnOperation) {
+				using (var svnUtils = new SvnUtils(eventArgs.Arguments, Logger)) {
+					switch (eventArgs.SvnOperation) {
 						case SvnOperation.CreateFeature:
-							var workingCopyPath = config.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
+							var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
 							Directory.CreateDirectory(workingCopyPath);
 							svnUtils.CreateFeature();
 							break;
 						case SvnOperation.UpdateFeature:
-							CheckoutWorkingCopy(svnUtils, config);
+							CheckoutWorkingCopy(svnUtils, eventArgs);
 							if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
 								svnUtils.CommitChanges(true);
 							}
 							break;
 						case SvnOperation.FinishFeature:
-							CheckoutWorkingCopy(svnUtils, config);
+							CheckoutWorkingCopy(svnUtils, eventArgs);
 							svnUtils.ReintegrationMergeToBaseBranch();
 							break;
 						case SvnOperation.CloseFeature:
-							CheckoutWorkingCopy(svnUtils, config);
+							CheckoutWorkingCopy(svnUtils, eventArgs);
 							svnUtils.DeleteClosedFeature();
 							break;
 						case SvnOperation.FixFeature:
-							CheckoutWorkingCopy(svnUtils, config);
+							CheckoutWorkingCopy(svnUtils, eventArgs);
 							svnUtils.FixBranch();
 							break;
 						default:
-							throw new NotImplementedException(nameof(config.SvnOperation));
+							throw new NotImplementedException(nameof(eventArgs.SvnOperation));
 					}
 				}
 				BrowserDialog.ShowInformationMessage(Resources.SvnOperationComplite);
@@ -91,9 +93,9 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			}
 		}
 
-		protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, SvnOperationConfig config) {
-			var workingCopyPath = config.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
-			var repositoryPath = config.Arguments[SvnUtilsBase.BranchFeatureUrlOptionName];
+		protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs) {
+			var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
+			var repositoryPath = eventArgs.Arguments[SvnUtilsBase.BranchFeatureUrlOptionName];
 			if (File.Exists(workingCopyPath) || string.IsNullOrWhiteSpace(repositoryPath)) {
 				return;
 			}

@@ -1,6 +1,10 @@
 ﻿using Ninject.Modules;
 using Terrasoft.Core;
+using Terrasoft.Core.DeployApp.Database;
+using Terrasoft.Core.DeployApp.Database.MsSql;
+using Terrasoft.Core.DeployApp.Database.Oracle;
 using Terrasoft.Tools.SvnUI.Model.File;
+using Terrasoft.Tools.SvnUI.Model.Log;
 using Terrasoft.Tools.SvnUI.ViewModel;
 
 namespace Terrasoft.Tools.SvnUI.Ioc {
@@ -18,6 +22,8 @@ namespace Terrasoft.Tools.SvnUI.Ioc {
 			Bind<LogViewModel>().ToSelf().InTransientScope();
 			Bind<IBrowserDialog>().To<BrowserDialog>();
 			Bind<ILogger>().To<UILogger>().InSingletonScope();
+			Bind<IDbExecutor>().To<MsSqlExecutor>().Named("MSSql");
+			Bind<IDbExecutor>().To<OracleExecutor>().Named("Oracle");
 		}
 	}
 }
