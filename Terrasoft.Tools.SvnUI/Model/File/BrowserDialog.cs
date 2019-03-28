@@ -40,5 +40,15 @@ namespace Terrasoft.Tools.SvnUI.Model.File {
 				return null;
 			}
 		}
+
+		public string SelectFile(string filter = "") {
+			using (var dialog = new OpenFileDialog()) {
+				dialog.Filter = filter;
+				if (dialog.ShowDialog() == DialogResult.OK) {
+					return dialog.FileName;
+				}
+			}
+			return null;
+		}
 	}
 }

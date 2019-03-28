@@ -112,7 +112,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppSetting.cs" />
-    <Compile Include="Constant\DeployArgumentNameConstant.cs" />
+    <Compile Include="Model\Constant\DeployArgumentNameConstant.cs" />
     <Compile Include="Ioc\IocConfiguration.cs" />
     <Compile Include="Ioc\IocKernel.cs" />
     <Compile Include="Model\Converter\EnumBooleanConverter.cs" />

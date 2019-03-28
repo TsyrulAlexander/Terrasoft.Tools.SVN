@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GalaSoft.MvvmLight.CommandWpf;
 using Terrasoft.Tools.SvnUI.Model;
+using Terrasoft.Tools.SvnUI.Model.Constant;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
@@ -50,12 +52,33 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			}
 		}
 
+		public RelayCommand SelectBackupCommand { get; set; }
+
 		public RestoreDatabaseViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
-			ServerName = new StringProperty(Resources.ServerName, true, AppSetting.DefDbServerName);
-			UserLogin = new StringProperty(Resources.UserLogin, true, AppSetting.DefDbServerUserLogin);
-			UserPassword = new StringProperty(Resources.UserPassword, true, AppSetting.DefDbServerUserPassword);
-			DatabaseName = new StringProperty(Resources.DatabaseName, true, AppSetting.DefDatabaseName);
-			BackupPath = new StringProperty(Resources.BackupPath, true, AppSetting.DefBackupPath);
+			ServerName = new StringProperty(Resources.ServerName, true, DeployArgumentNameConstant.ServerName) {
+				Value = AppSetting.DefDbServerName
+			};
+			UserLogin = new StringProperty(Resources.UserLogin, true, DeployArgumentNameConstant.UserLogin) {
+				Value = AppSetting.DefDbServerUserLogin
+			};
+			UserPassword = new StringProperty(Resources.UserPassword, true, DeployArgumentNameConstant.UserPassword) {
+				Value = AppSetting.DefDbServerUserPassword
+			};
+			DatabaseName = new StringProperty(Resources.DatabaseName, true, DeployArgumentNameConstant.DatabaseName) {
+				Value = AppSetting.DefDatabaseName
+			};
+			BackupPath = new StringProperty(Resources.BackupPath, true, DeployArgumentNameConstant.BackupPath) {
+				Value = AppSetting.DefBackupPath
+			};
+			SelectBackupCommand = new RelayCommand(SelectBackup);
+		}
+
+		private void SelectBackup() {
+			var backPath = BrowserDialog.SelectFile("Backup file (*.bak)|*.bak");
+			if (string.IsNullOrWhiteSpace(backPath)) {
+				return;
+			}
+			BackupPath.Value = backPath;
 		}
 
 		protected override IEnumerable<BaseProperty> GetProperties() {

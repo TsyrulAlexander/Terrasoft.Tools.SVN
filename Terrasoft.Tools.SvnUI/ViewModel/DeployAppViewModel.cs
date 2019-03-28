@@ -4,7 +4,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Terrasoft.Core.DeployApp.Database;
 using Terrasoft.Core.DeployApp.Database.MsSql;
-using Terrasoft.Tools.SvnUI.Constant;
+using Terrasoft.Tools.SvnUI.Model.Constant;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.EventArgs;
 using Terrasoft.Tools.SvnUI.Model.File;
@@ -57,12 +57,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		private void Execute() {
-			//try {
-			//	IDbExecutor executor = new MsSqlExecutor(@"Partner-MS-02\MSSQL2017", "backupadmin", "Terrasoft+-");
-			//	executor.RestoreDb("MTS7131DevATsyrul", @"C:\dfghjkl\BPMonline7123SalesEnterprise_Marketing_ServiceEnterprise.bak");
-			//} catch (Exception ex) {
-			//	BrowserDialog.ShowErrorMessage(ex.Message);
-			//}
+			Messenger.Default.Send(Operation);
 		}
 	}
 }

@@ -11,6 +11,8 @@
             <view:StringPropertyControl Property="{Binding ServerName}"></view:StringPropertyControl>
             <view:StringPropertyControl Property="{Binding UserLogin}"></view:StringPropertyControl>
             <view:PasswordPropertyControl Property="{Binding UserPassword}"></view:PasswordPropertyControl>
+            <view:StringPropertyControl Property="{Binding DatabaseName}"></view:StringPropertyControl>
+            <view:SelectItemControl Property="{Binding BackupPath}" OpenCommand="{Binding SelectBackupCommand}"></view:SelectItemControl>
         </StackPanel>
     </Grid>
 </UserControl>

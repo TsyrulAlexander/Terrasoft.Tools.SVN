@@ -1,4 +1,4 @@
-﻿namespace Terrasoft.Tools.SvnUI.Constant
+﻿namespace Terrasoft.Tools.SvnUI.Model.Constant
 {
 	public class DeployArgumentNameConstant {
 		public const string ServerName = "servername";
