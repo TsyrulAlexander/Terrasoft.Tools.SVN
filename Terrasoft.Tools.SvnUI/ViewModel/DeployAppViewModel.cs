@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Terrasoft.Core.DeployApp.Database;
 using Terrasoft.Core.DeployApp.Database.MsSql;
+using Terrasoft.Core.DeployApp.Database.Oracle;
 using Terrasoft.Tools.SvnUI.Model.Constant;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.EventArgs;
@@ -45,7 +46,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 				var userPassword = args.Args[DeployArgumentNameConstant.UserPassword];
 				var databaseName = args.Args[DeployArgumentNameConstant.DatabaseName];
 				var backupPath = args.Args[DeployArgumentNameConstant.BackupPath];
-				IDbExecutor executor = new MsSqlExecutor(serverName, userLogin, userPassword);
+				IDbExecutor executor = new OracleExecutor(serverName, userLogin, userPassword);
 				executor.RestoreDb(databaseName, backupPath);
 			} catch (Exception ex) {
 				BrowserDialog.ShowErrorMessage(ex.Message);
@@ -57,7 +58,9 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		private void Execute() {
-			Messenger.Default.Send(Operation);
+			IDbExecutor executor = new OracleExecutor("partnerora.tscrm.com", "MTS_A_KALUS", "MTS_A_KALUS");
+			executor.RestoreDb("MTS_A_KALUS", "");
+			//Messenger.Default.Send(Operation);
 		}
 	}
 }

@@ -6,5 +6,6 @@
 		public const string UserPassword = "userpassword";
 		public const string DatabaseName = "databasename";
 		public const string BackupPath = "backuppath";
+		public const string DataBaseType = "databasetype";
 	}
 }

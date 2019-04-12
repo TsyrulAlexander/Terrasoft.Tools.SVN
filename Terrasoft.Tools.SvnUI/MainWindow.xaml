@@ -25,13 +25,13 @@
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
                     IsChecked="{Binding Path=OperationType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=DeployApp, UpdateSourceTrigger=PropertyChanged}" 
-                    Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static enums:OperationType.DeployApp}" Height="Auto">
+                    Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static enums:OperationType.DeployApp}" Height="Auto" IsEnabled="False">
                     <TextBlock Text="{x:Static resx:Resources.DeployApp}"></TextBlock>
                 </RadioButton>
             </StackPanel>
         </materialDesign:DrawerHost.LeftDrawerContent>
         <materialDesign:DrawerHost.BottomDrawerContent>
-            <Grid>
+            <Grid Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -41,12 +41,13 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="4" VerticalAlignment="Center" Text="{x:Static resx:Resources.Log}" Style="{DynamicResource HeaderTextBoxStyle}"/>
-                <Button Grid.Row="0" Grid.Column="1"  DockPanel.Dock="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-                        CommandParameter="{x:Static Dock.Bottom}" Style="{DynamicResource RunBotton}"
+                <Button Grid.Row="0" Grid.Column="1"  DockPanel.Dock="Right" Click="CloseLogPanelClick" Style="{DynamicResource RunBotton}"
                         Margin="4" VerticalAlignment="Top">
                     <materialDesign:PackIcon Kind="ArrowDown"  />
                 </Button>
-                <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding LogInfoCollection, Mode=OneWay}"  SelectedItem="{Binding Selected}" Background="Transparent" DataContext="{Binding Log, Source={StaticResource Locator}}">
+                <ListBox x:Name="LogListBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding LogInfoCollection, Mode=OneWay}" VirtualizingStackPanel.IsVirtualizing="True"
+                         VirtualizingStackPanel.VirtualizationMode="Recycling" ScrollViewer.IsDeferredScrollingEnabled="True" VirtualizingStackPanel.ScrollUnit="Pixel"
+                         SelectedItem="{Binding Selected}" Background="Transparent" DataContext="{Binding Log, Source={StaticResource Locator}}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>
@@ -87,8 +88,7 @@
                         Height="Auto" Background="Transparent">
                     <materialDesign:PackIcon Kind="HamburgerMenu" Width="35" Height="Auto"/>
                 </Button>
-                <Button Margin="1" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" Style="{DynamicResource RunBotton}"
-                         CommandParameter="{x:Static Dock.Bottom}"
+                <Button Margin="1" Click="OpenLogPanelClick" Style="{DynamicResource RunBotton}"
                          Height="Auto" Background="Transparent">
                     <materialDesign:PackIcon Kind="CommentTextOutline" Width="35" Height="Auto"/>
                 </Button>

@@ -14,22 +14,14 @@ using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Properties;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel {
-	public class SvnToolViewModel : ViewModelBase {
+	public class SvnToolViewModel : BaseViewModel {
 		public ILogger Logger { get; }
 		public IBrowserDialog BrowserDialog { get; }
 		private SvnOperation _svnOperation = SvnOperation.CreateFeature;
-		private bool _inProgress;
 		public SvnOperation SvnOperation {
 			get => _svnOperation;
 			set {
 				_svnOperation = value;
-				RaisePropertyChanged();
-			}
-		}
-		public bool InProgress {
-			get => _inProgress;
-			set {
-				_inProgress = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -96,14 +88,10 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 		protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs) {
 			var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
 			var repositoryPath = eventArgs.Arguments[SvnUtilsBase.BranchFeatureUrlOptionName];
-			if (File.Exists(workingCopyPath) || string.IsNullOrWhiteSpace(repositoryPath)) {
+			if (Directory.Exists(workingCopyPath) || string.IsNullOrWhiteSpace(repositoryPath)) {
 				return;
 			}
 			svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
-		}
-
-		private void SetProgressState(bool state) {
-			DispatcherHelper.CheckBeginInvokeOnUI(() => InProgress = state);
 		}
 
 		private bool CanRun() {

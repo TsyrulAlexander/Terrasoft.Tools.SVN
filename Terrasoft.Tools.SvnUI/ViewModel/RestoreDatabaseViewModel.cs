@@ -16,6 +16,14 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		private StringProperty _userPassword;
 		private StringProperty _databaseName;
 		private StringProperty _backupePath;
+		private EnumProperty<DataBaseType> _dataBaseType;
+		public EnumProperty<DataBaseType> DataBaseType {
+			get => _dataBaseType;
+			set {
+				_dataBaseType = value;
+				RaisePropertyChanged();
+			}
+		}
 		public StringProperty ServerName {
 			get => _serverName;
 			set {
@@ -51,7 +59,6 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 				RaisePropertyChanged();
 			}
 		}
-
 		public RelayCommand SelectBackupCommand { get; set; }
 
 		public RestoreDatabaseViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
@@ -70,6 +77,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			BackupPath = new StringProperty(Resources.BackupPath, true, DeployArgumentNameConstant.BackupPath) {
 				Value = AppSetting.DefBackupPath
 			};
+			DataBaseType = new EnumProperty<DataBaseType>(Resources.DataBase, true, DeployArgumentNameConstant.DataBaseType);
 			SelectBackupCommand = new RelayCommand(SelectBackup);
 		}
 
@@ -82,8 +90,8 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		protected override IEnumerable<BaseProperty> GetProperties() {
-			return base.GetProperties().Concat(new [] {
-				ServerName, UserLogin, UserPassword, DatabaseName, BackupPath
+			return base.GetProperties().Concat(new BaseProperty[] {
+				DataBaseType, ServerName, UserLogin, UserPassword, DatabaseName, BackupPath
 			});
 		}
 

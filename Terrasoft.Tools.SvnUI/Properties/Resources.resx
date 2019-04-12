@@ -254,4 +254,16 @@ SUCCESS</value>
   <data name="UserPassword" xml:space="preserve">
     <value>Пароль сервера</value>
   </data>
+  <data name="MsSql" xml:space="preserve">
+    <value>MsSql</value>
+  </data>
+  <data name="Oracle" xml:space="preserve">
+    <value>Oracle</value>
+  </data>
+  <data name="DataBase" xml:space="preserve">
+    <value>База данных</value>
+  </data>
+  <data name="IfCloseFeatureMessage" xml:space="preserve">
+    <value>Вы уверены, что хотите закрыть ветку?</value>
+  </data>
 </root>

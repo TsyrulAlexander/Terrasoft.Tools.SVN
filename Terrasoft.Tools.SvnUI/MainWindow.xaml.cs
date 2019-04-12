@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 
 namespace Terrasoft.Tools.SvnUI
 {
@@ -22,6 +23,16 @@ namespace Terrasoft.Tools.SvnUI
 	{
 		public MainWindow() {
 			InitializeComponent();
+		}
+
+		private void CloseLogPanelClick(object sender, RoutedEventArgs e) {
+			LogListBox.Visibility = Visibility.Collapsed;
+			DrawerHost.CloseDrawerCommand.Execute(Dock.Bottom, (IInputElement)sender);
+		}
+
+		private void OpenLogPanelClick(object sender, RoutedEventArgs e) {
+			LogListBox.Visibility = Visibility.Visible;
+			DrawerHost.OpenDrawerCommand.Execute(Dock.Bottom, (IInputElement)sender);
 		}
 	}
 }

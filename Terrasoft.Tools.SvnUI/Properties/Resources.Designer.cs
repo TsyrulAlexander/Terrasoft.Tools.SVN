@@ -197,6 +197,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to База данных.
+        /// </summary>
+        public static string DataBase {
+            get {
+                return ResourceManager.GetString("DataBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Название бд.
         /// </summary>
         public static string DatabaseName {
@@ -288,6 +297,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вы уверены, что хотите закрыть ветку?.
+        /// </summary>
+        public static string IfCloseFeatureMessage {
+            get {
+                return ResourceManager.GetString("IfCloseFeatureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле {0} не может быть пустым.
         /// </summary>
         public static string IsEmpryPropertyValueMessage {
@@ -324,11 +342,29 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MsSql.
+        /// </summary>
+        public static string MsSql {
+            get {
+                return ResourceManager.GetString("MsSql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Операция.
         /// </summary>
         public static string Operation {
             get {
                 return ResourceManager.GetString("Operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oracle.
+        /// </summary>
+        public static string Oracle {
+            get {
+                return ResourceManager.GetString("Oracle", resourceCulture);
             }
         }
         

@@ -46,7 +46,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -117,7 +117,9 @@
     <Compile Include="Ioc\IocKernel.cs" />
     <Compile Include="Model\Converter\EnumBooleanConverter.cs" />
     <Compile Include="Model\Converter\InverseBooleanConverter.cs" />
+    <Compile Include="Model\Enums\DataBaseType.cs" />
     <Compile Include="Model\Enums\DeployOperation.cs" />
+    <Compile Include="Model\EventArgs\ProgressEventArgs.cs" />
     <Compile Include="Model\EventArgs\StartDeployOperationEventArgs.cs" />
     <Compile Include="Model\Enums\OperationType.cs" />
     <Compile Include="Model\Property\BaseProperty.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Model\File\IBrowserDialog.cs" />
     <Compile Include="Model\Log\LogInfo.cs" />
     <Compile Include="Model\Enums\LogLevel.cs" />
+    <Compile Include="Model\Property\EnumProperty.cs" />
     <Compile Include="Model\Property\StringProperty.cs" />
     <Compile Include="Model\Enums\SvnOperation.cs" />
     <Compile Include="Model\EventArgs\StartSvnOperationEventArgs.cs" />
@@ -156,6 +159,9 @@
     </Compile>
     <Compile Include="View\CreateSvnFeatureView.xaml.cs">
       <DependentUpon>CreateSvnFeatureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataBaseTypePropertyControl.xaml.cs">
+      <DependentUpon>DataBaseTypePropertyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DeployAppView.xaml.cs">
       <DependentUpon>DeployAppView.xaml</DependentUpon>
@@ -209,6 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CreateSvnFeatureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataBaseTypePropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

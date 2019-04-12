@@ -4,10 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Terrasoft.Tools.SvnUI.View"
+             xmlns:enums="clr-namespace:Terrasoft.Tools.SvnUI.Model.Enums"
+             xmlns:resx="clr-namespace:Terrasoft.Tools.SvnUI.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <StackPanel DataContext="{Binding RestoreDatabase, Source={StaticResource Locator}}">
+    <Grid DataContext="{Binding RestoreDatabase, Source={StaticResource Locator}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <view:DataBaseTypePropertyControl Property="{Binding DataBaseType}"></view:DataBaseTypePropertyControl>
+        <StackPanel Grid.Row="1" >
             <view:StringPropertyControl Property="{Binding ServerName}"></view:StringPropertyControl>
             <view:StringPropertyControl Property="{Binding UserLogin}"></view:StringPropertyControl>
             <view:PasswordPropertyControl Property="{Binding UserPassword}"></view:PasswordPropertyControl>
