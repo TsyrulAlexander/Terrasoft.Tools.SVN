@@ -168,6 +168,18 @@
     <value>Параметр NodeKind неопределен</value>
   </data>
   <data name="SMTPCRD" xml:space="preserve">
-    <value>VGVycmFzb2Z0Kw</value>
+    <value>VGVycmFzb2Z0Kw==</value>
+  </data>
+  <data name="FolderExistAndWouldBackuped" xml:space="preserve">
+    <value>Целевая папка существует и будет бэкапирована</value>
+  </data>
+  <data name="RemoveFolderContainFiles" xml:space="preserve">
+    <value>Удаляем папку содержащую файлы.</value>
+  </data>
+  <data name="FolderAddedInRevision" xml:space="preserve">
+    <value>Папка была добавлена пользователем {0} в ревизии {1}</value>
+  </data>
+  <data name="ParameterIsEmpty" xml:space="preserve">
+    <value>Параеметр {argumentNullException.ParamName} пуст.</value>
   </data>
 </root>

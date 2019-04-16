@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using SharpSvn;
 using Terrasoft.Tools.Svn.Properties;
-using Terrasoft.Tools.SVN;
 
 namespace Terrasoft.Tools.Svn
 {
@@ -46,7 +46,7 @@ namespace Terrasoft.Tools.Svn
         /// <param name="svnCommittingEventArgs">Аргумент</param>
         private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs svnCommittingEventArgs) {
             Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit,
-                svnCommittingEventArgs.Items.Count.ToString()
+                svnCommittingEventArgs.Items.Count.ToString(CultureInfo.CurrentCulture)
             );
         }
 
@@ -66,7 +66,7 @@ namespace Terrasoft.Tools.Svn
         /// <param name="svnCommittedEventArgs">Аргумент</param>
         private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs) {
             Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision,
-                svnCommittedEventArgs.Revision.ToString()
+                svnCommittedEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
             );
         }
 
@@ -116,9 +116,10 @@ namespace Terrasoft.Tools.Svn
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
         private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
-            Logger.Info(string.Format(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision,
+            Logger.Info(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision,
                     svnNotifyEventArgs.Path,
-                    svnNotifyEventArgs.Revision.ToString()
+                    svnNotifyEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
                 )
             );
         }
@@ -149,7 +150,7 @@ namespace Terrasoft.Tools.Svn
         private void ResolveConflictByType(SvnConflictEventArgs svnConflictEventArgs) {
             switch (svnConflictEventArgs.ConflictType) {
                 case SvnConflictType.Tree:
-                    ResolveConflictByReason(svnConflictEventArgs);
+                    ResolveConflictByTreeReason(svnConflictEventArgs);
                     break;
                 case SvnConflictType.Content:
                     //
@@ -157,8 +158,6 @@ namespace Terrasoft.Tools.Svn
                 case SvnConflictType.Property:
                     //
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -167,10 +166,10 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
-        private void ResolveConflictByReason(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByTreeReason(SvnConflictEventArgs svnConflictEventArgs) {
             switch (svnConflictEventArgs.ConflictReason) {
                 case SvnConflictReason.Added:
-                    ResolveConflictByAction(svnConflictEventArgs);
+                    ResolveConflictByTreeAddedAction(svnConflictEventArgs);
                     break;
                 case SvnConflictReason.Edited:
                     break;
@@ -189,30 +188,7 @@ namespace Terrasoft.Tools.Svn
                 case SvnConflictReason.Obstructed:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        /// <summary>
-        ///     Обработчик конфликтов добавления
-        /// </summary>
-        /// <param name="svnConflictEventArgs">Аргумент</param>
-        /// <exception cref="ArgumentOutOfRangeException">Возможная ошибка</exception>
-        private void ResolveConflictAdded(SvnConflictEventArgs svnConflictEventArgs) {
-            switch (svnConflictEventArgs.NodeKind) {
-                case SvnNodeKind.Directory:
-                    AddToExistsFolderConflict(svnConflictEventArgs);
-                    break;
-                case SvnNodeKind.File:
-                    break;
-                case SvnNodeKind.SymbolicLink:
-                    break;
-                case SvnNodeKind.Unknown:
-                    break;
-                case SvnNodeKind.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs));
             }
         }
 
@@ -220,7 +196,7 @@ namespace Terrasoft.Tools.Svn
         ///     Обработка конфликт существующей папки
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void AddToExistsFolderConflict(SvnConflictEventArgs svnConflictEventArgs) {
+        private static void AddToExistsFolderConflict(SvnConflictEventArgs svnConflictEventArgs) {
             if (!Directory.Exists(svnConflictEventArgs.Conflict.FullPath)) {
                 return;
             }
@@ -253,7 +229,7 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможная ошибка</exception>
-        private void ResolveConflictByAction(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByTreeAddedAction(SvnConflictEventArgs svnConflictEventArgs) {
             switch (svnConflictEventArgs.ConflictAction) {
                 case SvnConflictAction.Replace:
                     break;
@@ -262,10 +238,10 @@ namespace Terrasoft.Tools.Svn
                 case SvnConflictAction.Edit:
                     break;
                 case SvnConflictAction.Add:
-                    ResolveConflictByNode(svnConflictEventArgs);
+                    ResolveConflictByTreeAddedAddNode(svnConflictEventArgs);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs));
             }
         }
 
@@ -274,23 +250,17 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private void ResolveConflictByNode(SvnConflictEventArgs svnConflictEventArgs) {
-            switch (svnConflictEventArgs.NodeKind) {
-                case SvnNodeKind.Directory:
-                    ResolveConflictAdded(svnConflictEventArgs);
-                    break;
-                case SvnNodeKind.File:
-                    NeedResolveList.Add(svnConflictEventArgs.Conflict.FullPath.Clone().ToString());
-                    svnConflictEventArgs.Choice = SvnAccept.Postpone;
-                    break;
-                case SvnNodeKind.SymbolicLink:
-                    break;
-                case SvnNodeKind.Unknown:
-                    break;
-                case SvnNodeKind.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs.NodeKind));
+        private void ResolveConflictByTreeAddedAddNode(SvnConflictEventArgs svnConflictEventArgs) {
+            if (svnConflictEventArgs.NodeKind == SvnNodeKind.Directory &&
+                svnConflictEventArgs.ConflictAction == SvnConflictAction.Add) {
+                AddToExistsFolderConflict(svnConflictEventArgs);
+                return;
+            }
+
+            if (svnConflictEventArgs.NodeKind == SvnNodeKind.File &&
+                svnConflictEventArgs.ConflictAction == SvnConflictAction.Add) {
+                NeedResolveList.Add(svnConflictEventArgs.Conflict.FullPath.Clone().ToString());
+                svnConflictEventArgs.Choice = SvnAccept.Postpone;
             }
         }
 

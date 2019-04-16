@@ -44,9 +44,11 @@ namespace Terrasoft.Tools.Svn
                             FileName = "TortoiseProc.exe",
                             Arguments = $"/command:resolve /path:{Path.GetDirectoryName(resolvePath)} /closeonend:3"
                         };
-                        var mergeApp = new Process {StartInfo = mergeAppStartInfo};
-                        mergeApp.Start();
-                        mergeApp.WaitForExit();
+                        using (var mergeApp = new Process()) {
+                            mergeApp.StartInfo = mergeAppStartInfo;
+                            mergeApp.Start();
+                            mergeApp.WaitForExit();
+                        }
                     }
                 }
             } catch (SvnException svnException) {

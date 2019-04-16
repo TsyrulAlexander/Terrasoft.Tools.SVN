@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using SharpSvn;
@@ -60,10 +61,17 @@ namespace Terrasoft.Tools.Svn
         /// <returns>Номер ревизии</returns>
         private long GetFeatureFirstRevisionNumber(string workingCopyPath) {
             long revision = 0;
-            var svnLogArgs = new SvnLogArgs {StrictNodeHistory = true};
+            var svnLogArgs = new SvnLogArgs {StrictNodeHistory = false};
             svnLogArgs.Notify += SvnLogArgsOnNotify;
+            var branchLocalPath = string.Empty;
+            Info(SvnTarget.FromString(workingCopyPath),
+                (sender, args) => {
+                    branchLocalPath = args.Uri.LocalPath.Remove(0, args.RepositoryRoot.LocalPath.Length - 1);
+                    branchLocalPath = branchLocalPath.Remove(branchLocalPath.Length - 1);
+                }
+            );
             Log(workingCopyPath, svnLogArgs, (sender, args) => {
-                    if (args.ChangedPaths.Count <= 0) {
+                    if (args.ChangedPaths.Count != 1) {
                         return;
                     }
 
@@ -72,7 +80,11 @@ namespace Terrasoft.Tools.Svn
                             continue;
                         }
 
-                        revision = changeItem.CopyFromRevision;
+                        if (changeItem.Action == SvnChangeAction.Add) {
+                            if (changeItem.CopyFromPath != branchLocalPath && changeItem.Path == branchLocalPath)
+
+                                revision = changeItem.CopyFromRevision;
+                        }
                     }
                 }
             );
@@ -221,11 +233,13 @@ namespace Terrasoft.Tools.Svn
                         if (!changeItem.Path.StartsWith(conflictRelativePath, StringComparison.Ordinal)) {
                             continue;
                         }
-
+                        
                         Logger.Warning(changeItem.Path == conflictRelativePath
-                                ? "Folder already exists and would be backuped."
-                                : "Remote folder contains a files.",
-                            $"Folder was added by {args.Author} in revision {args.Revision}"
+                                ? Resources.ResourceManager.GetString("FolderExistAndWouldBackuped")
+                                : Resources.ResourceManager.GetString("RemoveFolderContainFiles"),
+                            string.Format(CultureInfo.CurrentCulture,
+                                Resources.ResourceManager.GetString("FolderAddedInRevision") ?? throw new InvalidOperationException(), args.Author, args.Revision
+                            )
                         );
                         fended = true;
                     }

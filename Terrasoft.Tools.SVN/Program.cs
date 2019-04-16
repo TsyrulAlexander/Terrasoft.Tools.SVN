@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Terrasoft.Tools.Svn.Properties;
 
+[assembly: CLSCompliant(true)]
+
 namespace Terrasoft.Tools.Svn
 {
-    public static class Program
+    internal static class Program
     {
         private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
         private const string OperationCreateFeature = " -Operation=CreateFeature";
@@ -35,25 +37,25 @@ namespace Terrasoft.Tools.Svn
         private static readonly ConcurrentDictionary<string, string> ProgramOptions =
             new ConcurrentDictionary<string, string>();
 
-        public static int Main(string[] args) {
+        private static int Main(string[] args) {
             Resources.Culture = CultureInfo.CurrentCulture;
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
-            if (!ProgramOptions.ContainsKey(@"operation")) {
+            if (!ProgramOptions.ContainsKey(@"OPERATION")) {
                 Usage();
                 return 0;
             }
 
-            string programOption = ProgramOptions[@"operation"].ToLowerInvariant();
+            string programOption = ProgramOptions[@"OPERATION"].ToUpperInvariant();
             switch (programOption) {
                 // ReSharper disable once StringLiteralTypo
-                case "createfeature":
+                case "CREATEFEATURE":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         return Convert.ToInt32(svnUtils.CreateFeature());
                     }
                 // ReSharper disable once StringLiteralTypo
-                case "updatefeature":
+                case "UPDATEFEATURE":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
@@ -62,21 +64,21 @@ namespace Terrasoft.Tools.Svn
 
                     break;
                 // ReSharper disable once StringLiteralTypo
-                case "finishfeature":
+                case "FINISHFEATURE":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         svnUtils.ReintegrationMergeToBaseBranch();
                     }
 
                     break;
                 // ReSharper disable once StringLiteralTypo
-                case "closefeature":
+                case "CLOSEFEATURE":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         svnUtils.DeleteClosedFeature();
                     }
 
                     break;
                 // ReSharper disable once StringLiteralTypo
-                case "fixfeature":
+                case "FIXFEATURE":
                     using (var svnUtils = new SvnUtils(ProgramOptions)) {
                         return Convert.ToInt32(
                             svnUtils.FixBranch()
@@ -160,7 +162,7 @@ namespace Terrasoft.Tools.Svn
                 ? 1
                 : keyValueArray.Length - 1;
             string value = string.Join("=", keyValueArray, 1, copyLength);
-            FillParam(key.ToLowerInvariant(), value);
+            FillParam(key.ToUpperInvariant(), value);
         }
 
         private static void FillParam(string key, string value) {

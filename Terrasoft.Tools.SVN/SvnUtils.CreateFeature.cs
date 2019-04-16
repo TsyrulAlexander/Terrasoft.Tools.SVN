@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using SharpSvn;
 using Terrasoft.Tools.Svn.Properties;
@@ -16,15 +17,21 @@ namespace Terrasoft.Tools.Svn
         /// <returns>Результат</returns>
         private bool CopyBaseBranch(string featureName, string featureNewUrl, long revision) {
             var svnCopyArgs = new SvnCopyArgs {
-                LogMessage = string.Format(Resources.SvnUtils_CopyBaseBranch_Init_Feature, featureName),
+                LogMessage =
+                    string.Format(CultureInfo.CurrentCulture,
+                        Resources.SvnUtils_CopyBaseBranch_Init_Feature,
+                        featureName
+                    ),
                 Revision = new SvnRevision(revision)
             };
             svnCopyArgs.Notify += SvnCopyArgsOnNotify;
             try {
                 return RemoteCopy(SvnTarget.FromString(BranchReleaseUrl), new Uri(featureNewUrl), svnCopyArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.Error(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty."
+                Logger.Error(argumentNullException.Message, string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString("ParameterIsEmpty") ??
+                        throw new InvalidOperationException(), argumentNullException.ParamName
+                    )
                 );
                 return false;
             } finally {
@@ -68,8 +75,10 @@ namespace Terrasoft.Tools.Svn
             try {
                 return CheckOut(SvnUriTarget.FromString(url), workingCopyPath, svnCheckOutArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.Error(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty."
+                Logger.Error(argumentNullException.Message, string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString("ParameterIsEmpty") ??
+                        throw new InvalidOperationException(), argumentNullException.ParamName
+                    )
                 );
                 return false;
             } finally {
@@ -91,8 +100,10 @@ namespace Terrasoft.Tools.Svn
             try {
                 return Update(workingCopyPath, svnUpdateArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.Error(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty."
+                Logger.Error(argumentNullException.Message, string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString("ParameterIsEmpty") ??
+                        throw new InvalidOperationException(), argumentNullException.ParamName
+                    )
                 );
                 return false;
             } finally {

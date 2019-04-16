@@ -168,6 +168,18 @@
     <value>NodeKind invalid.</value>
   </data>
   <data name="SMTPCRD" xml:space="preserve">
-    <value>VGVycmFzb2Z0Kw</value>
+    <value>VGVycmFzb2Z0Kw==</value>
+  </data>
+  <data name="FolderAddedInRevision" xml:space="preserve">
+    <value>Folder was added by {0} in revision {1}</value>
+  </data>
+  <data name="FolderExistAndWouldBackuped" xml:space="preserve">
+    <value>Folder already exists and would be backuped.</value>
+  </data>
+  <data name="ParameterIsEmpty" xml:space="preserve">
+    <value>Parameter {argumentNullException.ParamName} is empty.</value>
+  </data>
+  <data name="RemoveFolderContainFiles" xml:space="preserve">
+    <value>Remote folder contains a files.</value>
   </data>
 </root>

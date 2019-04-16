@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 using SharpSvn;
 using SharpSvn.Security;
 
@@ -18,41 +19,7 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="options">Коллекция параметров</param>
         protected SvnUtilsBase(IReadOnlyDictionary<string, string> options) {
-            foreach (KeyValuePair<string, string> option in options) {
-                switch (option.Key) {
-                    case "svnuser":
-                        UserName = options["svnuser"];
-                        break;
-                    case "workingcopypath":
-                        WorkingCopyPath = options["workingcopypath"];
-                        break;
-                    case "baseworkingcopypath":
-                        BaseWorkingCopyPath = options["baseworkingcopypath"];
-                        break;
-                    case "branchreleaseurl":
-                        BranchReleaseUrl = options["branchreleaseurl"];
-                        break;
-                    case "featurename":
-                        FeatureName = options["featurename"];
-                        break;
-                    case "branchfeatureurl":
-                        BranchFeatureUrl = options["branchfeatureurl"];
-                        break;
-                    case "maintainer":
-                        Maintainer = options["maintainer"];
-                        break;
-                    case "commitifnoerror":
-                        CommitIfNoError = Convert.ToBoolean(options["commitifnoerror"]);
-                        break;
-                    case "svnpassword":
-                        Password = options["svnpassword"];
-                        break;
-                    case "automerge":
-                        break;
-                    default:
-                        continue;
-                }
-            }
+            InitializeOptions(options);
 
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
@@ -63,42 +30,73 @@ namespace Terrasoft.Tools.Svn
             };
         }
 
-        private string UserName { get; }
-        private string Password { get; }
+        private void InitializeOptions(IReadOnlyDictionary<string, string> options) {
+            foreach (KeyValuePair<string, string> option in options) {
+                foreach (PropertyInfo propertyInfo in typeof(SvnUtilsBase).GetProperties(
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                )) {
+                    foreach (OptionName optionName in propertyInfo.GetCustomAttributes<OptionName>()) {
+                        if (optionName.Name.ToUpperInvariant() == option.Key) {
+                            propertyInfo.SetValue(this, option.Value);
+                        }
+                    }
+                }
+            }
+        }
+
+        [OptionName("SvnUser")] private string UserName { get; set; }
+
+        [OptionName("SvnPassword")] private string Password { get; set; }
 
         /// <summary>
         ///     Название фитчи
         /// </summary>
-        protected string FeatureName { get; }
+        [OptionName("FeatureName")]
+        protected string FeatureName { get; set; }
 
         /// <summary>
         ///     URL Ветки с фитчами
         /// </summary>
-        protected string BranchFeatureUrl { get; }
+        [OptionName("BranchFeatureUrl")]
+        protected string BranchFeatureUrl { get; set; }
 
         /// <summary>
         ///     Издатель
         /// </summary>
-        protected string Maintainer { get; }
+        [OptionName("Maintainer")]
+        protected string Maintainer { get; set; }
 
         /// <summary>
         ///     Базовая ветка, из которой выделяется фитча
         /// </summary>
-        protected string BranchReleaseUrl { get; }
+        [OptionName("BranchReleaseUrl")]
+        protected string BranchReleaseUrl { get; set; }
 
         /// <summary>
         ///     Путь к рабочей копии
         /// </summary>
-        protected string WorkingCopyPath { get; }
+        [OptionName("WorkingCopyPath")]
+        protected string WorkingCopyPath { get; set; }
 
         /// <summary>
         ///     Путь к базовой рабочей копии (родитель)
         /// </summary>
-        protected string BaseWorkingCopyPath { get; }
+        [OptionName("BaseWorkingCopyPath")]
+        protected string BaseWorkingCopyPath { get; set; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
-        internal bool CommitIfNoError { get; }
+        [OptionName("CommitIfNoError")]
+        internal bool CommitIfNoError { get; set; }
+    }
+
+    sealed class OptionName : Attribute
+    {
+        public OptionName(string name) {
+            Name = name;
+        }
+
+        public string Name { get; }
     }
 }

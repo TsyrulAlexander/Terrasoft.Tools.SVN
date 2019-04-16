@@ -7,7 +7,7 @@ namespace Terrasoft.Tools.Svn
         internal static void Error(string errorMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($@"{errorMessage} ");
+            Console.Write($@"{errorMessage}	");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
@@ -15,7 +15,7 @@ namespace Terrasoft.Tools.Svn
         internal static void Info(string infoMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write($@"{infoMessage} ");
+            Console.Write($@"{infoMessage}	");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
@@ -23,7 +23,7 @@ namespace Terrasoft.Tools.Svn
         internal static void Warning(string infoMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($@"{infoMessage} ");
+            Console.Write($@"{infoMessage}	");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
