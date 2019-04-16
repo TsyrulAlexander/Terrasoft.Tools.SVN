@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using Terrasoft.Tools.SvnUI.Model.Enums;
 
 namespace Terrasoft.Tools.SvnUI {
 	internal static class AppSetting {
@@ -17,7 +19,19 @@ namespace Terrasoft.Tools.SvnUI {
 		public static string DefDbServerUserPassword => GetSettingValue("defDbServerUserPassword");
 		public static string DefDatabaseName => GetSettingValue("defDatabaseName");
 		public static string DefBackupPath => GetSettingValue("defBackupPath");
+		public static FilePathType DefBackupPathType => GetEnumValue<FilePathType>("defBackupPathType");
+		public static string DefBackupFtpPath => GetSettingValue("defBackupFtpPath");
+		public static string DefFtpLogin => GetSettingValue("defFtpLogin");
+		public static string DefFtpPassword => GetSettingValue("defFtpPassword");
+		public static string DefFtpTempFile => GetSettingValue("defFtpTempFile");
 
+		private static T GetEnumValue<T>(string key) where T : struct {
+			var value = GetSettingValue(key);
+			if (Enum.TryParse(value, out T enumValue)) {
+				return enumValue;
+			}
+			return default(T);
+		}
 		private static string GetSettingValue(string key) {
 			return ConfigurationManager.AppSettings.Get(key);
 		}

@@ -19,6 +19,8 @@ namespace Terrasoft.Tools.SvnUI.Ioc {
 			Bind<FixFeatureSvnViewModel>().ToSelf().InTransientScope();
 			Bind<DeployAppViewModel>().ToSelf().InTransientScope();
 			Bind<RestoreDatabaseViewModel>().ToSelf().InTransientScope();
+			Bind<RestoreOracleDatabaseViewModel>().ToSelf().InTransientScope();
+			Bind<RestoreMsSqlDatabaseViewModel>().ToSelf().InTransientScope();
 			Bind<LogViewModel>().ToSelf().InTransientScope();
 			Bind<IBrowserDialog>().To<BrowserDialog>();
 			Bind<ILogger>().To<UILogger>().InSingletonScope();

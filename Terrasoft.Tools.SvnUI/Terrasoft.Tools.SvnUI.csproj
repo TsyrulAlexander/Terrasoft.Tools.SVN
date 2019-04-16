@@ -119,7 +119,9 @@
     <Compile Include="Model\Converter\InverseBooleanConverter.cs" />
     <Compile Include="Model\Enums\DataBaseType.cs" />
     <Compile Include="Model\Enums\DeployOperation.cs" />
+    <Compile Include="Model\Enums\FilePathType.cs" />
     <Compile Include="Model\EventArgs\ProgressEventArgs.cs" />
+    <Compile Include="Model\EventArgs\PropertyValueChangeEventArgs.cs" />
     <Compile Include="Model\EventArgs\StartDeployOperationEventArgs.cs" />
     <Compile Include="Model\Enums\OperationType.cs" />
     <Compile Include="Model\Property\BaseProperty.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Model\Log\UILogger.cs" />
     <Compile Include="ViewModel\BaseDeployViewModel.cs" />
+    <Compile Include="ViewModel\BaseRestoreDatabaseViewModel.cs" />
     <Compile Include="ViewModel\BaseSvnOperationViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CloseFeatureSvnViewModel.cs" />
@@ -148,6 +151,8 @@
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RestoreDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\RestoreMsSqlDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\RestoreOracleDatabaseViewModel.cs" />
     <Compile Include="ViewModel\SvnToolViewModel.cs" />
     <Compile Include="ViewModel\UpdateFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -177,6 +182,12 @@
     </Compile>
     <Compile Include="View\RestoreDatabaseView.xaml.cs">
       <DependentUpon>RestoreDatabaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RestoreMsSqlDatabaseControl.xaml.cs">
+      <DependentUpon>RestoreMsSqlDatabaseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SelectFilePathFromTypeControl.xaml.cs">
+      <DependentUpon>SelectFilePathFromTypeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SelectItemControl.xaml.cs">
       <DependentUpon>SelectItemControl.xaml</DependentUpon>
@@ -239,6 +250,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\RestoreDatabaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RestoreMsSqlDatabaseControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SelectFilePathFromTypeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

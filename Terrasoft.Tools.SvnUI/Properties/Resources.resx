@@ -266,4 +266,25 @@ SUCCESS</value>
   <data name="IfCloseFeatureMessage" xml:space="preserve">
     <value>Вы уверены, что хотите закрыть ветку?</value>
   </data>
+  <data name="FtpFile" xml:space="preserve">
+    <value>FTP файл</value>
+  </data>
+  <data name="LocalFile" xml:space="preserve">
+    <value>Локальный файл</value>
+  </data>
+  <data name="BackupFilePathType" xml:space="preserve">
+    <value>Тип хранилища бэкапа</value>
+  </data>
+  <data name="BackupFtpPath" xml:space="preserve">
+    <value>Путь в бекапу</value>
+  </data>
+  <data name="FtpLogin" xml:space="preserve">
+    <value>Логин FTP</value>
+  </data>
+  <data name="FtpPassword" xml:space="preserve">
+    <value>Пароль FTP</value>
+  </data>
+  <data name="FtpTempFile" xml:space="preserve">
+    <value>Путь для выгрузки бэкапа</value>
+  </data>
 </root>

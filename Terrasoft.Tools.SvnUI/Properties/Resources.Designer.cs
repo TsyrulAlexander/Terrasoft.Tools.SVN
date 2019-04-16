@@ -71,6 +71,24 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Тип хранилища бэкапа.
+        /// </summary>
+        public static string BackupFilePathType {
+            get {
+                return ResourceManager.GetString("BackupFilePathType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Путь в бекапу.
+        /// </summary>
+        public static string BackupFtpPath {
+            get {
+                return ResourceManager.GetString("BackupFtpPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Путь к бэкапу.
         /// </summary>
         public static string BackupPath {
@@ -297,6 +315,42 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FTP файл.
+        /// </summary>
+        public static string FtpFile {
+            get {
+                return ResourceManager.GetString("FtpFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Логин FTP.
+        /// </summary>
+        public static string FtpLogin {
+            get {
+                return ResourceManager.GetString("FtpLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароль FTP.
+        /// </summary>
+        public static string FtpPassword {
+            get {
+                return ResourceManager.GetString("FtpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Путь для выгрузки бэкапа.
+        /// </summary>
+        public static string FtpTempFile {
+            get {
+                return ResourceManager.GetString("FtpTempFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вы уверены, что хотите закрыть ветку?.
         /// </summary>
         public static string IfCloseFeatureMessage {
@@ -311,6 +365,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string IsEmpryPropertyValueMessage {
             get {
                 return ResourceManager.GetString("IsEmpryPropertyValueMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Локальный файл.
+        /// </summary>
+        public static string LocalFile {
+            get {
+                return ResourceManager.GetString("LocalFile", resourceCulture);
             }
         }
         

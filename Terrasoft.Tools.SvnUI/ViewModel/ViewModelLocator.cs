@@ -18,6 +18,8 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public FixFeatureSvnViewModel FixFeature => IocKernel.Get<FixFeatureSvnViewModel>();
 		public DeployAppViewModel DeployApp => IocKernel.Get<DeployAppViewModel>();
 		public RestoreDatabaseViewModel RestoreDatabase => IocKernel.Get<RestoreDatabaseViewModel>();
+		public RestoreMsSqlDatabaseViewModel RestoreMsSqlDatabase => IocKernel.Get<RestoreMsSqlDatabaseViewModel>();
+		public RestoreOracleDatabaseViewModel RestoreOracleDatabase => IocKernel.Get<RestoreOracleDatabaseViewModel>();
 		public LogViewModel Log => IocKernel.Get<LogViewModel>();
 	}
 }
