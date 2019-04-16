@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Terrasoft.Tools.SvnUI.View.SvnToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Terrasoft.Tools.SvnUI.View"
+             xmlns:resx="clr-namespace:Terrasoft.Tools.SvnUI.Properties"
+             xmlns:enums="clr-namespace:Terrasoft.Tools.SvnUI.Model.Enums"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000" TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    <Grid DataContext="{Binding SvnTool, Source={StaticResource Locator}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}">
+            <StackPanel
+                    Orientation="Horizontal" Margin="2" CanHorizontallyScroll="True">
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CreateFeature}"
+                        Content="{x:Static resx:Resources.CreateFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static enums:SvnOperation.CreateFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=UpdateFeature}"
+                        Content="{x:Static resx:Resources.UpdateFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static enums:SvnOperation.UpdateFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=FinishFeature}"
+                        Content="{x:Static resx:Resources.FinishFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static enums:SvnOperation.FinishFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CloseFeature}"
+                        Content="{x:Static resx:Resources.CloseFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static enums:SvnOperation.CloseFeature}"/>
+                <RadioButton
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="4"
+                        IsChecked="{Binding Path=SvnOperation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=FixFeature}"
+                        Content="{x:Static resx:Resources.FixFeature}" Command="{Binding SetSvnOperationCommand}" CommandParameter="{x:Static enums:SvnOperation.FixFeature}"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1" IsEnabled="{Binding InProgress, Converter={StaticResource InverseBooleanConverter}}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <local:CreateSvnFeatureView Visibility="{Binding SvnOperation, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='CreateFeature'}" />
+            <local:UpdateSvnFeatureView Visibility="{Binding SvnOperation, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='UpdateFeature'}" />
+            <local:FinishSvnFeatureView Visibility="{Binding SvnOperation, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='FinishFeature'}" />
+            <local:CloseSvnFeatureView Visibility="{Binding SvnOperation, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='CloseFeature'}" />
+            <local:FixSvnFeatureView Visibility="{Binding SvnOperation, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='FixFeature'}" />
+        </StackPanel>
+        <Button Grid.Row="2" Command="{Binding RunCommand}" Margin="1" Style="{DynamicResource RunBotton}">
+            <StackPanel Orientation="Horizontal">
+                <ProgressBar
+                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                    Value="50"
+                    IsIndeterminate="True" Visibility="{Binding InProgress, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Text="{x:Static resx:Resources.Run}" Foreground="{DynamicResource MaterialDesignBody}"></TextBlock>
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>
