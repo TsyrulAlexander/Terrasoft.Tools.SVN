@@ -50,8 +50,6 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 				using (var svnUtils = new SvnUtils(eventArgs.Arguments, Logger)) {
 					switch (eventArgs.SvnOperation) {
 						case SvnOperation.CreateFeature:
-							var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
-							Directory.CreateDirectory(workingCopyPath);
 							svnUtils.CreateFeature();
 							break;
 						case SvnOperation.UpdateFeature:
@@ -88,9 +86,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 		protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs) {
 			var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
 			var repositoryPath = eventArgs.Arguments[SvnUtilsBase.BranchFeatureUrlOptionName];
-			if (Directory.Exists(workingCopyPath) || string.IsNullOrWhiteSpace(repositoryPath)) {
+			if ((Directory.Exists(workingCopyPath) && !string.IsNullOrWhiteSpace(SvnUtils.GetRepositoryPathWithFolder(workingCopyPath)))
+				|| string.IsNullOrWhiteSpace(repositoryPath)) {
 				return;
 			}
+			Directory.CreateDirectory(workingCopyPath);
 			svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
 		}
 
