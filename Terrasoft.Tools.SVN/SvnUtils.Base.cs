@@ -5,6 +5,9 @@ using System.Reflection;
 using SharpSvn;
 using SharpSvn.Security;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+
 namespace Terrasoft.Tools.Svn
 {
     /// <inheritdoc />
@@ -18,30 +21,19 @@ namespace Terrasoft.Tools.Svn
         ///     Конструктор SVN клиента
         /// </summary>
         /// <param name="options">Коллекция параметров</param>
-        protected SvnUtilsBase(IReadOnlyDictionary<string, string> options) {
+        protected SvnUtilsBase(IReadOnlyDictionary<string, string> options)
+        {
             InitializeOptions(options);
 
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
+#pragma warning disable CA5359 // Do Not Disable Certificate Validation
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+#pragma warning restore CA5359 // Do Not Disable Certificate Validation
             Authentication.SslServerTrustHandlers += delegate(object o, SvnSslServerTrustEventArgs args) {
                 args.AcceptedFailures = args.Failures;
                 args.Save = true;
             };
-        }
-
-        private void InitializeOptions(IReadOnlyDictionary<string, string> options) {
-            foreach (KeyValuePair<string, string> option in options) {
-                foreach (PropertyInfo propertyInfo in typeof(SvnUtilsBase).GetProperties(
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-                )) {
-                    foreach (OptionName optionName in propertyInfo.GetCustomAttributes<OptionName>()) {
-                        if (optionName.Name.ToUpperInvariant() == option.Key) {
-                            propertyInfo.SetValue(this, option.Value);
-                        }
-                    }
-                }
-            }
         }
 
         [OptionName("SvnUser")] private string UserName { get; set; }
@@ -89,11 +81,28 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         [OptionName("CommitIfNoError")]
         internal bool CommitIfNoError { get; set; }
+
+        private void InitializeOptions(IReadOnlyDictionary<string, string> options)
+        {
+            foreach (KeyValuePair<string, string> option in options) {
+                foreach (PropertyInfo propertyInfo in typeof(SvnUtilsBase).GetProperties(
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                )) {
+                    foreach (OptionName optionName in propertyInfo.GetCustomAttributes<OptionName>()) {
+                        if (optionName.Name.Equals(option.Key, StringComparison.OrdinalIgnoreCase)) {
+                            propertyInfo.SetValue(this, option.Value);
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    sealed class OptionName : Attribute
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    internal sealed class OptionName : Attribute
     {
-        public OptionName(string name) {
+        public OptionName(string name)
+        {
             Name = name;
         }
 

@@ -1,37 +1,44 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Resources;
 using System.Security;
 using System.Text;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Terrasoft.Tools.Svn.Properties;
 
 namespace Terrasoft.Tools.Svn
 {
     internal static class BugReporter
     {
-        public static void SendBugReport(object value, Type type) {
-            if (type == null) {
+        public static void SendBugReport(object value, Type type)
+        {
+            if (type is null) {
                 return;
             }
 
-            using (var smtpClient = new SmtpClient("smtp.tscrm.com", 25)) {
-                using (var password = new SecureString()) {
+            using (SmtpClient smtpClient = new SmtpClient("smtp.tscrm.com", 25)) {
+                using (SecureString password = new SecureString()) {
                     GetSecurePassword(password);
-                    ICredentialsByHost credentials = new NetworkCredential(
-                        "BPMonlineBuild",
-                        password, "TSCRM"
-                    );
+                    const string domain = "TSCRM";
+                    const string userName = "BPMonlineBuild";
+                    ICredentialsByHost credentials = new NetworkCredential(userName, password, domain);
                     smtpClient.Credentials = credentials;
-                    using (var message = new MailMessage()) {
-                        var toMailAddress = new MailAddress("e.androsov@bpmonline.com", "Eugene Androsov");
+                    using (MailMessage message = new MailMessage()) {
+                        const string toAddress = "e.androsov@bpmonline.com";
+                        const string displayName = "Eugene Androsov";
+                        MailAddress toMailAddress = new MailAddress(toAddress, displayName);
                         message.To.Add(toMailAddress);
-                        var fromMailAddress = new MailAddress("bpmonlinebuild@bpmonline.com", "Terrasoft.Tools.Svn");
+                        const string fromAddress = "bpmonlinebuild@bpmonline.com";
+                        const string subject = "Terrasoft.Tools.Svn";
+                        MailAddress fromMailAddress = new MailAddress(fromAddress, subject);
 
                         using (MemoryStream stream = GetJsonStream(value)) {
-                            var attachment = new Attachment(stream, type.FullName + ".json");
+                            Attachment attachment = new Attachment(stream, type.FullName + ".json");
                             message.Attachments.Add(attachment);
                             message.From = fromMailAddress;
                             try {
@@ -45,12 +52,13 @@ namespace Terrasoft.Tools.Svn
             }
         }
 
-        private static void GetSecurePassword(SecureString securePassword) {
+        private static void GetSecurePassword(SecureString securePassword)
+        {
             ResourceManager resourceManager = Resources.ResourceManager;
 
-            string encodedHash = resourceManager?.GetString("SMTPCRD");
+            string encodedHash = resourceManager?.GetString("SMTPCRD", CultureInfo.CurrentCulture);
 
-            if (encodedHash == null) {
+            if (encodedHash is null) {
                 return;
             }
 
@@ -62,15 +70,17 @@ namespace Terrasoft.Tools.Svn
             }
         }
 
-        private static MemoryStream GetJsonStream(object value) {
-            using (var stream = new MemoryStream()) {
-                var streamWriter = new StreamWriter(stream);
+        private static MemoryStream GetJsonStream(object value)
+        {
+            MemoryStream stream = new MemoryStream();
+            using (StreamWriter streamWriter = new StreamWriter(stream)) {
                 string jsonObject = SerializeObjectToJsonString(value);
                 streamWriter.Write(jsonObject);
                 streamWriter.Flush();
-                stream.Position = 0;
-                return stream;
             }
+
+            stream.Position = 0;
+            return stream;
         }
 
         /// <summary>
@@ -78,10 +88,16 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="value">Объект сериализации</param>
         /// <returns></returns>
-        private static string SerializeObjectToJsonString(object value) {
+        private static string SerializeObjectToJsonString(object value)
+        {
+            JsonSerializerSettings converters = new JsonSerializerSettings();
+            JsonConverter converter = new StringEnumConverter(new DefaultNamingStrategy(), false);
+            converters.Converters.Add(converter);
+            return JsonConvert.SerializeObject(value, Formatting.Indented, converters);
+            /*
             var javaScriptSerializer = new JavaScriptSerializer();
             string jsonObject = javaScriptSerializer.Serialize(value);
-            return jsonObject;
+            return jsonObject;*/
         }
     }
 }

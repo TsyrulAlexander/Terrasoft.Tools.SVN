@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Tools.Svn", "Terrasoft.Tools.SVN\Terrasoft.Tools.Svn.csproj", "{9E2451FE-D03B-4823-BFCC-9449EB71685B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpSvn", "..\..\SVN\sharpsvn\branches\1.900x\src\SharpSvn\SharpSvn.vcxproj", "{6DD8A600-5A7E-4B7A-91EE-86AB78F58AAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DD8A600-5A7E-4B7A-91EE-86AB78F58AAC}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{6DD8A600-5A7E-4B7A-91EE-86AB78F58AAC}.Debug|Any CPU.Build.0 = Debug|Win32
-		{6DD8A600-5A7E-4B7A-91EE-86AB78F58AAC}.Release|Any CPU.ActiveCfg = Release|Win32
-		{6DD8A600-5A7E-4B7A-91EE-86AB78F58AAC}.Release|Any CPU.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

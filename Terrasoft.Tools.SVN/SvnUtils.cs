@@ -19,7 +19,8 @@ namespace Terrasoft.Tools.Svn
         /// <summary>
         ///     Реинтеграция фитчи в родительскую ветку
         /// </summary>
-        public void ReintegrationMergeToBaseBranch() {
+        public void ReintegrationMergeToBaseBranch()
+        {
             string baseWorkingCopyPath = BaseWorkingCopyPath;
             if (string.IsNullOrEmpty(baseWorkingCopyPath)) {
                 baseWorkingCopyPath = WorkingCopyPath + "_Release";
@@ -43,12 +44,12 @@ namespace Terrasoft.Tools.Svn
 
             try {
                 string workingCopyUrl = string.Empty;
-                Info(WorkingCopyPath, new SvnInfoArgs {Revision = new SvnRevision(SvnRevisionType.Head)}
-                    , (sender, args) => workingCopyUrl = args.Uri.ToString()
+                Info(WorkingCopyPath, new SvnInfoArgs {Revision = new SvnRevision(SvnRevisionType.Head)},
+                    (sender, args) => workingCopyUrl = args.Uri.ToString()
                 );
-                ReintegrationMerge(baseWorkingCopyPath
-                    , SvnTarget.FromString(workingCopyUrl)
-                    , svnReintegrationMergeArgs
+                ReintegrationMerge(baseWorkingCopyPath,
+                    SvnTarget.FromString(workingCopyUrl),
+                    svnReintegrationMergeArgs
                 );
             } catch (SvnClientNotReadyToMergeException e) {
                 Logger.Error(e.Message, e.Targets.ToString());
@@ -63,11 +64,36 @@ namespace Terrasoft.Tools.Svn
         /// <summary>
         ///     Удаление закрытой фитчи
         /// </summary>
-        public void DeleteClosedFeature() {
+        public void DeleteClosedFeature()
+        {
             string featureRootUrl = string.Empty;
             Info(SvnTarget.FromString(WorkingCopyPath), (sender, args) => featureRootUrl = args.Uri.ToString());
             var svnDeleteArgs = new SvnDeleteArgs {LogMessage = "Remove closed feature branch"};
             RemoteDelete(new Uri(featureRootUrl), svnDeleteArgs);
+        }
+
+        private bool TryDoSvnAction(Func<bool> doAction)
+        {
+            for (int i = 1; i < 3; i++) {
+                try {
+                    if (doAction.Invoke()) {
+                        return true;
+                    }
+                } catch (SvnException svnException) {
+                    Logger.Error(svnException.Message, svnException.StackTrace);
+                }
+
+                switch (i) {
+                    case 1:
+                        CleanUp(WorkingCopyPath);
+                        break;
+                    case 2:
+                        Revert(WorkingCopyPath);
+                        break;
+                }
+            }
+
+            return false;
         }
     }
 }

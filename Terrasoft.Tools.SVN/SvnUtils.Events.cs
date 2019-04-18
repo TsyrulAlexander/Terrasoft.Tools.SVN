@@ -6,6 +6,7 @@ using Terrasoft.Tools.Svn.Properties;
 
 namespace Terrasoft.Tools.Svn
 {
+#pragma warning disable CA1501 // Avoid excessive inheritance
     internal sealed partial class SvnUtils
     {
         /// <summary>
@@ -13,8 +14,9 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Элемент истории</param>
-        private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
-            if (svnNotifyEventArgs == null) {
+        private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
+            if (svnNotifyEventArgs is null) {
                 throw new ArgumentNullException(nameof(svnNotifyEventArgs));
             }
 
@@ -26,7 +28,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
-        private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+        private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
             Logger.Info(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.Path);
         }
 
@@ -35,7 +38,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs)
+        {
             AutoResolveConflict(svnConflictEventArgs);
         }
 
@@ -44,7 +48,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnCommittingEventArgs">Аргумент</param>
-        private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs svnCommittingEventArgs) {
+        private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs svnCommittingEventArgs)
+        {
             Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit,
                 svnCommittingEventArgs.Items.Count.ToString(CultureInfo.CurrentCulture)
             );
@@ -55,7 +60,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
-        private static void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+        private static void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
             Logger.Info(svnNotifyEventArgs.Action.ToString("G"), svnNotifyEventArgs.Path);
         }
 
@@ -64,7 +70,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnCommittedEventArgs">Аргумент</param>
-        private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs) {
+        private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs)
+        {
             Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision,
                 svnCommittedEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
             );
@@ -75,7 +82,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
-        private static void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+        private static void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
             Logger.Info(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.Path);
         }
 
@@ -84,7 +92,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
-        private static void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+        private static void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
             if (svnNotifyEventArgs.Action == SvnNotifyAction.TreeConflict) {
                 Logger.Error(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.FullPath);
             } else {
@@ -97,7 +106,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs)
+        {
             AutoResolveConflict(svnConflictEventArgs);
         }
 
@@ -106,7 +116,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
-        private static void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+        private static void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
             Logger.Info(svnNotifyEventArgs.Uri.ToString());
         }
 
@@ -115,7 +126,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
-        private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+        private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
+        {
             Logger.Info(string.Format(CultureInfo.CurrentCulture,
                     Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision,
                     svnNotifyEventArgs.Path,
@@ -129,7 +141,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnErrorEventArgs">Аргумент</param>
-        private static void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs svnErrorEventArgs) {
+        private static void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs svnErrorEventArgs)
+        {
             Logger.Error(svnErrorEventArgs.Exception.Message, svnErrorEventArgs.Exception.SvnErrorCategory.ToString());
         }
 
@@ -138,7 +151,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void SvnUpdateArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+        private void SvnUpdateArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs)
+        {
             AutoResolveConflict(svnConflictEventArgs);
         }
 
@@ -147,16 +161,17 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
-        private void ResolveConflictByType(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByType(SvnConflictEventArgs svnConflictEventArgs)
+        {
             switch (svnConflictEventArgs.ConflictType) {
                 case SvnConflictType.Tree:
                     ResolveConflictByTreeReason(svnConflictEventArgs);
                     break;
                 case SvnConflictType.Content:
-                    //
+                    svnConflictEventArgs.Choice = SvnAccept.Theirs;
                     break;
                 case SvnConflictType.Property:
-                    //
+                    svnConflictEventArgs.Choice = SvnAccept.Theirs;
                     break;
             }
         }
@@ -166,7 +181,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
-        private void ResolveConflictByTreeReason(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByTreeReason(SvnConflictEventArgs svnConflictEventArgs)
+        {
             switch (svnConflictEventArgs.ConflictReason) {
                 case SvnConflictReason.Added:
                     ResolveConflictByTreeAddedAction(svnConflictEventArgs);
@@ -196,7 +212,8 @@ namespace Terrasoft.Tools.Svn
         ///     Обработка конфликт существующей папки
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
-        private static void AddToExistsFolderConflict(SvnConflictEventArgs svnConflictEventArgs) {
+        private static void AddToExistsFolderConflict(SvnConflictEventArgs svnConflictEventArgs)
+        {
             if (!Directory.Exists(svnConflictEventArgs.Conflict.FullPath)) {
                 return;
             }
@@ -229,7 +246,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможная ошибка</exception>
-        private void ResolveConflictByTreeAddedAction(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByTreeAddedAction(SvnConflictEventArgs svnConflictEventArgs)
+        {
             switch (svnConflictEventArgs.ConflictAction) {
                 case SvnConflictAction.Replace:
                     break;
@@ -250,7 +268,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="svnConflictEventArgs"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private void ResolveConflictByTreeAddedAddNode(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByTreeAddedAddNode(SvnConflictEventArgs svnConflictEventArgs)
+        {
             if (svnConflictEventArgs.NodeKind == SvnNodeKind.Directory &&
                 svnConflictEventArgs.ConflictAction == SvnConflictAction.Add) {
                 AddToExistsFolderConflict(svnConflictEventArgs);
@@ -269,7 +288,8 @@ namespace Terrasoft.Tools.Svn
         ///     Обработчик ошибки
         /// </summary>
         /// <param name="e">Аргумент</param>
-        private void AutoResolveConflict(SvnConflictEventArgs e) {
+        private void AutoResolveConflict(SvnConflictEventArgs e)
+        {
             ResolveConflictByType(e);
             if (e.Choice == SvnAccept.Postpone) {
                 BugReporter.SendBugReport(e, e.GetType());
@@ -318,5 +338,6 @@ namespace Terrasoft.Tools.Svn
                     break;
             }*/
         }
+#pragma warning restore CA1501 // Avoid excessive inheritance
     }
 }

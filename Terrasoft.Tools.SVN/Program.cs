@@ -34,29 +34,30 @@ namespace Terrasoft.Tools.Svn
         private const string CommitIfNoErrorTrue = " -CommitIfNoError=true";
         private const string Maintainer = " -Maintainer=Partner1";
 
-        private static readonly ConcurrentDictionary<string, string> ProgramOptions =
+        private static readonly ConcurrentDictionary<string, string> _programOptions =
             new ConcurrentDictionary<string, string>();
 
-        private static int Main(string[] args) {
+        private static int Main(string[] args)
+        {
             Resources.Culture = CultureInfo.CurrentCulture;
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
-            if (!ProgramOptions.ContainsKey(@"OPERATION")) {
+            if (!_programOptions.ContainsKey(@"OPERATION")) {
                 Usage();
                 return 0;
             }
 
-            string programOption = ProgramOptions[@"OPERATION"].ToUpperInvariant();
+            string programOption = _programOptions[@"OPERATION"].ToUpperInvariant();
             switch (programOption) {
                 // ReSharper disable once StringLiteralTypo
                 case "CREATEFEATURE":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                    using (var svnUtils = new SvnUtils(_programOptions)) {
                         return Convert.ToInt32(svnUtils.CreateFeature());
                     }
                 // ReSharper disable once StringLiteralTypo
                 case "UPDATEFEATURE":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                    using (var svnUtils = new SvnUtils(_programOptions)) {
                         if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
                         }
@@ -65,21 +66,21 @@ namespace Terrasoft.Tools.Svn
                     break;
                 // ReSharper disable once StringLiteralTypo
                 case "FINISHFEATURE":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                    using (var svnUtils = new SvnUtils(_programOptions)) {
                         svnUtils.ReintegrationMergeToBaseBranch();
                     }
 
                     break;
                 // ReSharper disable once StringLiteralTypo
                 case "CLOSEFEATURE":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                    using (var svnUtils = new SvnUtils(_programOptions)) {
                         svnUtils.DeleteClosedFeature();
                     }
 
                     break;
                 // ReSharper disable once StringLiteralTypo
                 case "FIXFEATURE":
-                    using (var svnUtils = new SvnUtils(ProgramOptions)) {
+                    using (var svnUtils = new SvnUtils(_programOptions)) {
                         return Convert.ToInt32(
                             svnUtils.FixBranch()
                         );
@@ -93,7 +94,8 @@ namespace Terrasoft.Tools.Svn
             return 0;
         }
 
-        private static void Usage() {
+        private static void Usage()
+        {
             Console.WriteLine(Resources.Program_Usage);
             string sample1 = GenerateSample1();
             Console.WriteLine(sample1);
@@ -111,7 +113,8 @@ namespace Terrasoft.Tools.Svn
             Console.WriteLine(sample4);
         }
 
-        private static string GenerateSample4() {
+        private static string GenerateSample4()
+        {
             var sample4 = new StringBuilder();
             sample4.Append(TerrasoftToolsSvnExe);
             sample4.Append(OperationCloseFeature);
@@ -121,7 +124,8 @@ namespace Terrasoft.Tools.Svn
             return sample4.ToString();
         }
 
-        private static string GenerateSample3() {
+        private static string GenerateSample3()
+        {
             var sample3 = new StringBuilder();
             sample3.Append(TerrasoftToolsSvnExe);
             sample3.Append(OperationFinishFeature);
@@ -131,7 +135,8 @@ namespace Terrasoft.Tools.Svn
             return sample3.ToString();
         }
 
-        private static string GenerateSample2() {
+        private static string GenerateSample2()
+        {
             var sample2 = new StringBuilder();
             sample2.Append(TerrasoftToolsSvnExe);
             sample2.Append(OperationUpdateFeature);
@@ -142,7 +147,8 @@ namespace Terrasoft.Tools.Svn
             return sample2.ToString();
         }
 
-        private static string GenerateSample1() {
+        private static string GenerateSample1()
+        {
             var sample1 = new StringBuilder();
             sample1.Append(TerrasoftToolsSvnExe);
             sample1.Append(OperationCreateFeature);
@@ -156,7 +162,8 @@ namespace Terrasoft.Tools.Svn
             return sample1.ToString();
         }
 
-        private static void FillParamDelegate(string[] keyValueArray, ParallelLoopState arg2, long arg3) {
+        private static void FillParamDelegate(string[] keyValueArray, ParallelLoopState arg2, long arg3)
+        {
             string key = keyValueArray[0].Substring(1, keyValueArray[0].Length - 1);
             int copyLength = keyValueArray.Length - 1 < 0
                 ? 1
@@ -165,11 +172,12 @@ namespace Terrasoft.Tools.Svn
             FillParam(key.ToUpperInvariant(), value);
         }
 
-        private static void FillParam(string key, string value) {
-            if (ProgramOptions.ContainsKey(key)) {
-                ProgramOptions[key] = value;
+        private static void FillParam(string key, string value)
+        {
+            if (_programOptions.ContainsKey(key)) {
+                _programOptions[key] = value;
             } else {
-                ProgramOptions.TryAdd(key, value);
+                _programOptions.TryAdd(key, value);
             }
         }
     }

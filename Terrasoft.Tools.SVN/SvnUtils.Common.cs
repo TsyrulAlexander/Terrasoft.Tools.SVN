@@ -27,7 +27,8 @@ namespace Terrasoft.Tools.Svn
         /// <param name="revision">Номер ревизии в которой выделена ветка</param>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Строка с URL</returns>
-        private string GetBaseBranchPath(long revision, string workingCopyPath) {
+        private string GetBaseBranchPath(long revision, string workingCopyPath)
+        {
             string basePath = string.Empty;
             var svnInfoArgs = new SvnInfoArgs {Revision = new SvnRevision(revision)};
             Info(SvnTarget.FromString(workingCopyPath), svnInfoArgs, (sender, args) => {
@@ -43,7 +44,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Результат проверки</returns>
-        private bool CheckWorkingCopyForError(string workingCopyPath) {
+        private bool CheckWorkingCopyForError(string workingCopyPath)
+        {
             var result = true;
             Status(workingCopyPath, (sender, args) => {
                     if (result && args.Conflicted) {
@@ -59,11 +61,12 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Номер ревизии</returns>
-        private long GetFeatureFirstRevisionNumber(string workingCopyPath) {
+        private long GetFeatureFirstRevisionNumber(string workingCopyPath)
+        {
             long revision = 0;
             var svnLogArgs = new SvnLogArgs {StrictNodeHistory = false};
             svnLogArgs.Notify += SvnLogArgsOnNotify;
-            var branchLocalPath = string.Empty;
+            string branchLocalPath = string.Empty;
             Info(SvnTarget.FromString(workingCopyPath),
                 (sender, args) => {
                     branchLocalPath = args.Uri.LocalPath.Remove(0, args.RepositoryRoot.LocalPath.Length - 1);
@@ -81,9 +84,9 @@ namespace Terrasoft.Tools.Svn
                         }
 
                         if (changeItem.Action == SvnChangeAction.Add) {
-                            if (changeItem.CopyFromPath != branchLocalPath && changeItem.Path == branchLocalPath)
-
+                            if (changeItem.CopyFromPath != branchLocalPath && changeItem.Path == branchLocalPath) {
                                 revision = changeItem.CopyFromRevision;
+                            }
                         }
                     }
                 }
@@ -96,7 +99,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="basePath">URL родительской ветки</param>
         /// <returns>Номер ревизии</returns>
-        private long GetBaseBranchHeadRevision(string basePath) {
+        private long GetBaseBranchHeadRevision(string basePath)
+        {
             long headRevision = 0;
             var svnLogArgs = new SvnLogArgs {
                 Limit = 1,
@@ -117,7 +121,8 @@ namespace Terrasoft.Tools.Svn
         /// <param name="logMessage"></param>
         /// <exception cref="SvnRepositoryException">Исключение в случае не разрешённых конфликтов рабочей копии</exception>
         /// <returns>Результат фиксации изменений в хранилище</returns>
-        internal bool CommitChanges(bool checkError = false, string logMessage = "") {
+        internal bool CommitChanges(bool checkError = false, string logMessage = "")
+        {
             if (checkError && !CheckWorkingCopyForError(WorkingCopyPath)) {
                 Logger.Error(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
                 return false;
@@ -146,7 +151,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns></returns>
-        private bool SetPackageProperty(string workingCopyPath = "") {
+        private bool SetPackageProperty(string workingCopyPath = "")
+        {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
                 : workingCopyPath;
@@ -167,7 +173,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns></returns>
-        private bool RemovePackageProperty(string workingCopyPath = "") {
+        private bool RemovePackageProperty(string workingCopyPath = "")
+        {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
                 : workingCopyPath;
@@ -188,7 +195,8 @@ namespace Terrasoft.Tools.Svn
         /// </summary>
         /// <param name="logMessage">Комментарий</param>
         /// <returns>Результат выполнения</returns>
-        private bool MakePropertiesCommit(string logMessage = "") {
+        private bool MakePropertiesCommit(string logMessage = "")
+        {
             return Commit(WorkingCopyPath,
                 new SvnCommitArgs {
                     LogMessage = !string.IsNullOrEmpty(logMessage)
@@ -202,7 +210,8 @@ namespace Terrasoft.Tools.Svn
         ///     Исправление ветки путём добавления и удаления технического свойства
         /// </summary>
         /// <returns></returns>
-        internal bool FixBranch() {
+        internal bool FixBranch()
+        {
             return SetPackageProperty(WorkingCopyPath) &&
                    MakePropertiesCommit() &&
                    RemovePackageProperty(WorkingCopyPath) &&
@@ -217,11 +226,13 @@ namespace Terrasoft.Tools.Svn
         /// <param name="targetPath">URL репозитория.</param>
         /// <param name="conflictRelativePath">Относительный путь конфликтного контента.</param>
         /// <returns>Результат</returns>
-        private static bool FindOwnerInLog(string targetPath, string conflictRelativePath) {
+        private static bool FindOwnerInLog(string targetPath, string conflictRelativePath)
+        {
             var fended = false;
             using (var svnClient = new SvnClient()) {
-                void LogHandler(object sender, SvnLogEventArgs args) {
-                    if (args?.ChangedPaths == null) {
+                void LogHandler(object sender, SvnLogEventArgs args)
+                {
+                    if (args?.ChangedPaths is null) {
                         return;
                     }
 
@@ -233,12 +244,18 @@ namespace Terrasoft.Tools.Svn
                         if (!changeItem.Path.StartsWith(conflictRelativePath, StringComparison.Ordinal)) {
                             continue;
                         }
-                        
+
                         Logger.Warning(changeItem.Path == conflictRelativePath
-                                ? Resources.ResourceManager.GetString("FolderExistAndWouldBackuped")
-                                : Resources.ResourceManager.GetString("RemoveFolderContainFiles"),
+                                ? Resources.ResourceManager.GetString("FolderExistAndWouldBackuped",
+                                    CultureInfo.CurrentCulture
+                                )
+                                : Resources.ResourceManager.GetString("RemoveFolderContainFiles",
+                                    CultureInfo.CurrentCulture
+                                ),
                             string.Format(CultureInfo.CurrentCulture,
-                                Resources.ResourceManager.GetString("FolderAddedInRevision") ?? throw new InvalidOperationException(), args.Author, args.Revision
+                                Resources.ResourceManager.GetString("FolderAddedInRevision", CultureInfo.CurrentCulture
+                                ) ??
+                                throw new InvalidOperationException(), args.Author, args.Revision
                             )
                         );
                         fended = true;
@@ -259,11 +276,13 @@ namespace Terrasoft.Tools.Svn
         /// <param name="sourceRepository">URL источник</param>
         /// <param name="destinationFolder">Папка получатель</param>
         /// <returns>Результат</returns>
-        private static bool ExtractContentInMergedFolder(string sourceRepository, string destinationFolder) {
+        private static bool ExtractContentInMergedFolder(string sourceRepository, string destinationFolder)
+        {
             using (var client = new SvnClient()) {
                 var svnExportArgs = new SvnExportArgs {Overwrite = true};
 
-                void OnSvnExportArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+                void OnSvnExportArgsOnNotify(object sender, SvnNotifyEventArgs args)
+                {
                     Logger.Info(args.Action.ToString("G"), args.FullPath);
                 }
 
@@ -280,7 +299,8 @@ namespace Terrasoft.Tools.Svn
         ///     Создание резервной копии указанной папки
         /// </summary>
         /// <param name="src"></param>
-        private static void BackupExistsFolder(string src) {
+        private static void BackupExistsFolder(string src)
+        {
             string[] files = Directory.GetFiles(src);
             string targetPath = src + ".tmp";
             if (!Directory.Exists(targetPath)) {

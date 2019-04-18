@@ -11,8 +11,9 @@ namespace Terrasoft.Tools.Svn
         ///     Интеграция родительской ветки в ветку фитчи
         /// </summary>
         /// <returns>Результат успешности слияния</returns>
-        public bool UpdateFromReleaseBranch() {
-            if (!UpdateWorkingCopy(WorkingCopyPath)) {
+        public bool UpdateFromReleaseBranch()
+        {
+            if (!TryDoSvnAction(() => UpdateWorkingCopy(WorkingCopyPath))) {
                 return false;
             }
 
@@ -29,7 +30,8 @@ namespace Terrasoft.Tools.Svn
         /// <param name="workingCopyPath">Рабочая папка</param>
         /// <param name="basePathUrl">URL родительской ветки</param>
         /// <returns>Результат слияния</returns>
-        private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl) {
+        private bool MergeBaseBranchIntoFeature(string workingCopyPath, string basePathUrl)
+        {
             var svnMergeArgs = new SvnMergeArgs {Force = false};
             svnMergeArgs.Notify += OnSvnMergeArgsOnNotify;
             svnMergeArgs.Conflict += OnSvnMergeArgsOnConflict;
