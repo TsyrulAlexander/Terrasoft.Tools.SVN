@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Terrasoft.Tools.Svn.Properties;
 
 [assembly: CLSCompliant(true)]
 
@@ -13,7 +12,7 @@ namespace Terrasoft.Tools.Svn
 {
     internal static class Program
     {
-        private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
+        private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.Svn.exe";
         private const string OperationCreateFeature = " -Operation=CreateFeature";
         private const string OperationUpdateFeature = " -Operation=UpdateFeature";
         private const string OperationFinishFeature = " -Operation=FinishFeature";
@@ -39,7 +38,6 @@ namespace Terrasoft.Tools.Svn
 
         private static int Main(string[] args)
         {
-            Resources.Culture = CultureInfo.CurrentCulture;
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
@@ -96,7 +94,7 @@ namespace Terrasoft.Tools.Svn
 
         private static void Usage()
         {
-            Console.WriteLine(Resources.Program_Usage);
+            Console.WriteLine(Resources.ResourceManager.GetString("Program_Usage", CultureInfo.CurrentCulture));
             string sample1 = GenerateSample1();
             Console.WriteLine(sample1);
             Console.WriteLine();

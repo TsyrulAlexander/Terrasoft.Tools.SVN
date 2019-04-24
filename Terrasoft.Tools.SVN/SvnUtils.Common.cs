@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using SharpSvn;
-using Terrasoft.Tools.Svn.Properties;
 
 namespace Terrasoft.Tools.Svn
 {
@@ -124,14 +123,18 @@ namespace Terrasoft.Tools.Svn
         internal bool CommitChanges(bool checkError = false, string logMessage = "")
         {
             if (checkError && !CheckWorkingCopyForError(WorkingCopyPath)) {
-                Logger.Error(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
+                Logger.Error(Resources.ResourceManager.GetString("SvnUtils_CommitChanges_Sources_not_resolved",
+                        CultureInfo.CurrentCulture
+                    )
+                );
                 return false;
             }
 
             var svnCommitArgs = new SvnCommitArgs {
                 LogMessage = string.IsNullOrEmpty(logMessage)
-                    ? Resources
-                        .SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature
+                    ? Resources.ResourceManager.GetString(
+                        "SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature", CultureInfo.CurrentCulture
+                    )
                     : logMessage
             };
 

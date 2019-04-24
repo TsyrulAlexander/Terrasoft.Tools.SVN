@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using SharpSvn;
-using Terrasoft.Tools.Svn.Properties;
 
 namespace Terrasoft.Tools.Svn
 {
@@ -20,7 +19,9 @@ namespace Terrasoft.Tools.Svn
             var svnCopyArgs = new SvnCopyArgs {
                 LogMessage =
                     string.Format(CultureInfo.CurrentCulture,
-                        Resources.SvnUtils_CopyBaseBranch_Init_Feature,
+                        Resources.ResourceManager.GetString(
+                            "SvnUtils_CopyBaseBranch_Init_Feature",CultureInfo.CurrentCulture) ?? throw new
+                            InvalidOperationException(),
                         featureName
                     ),
                 Revision = new SvnRevision(revision)

@@ -86,6 +86,7 @@ namespace Terrasoft.Tools.Svn
                 switch (i) {
                     case 1:
                         CleanUp(WorkingCopyPath);
+                        Revert(WorkingCopyPath);
                         break;
                     case 2:
                         Revert(WorkingCopyPath);

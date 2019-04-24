@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using SharpSvn;
-using Terrasoft.Tools.Svn.Properties;
 
 namespace Terrasoft.Tools.Svn
 {
@@ -50,7 +49,9 @@ namespace Terrasoft.Tools.Svn
         /// <param name="svnCommittingEventArgs">Аргумент</param>
         private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs svnCommittingEventArgs)
         {
-            Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit,
+            Logger.Info(Resources.ResourceManager.GetString(
+                    "SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit", CultureInfo.CurrentCulture
+                ),
                 svnCommittingEventArgs.Items.Count.ToString(CultureInfo.CurrentCulture)
             );
         }
@@ -72,7 +73,8 @@ namespace Terrasoft.Tools.Svn
         /// <param name="svnCommittedEventArgs">Аргумент</param>
         private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs)
         {
-            Logger.Info(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision,
+            Logger.Info(Resources.ResourceManager.GetString(
+                    "SvnUtils_SvnCommitArgsOnCommitted_Commited_revision",CultureInfo.CurrentCulture),
                 svnCommittedEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
             );
         }
@@ -129,7 +131,10 @@ namespace Terrasoft.Tools.Svn
         private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs)
         {
             Logger.Info(string.Format(CultureInfo.CurrentCulture,
-                    Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision,
+                    Resources.ResourceManager.GetString("SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision",
+                        CultureInfo.CurrentCulture
+                    ) ??
+                    throw new InvalidOperationException(),
                     svnNotifyEventArgs.Path,
                     svnNotifyEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
                 )

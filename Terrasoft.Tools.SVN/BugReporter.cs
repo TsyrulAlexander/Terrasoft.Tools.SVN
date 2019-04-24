@@ -9,7 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Terrasoft.Tools.Svn.Properties;
+
 
 namespace Terrasoft.Tools.Svn
 {

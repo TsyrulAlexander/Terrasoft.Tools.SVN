@@ -17,11 +17,21 @@ namespace Terrasoft.Tools.Svn
                 return false;
             }
 
-            long revision = GetFeatureFirstRevisionNumber(WorkingCopyPath);
+            long revision = 1;
+            TryDoSvnAction(() => {
+                    revision = GetFeatureFirstRevisionNumber(WorkingCopyPath);
+                    return true;
+                }
+            );
 
-            string basePath = GetBaseBranchPath(revision, WorkingCopyPath);
+            string basePath = string.Empty;
+            TryDoSvnAction(() => {
+                    basePath = GetBaseBranchPath(revision, WorkingCopyPath);
+                    return true;
+                }
+            );
 
-            return MergeBaseBranchIntoFeature(WorkingCopyPath, basePath);
+            return TryDoSvnAction(() => MergeBaseBranchIntoFeature(WorkingCopyPath, basePath));
         }
 
         /// <summary>
