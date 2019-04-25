@@ -20,6 +20,20 @@ namespace Terrasoft.Tools.SVN
         /// <param name="programOptions">Словарь с параметрами</param>
         internal SvnUtils(IReadOnlyDictionary<string, string> programOptions) : base(programOptions) { }
 
+		public static string GetRepositoryPathWithFolder(string folderPath) {
+			try {
+				using (var svnClient = new SvnClient()) {
+					svnClient.GetInfo(SvnTarget.FromString(folderPath), out var args);
+					return args?.Uri?.AbsoluteUri;
+				}
+			} catch (SvnInvalidNodeKindException nodeKindException) {
+				if (nodeKindException.SvnErrorCode == SvnErrorCode.SVN_ERR_WC_NOT_DIRECTORY) {
+					return string.Empty;
+				}
+				throw;
+			}
+		}
+
         /// <summary>
         ///     Получить URL ветки из которой была выделена фитча
         /// </summary>
