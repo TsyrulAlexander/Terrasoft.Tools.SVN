@@ -59,11 +59,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		}
 
 		private void Execute() {
-			FileUtilities.SaveFtpFile(@"ftp://ftp01.bpmonline.com/backup/MTSBY7123_R.DMP", @"C:\Projects\DevTemp\azaza.BAK", "ftp01.bpmonline.com|partner", "346d!fmgU@$");
-			//var file = FileUtilities.DownloadFtpFile(@"ftp://ftp01.bpmonline.com/backup/MTSBY7123_R.DMP", "ftp01.bpmonline.com|partner", "346d!fmgU@$");
-			//IDbExecutor executor = new OracleExecutor("partnerora.tscrm.com", "MTS_A_KALUS", "MTS_A_KALUS");
-			//executor.RestoreDb("MTS_A_KALUS", "");
-			//Messenger.Default.Send(Operation);
+			Messenger.Default.Send(Operation);
 		}
 	}
 }

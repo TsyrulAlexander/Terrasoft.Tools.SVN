@@ -21,9 +21,16 @@ namespace Terrasoft.Core.SVN
         public SvnUtils(IReadOnlyDictionary<string, string> programOptions, ILogger logger) : base(programOptions, logger) { }
 
 		public static string GetRepositoryPathWithFolder(string folderPath) {
-			using (var svnClient = new SvnClient()) {
-				svnClient.GetInfo(SvnTarget.FromString(folderPath), out var args);
-				return args?.Uri?.AbsoluteUri;
+			try {
+				using (var svnClient = new SvnClient()) {
+					svnClient.GetInfo(SvnTarget.FromString(folderPath), out var args);
+					return args?.Uri?.AbsoluteUri;
+				}
+			} catch (SvnInvalidNodeKindException nodeKindException) {
+				if (nodeKindException.SvnErrorCode == SvnErrorCode.SVN_ERR_WC_NOT_DIRECTORY) {
+					return string.Empty;
+				}
+				throw;
 			}
 		}
 
