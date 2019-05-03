@@ -20,7 +20,9 @@ namespace Terrasoft.Tools.Svn
                 LogMessage =
                     string.Format(CultureInfo.CurrentCulture,
                         Resources.ResourceManager.GetString(
-                            "SvnUtils_CopyBaseBranch_Init_Feature",CultureInfo.CurrentCulture) ?? throw new
+                            "SvnUtils_CopyBaseBranch_Init_Feature", CultureInfo.CurrentCulture
+                        ) ??
+                        throw new
                             InvalidOperationException(),
                         featureName
                     ),

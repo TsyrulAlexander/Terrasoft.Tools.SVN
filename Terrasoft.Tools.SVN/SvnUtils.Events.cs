@@ -74,7 +74,8 @@ namespace Terrasoft.Tools.Svn
         private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs)
         {
             Logger.Info(Resources.ResourceManager.GetString(
-                    "SvnUtils_SvnCommitArgsOnCommitted_Commited_revision",CultureInfo.CurrentCulture),
+                    "SvnUtils_SvnCommitArgsOnCommitted_Commited_revision", CultureInfo.CurrentCulture
+                ),
                 svnCommittedEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
             );
         }

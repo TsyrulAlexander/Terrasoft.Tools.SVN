@@ -74,7 +74,7 @@ namespace Terrasoft.Tools.Svn
 
         private bool TryDoSvnAction(Func<bool> doAction)
         {
-            for (int i = 1; i < 3; i++) {
+            for (var i = 1; i < 3; i++) {
                 try {
                     if (doAction.Invoke()) {
                         return true;

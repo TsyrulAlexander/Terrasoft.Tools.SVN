@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Red.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="HeaderTextBoxStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTitleTextBlock}"/>
+    <Color x:Key="BorderColor">Red</Color>
+    <Color x:Key="BackgrountColor">Transparent</Color>
+    <SolidColorBrush x:Key="BackgrountBrush" Color="{StaticResource BackgrountColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"></SolidColorBrush>
+    <Style x:Key="SelectFolderButton" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Padding" Value="4"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+    </Style>
+    <Style x:Key="RunBotton" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="Red" Opacity="0.2"></SolidColorBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
