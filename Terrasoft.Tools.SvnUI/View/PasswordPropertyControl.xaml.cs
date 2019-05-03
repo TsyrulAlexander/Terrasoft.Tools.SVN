@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Terrasoft.Tools.SvnUI.Model.Property;
 
 namespace Terrasoft.Tools.SvnUI.View
 {
-    public partial class PasswordPropertyControl : UserControl
+    public partial class PasswordPropertyControl
     {
         public static readonly DependencyProperty StringProperty =
             DependencyProperty.Register("Property", typeof(StringProperty), typeof(PasswordPropertyControl),
@@ -29,12 +28,14 @@ namespace Terrasoft.Tools.SvnUI.View
             }
         }
 
+/*
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Property.Value)) {
                 psw.Password = Property.Value;
             }
         }
+*/
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {

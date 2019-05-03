@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace Terrasoft.Tools.SvnUI.View
+﻿namespace Terrasoft.Tools.SvnUI.View
 {
     /// <summary>
     ///     Interaction logic for RestoreDatabaseView.xaml
     /// </summary>
-    public partial class RestoreDatabaseView : UserControl
+    public partial class RestoreDatabaseView
     {
         public RestoreDatabaseView()
         {

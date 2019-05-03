@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using GalaSoft.MvvmLight.CommandWpf;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.Property;
 
 namespace Terrasoft.Tools.SvnUI.View
 {
-    public partial class DataBaseTypePropertyControl : UserControl
+    public partial class DataBaseTypePropertyControl
     {
         public static readonly DependencyProperty DataBaseTypeProperty =
             DependencyProperty.Register("Property", typeof(EnumProperty<DataBaseType>),

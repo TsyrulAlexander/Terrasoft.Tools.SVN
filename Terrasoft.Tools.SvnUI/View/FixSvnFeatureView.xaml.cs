@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace Terrasoft.Tools.SvnUI.View
+﻿namespace Terrasoft.Tools.SvnUI.View
 {
     /// <summary>
     ///     Interaction logic for FixSvnFeatureView.xaml
     /// </summary>
-    public partial class FixSvnFeatureView : UserControl
+    public partial class FixSvnFeatureView
     {
         public FixSvnFeatureView()
         {

@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using GalaSoft.MvvmLight.CommandWpf;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.Property;
 
 namespace Terrasoft.Tools.SvnUI.View
 {
-    public partial class SelectFilePathFromTypeControl : UserControl
+    public partial class SelectFilePathFromTypeControl
     {
         public static readonly DependencyProperty FilePathTypeProperty = DependencyProperty.Register("FilePathType",
             typeof(EnumProperty<FilePathType>), typeof(SelectFilePathFromTypeControl)

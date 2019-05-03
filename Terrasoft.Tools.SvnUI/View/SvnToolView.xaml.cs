@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace Terrasoft.Tools.SvnUI.View
+﻿namespace Terrasoft.Tools.SvnUI.View
 {
-    public partial class SvnToolView : UserControl
+    public partial class SvnToolView
     {
         public SvnToolView()
         {

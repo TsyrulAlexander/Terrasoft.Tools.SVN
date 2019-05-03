@@ -4,7 +4,7 @@ using Terrasoft.Tools.SvnUI.Ioc;
 
 namespace Terrasoft.Tools.SvnUI
 {
-    public partial class App : Application
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {

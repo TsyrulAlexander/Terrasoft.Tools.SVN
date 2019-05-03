@@ -11,7 +11,7 @@ using Terrasoft.Tools.SvnConsole.Properties;
 
 namespace Terrasoft.Tools.SvnConsole
 {
-    internal class Program
+    internal static class Program
     {
         private const string TerrasoftToolsSvnExe = @"	Terrasoft.Tools.SVN.exe";
         private const string OperationCreateFeature = " -Operation=CreateFeature";
@@ -34,7 +34,7 @@ namespace Terrasoft.Tools.SvnConsole
         private const string CommitIfNoErrorTrue = " -CommitIfNoError=true";
         private const string Maintainer = " -Maintainer=Partner1";
 
-        private static readonly ConcurrentDictionary<string, string> ProgramOptions =
+        private static readonly ConcurrentDictionary<string, string> _programOptions =
             new ConcurrentDictionary<string, string>();
 
         private static ILogger Logger { get; set; }
@@ -46,13 +46,13 @@ namespace Terrasoft.Tools.SvnConsole
             IEnumerable<string[]> argsEnumerable =
                 args.Select(argument => argument.Split('=')).Where(keyValue => keyValue.Length == 2);
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
-            if (!ProgramOptions.ContainsKey(@"operation")) {
+            if (!_programOptions.ContainsKey(@"operation")) {
                 Usage();
                 Console.ReadLine();
                 return 0;
             }
 
-            string programOption = ProgramOptions[@"operation"].ToLowerInvariant();
+            string programOption = _programOptions[@"operation"].ToLowerInvariant();
             int result = StartOperation(programOption);
             Console.ReadLine();
             return result;
@@ -62,11 +62,11 @@ namespace Terrasoft.Tools.SvnConsole
         {
             switch (operation) {
                 case Constant.CreateFeatureCommandName:
-                    using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
+                    using (var svnUtils = new SvnUtils(_programOptions, Logger)) {
                         return Convert.ToInt32(svnUtils.CreateFeature());
                     }
                 case Constant.UpdateFeatureCommandName:
-                    using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
+                    using (var svnUtils = new SvnUtils(_programOptions, Logger)) {
                         if (svnUtils.UpdateFromReleaseBranch() && svnUtils.CommitIfNoError) {
                             return Convert.ToInt32(svnUtils.CommitChanges(true));
                         }
@@ -74,19 +74,19 @@ namespace Terrasoft.Tools.SvnConsole
 
                     break;
                 case Constant.FinishFeatureCommandName:
-                    using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
+                    using (var svnUtils = new SvnUtils(_programOptions, Logger)) {
                         svnUtils.ReintegrationMergeToBaseBranch();
                     }
 
                     break;
                 case Constant.CloseFeatureCommandName:
-                    using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
+                    using (var svnUtils = new SvnUtils(_programOptions, Logger)) {
                         svnUtils.DeleteClosedFeature();
                     }
 
                     break;
                 case Constant.FixFeatureCommandName:
-                    using (var svnUtils = new SvnUtils(ProgramOptions, Logger)) {
+                    using (var svnUtils = new SvnUtils(_programOptions, Logger)) {
                         return Convert.ToInt32(svnUtils.FixBranch());
                     }
                 default:
@@ -107,10 +107,10 @@ namespace Terrasoft.Tools.SvnConsole
 
         private static void FillParam(string key, string value)
         {
-            if (ProgramOptions.ContainsKey(key)) {
-                ProgramOptions[key] = value;
+            if (_programOptions.ContainsKey(key)) {
+                _programOptions[key] = value;
             } else {
-                ProgramOptions.TryAdd(key, value);
+                _programOptions.TryAdd(key, value);
             }
         }
 

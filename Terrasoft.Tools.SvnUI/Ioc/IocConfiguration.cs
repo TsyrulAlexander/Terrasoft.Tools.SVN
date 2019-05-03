@@ -26,7 +26,7 @@ namespace Terrasoft.Tools.SvnUI.Ioc
             Bind<RestoreMsSqlDatabaseViewModel>().ToSelf().InTransientScope();
             Bind<LogViewModel>().ToSelf().InTransientScope();
             Bind<IBrowserDialog>().To<BrowserDialog>();
-            Bind<ILogger>().To<UILogger>().InSingletonScope();
+            Bind<ILogger>().To<UiLogger>().InSingletonScope();
             Bind<IDbExecutor>().To<MsSqlExecutor>().Named("MSSql");
             Bind<IDbExecutor>().To<OracleExecutor>().Named("Oracle");
         }

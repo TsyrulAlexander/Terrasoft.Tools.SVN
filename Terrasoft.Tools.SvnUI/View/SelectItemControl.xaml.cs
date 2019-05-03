@@ -1,11 +1,10 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Terrasoft.Tools.SvnUI.Model.Property;
 
 namespace Terrasoft.Tools.SvnUI.View
 {
-    public partial class SelectItemControl : UserControl
+    public partial class SelectItemControl
     {
         public static readonly DependencyProperty StringProperty =
             DependencyProperty.Register("Property", typeof(StringProperty), typeof(SelectItemControl));

@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace Terrasoft.Tools.SvnUI.View
+﻿namespace Terrasoft.Tools.SvnUI.View
 {
     /// <summary>
     ///     Interaction logic for FinishSvnFeatureView.xaml
     /// </summary>
-    public partial class FinishSvnFeatureView : UserControl
+    public partial class FinishSvnFeatureView
     {
         public FinishSvnFeatureView()
         {

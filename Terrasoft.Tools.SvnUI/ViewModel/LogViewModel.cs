@@ -19,7 +19,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         {
             Logger = logger;
             BrowserDialog = browserDialog;
-            ((UILogger) logger).Execute += OnLogExecute;
+            ((UiLogger) logger).Execute += OnLogExecute;
             LogInfoCollection = new ObservableCollection<LogInfo>();
             ClearCommand = new RelayCommand(Clear);
             CopyCommand = new RelayCommand(CopyLog);
