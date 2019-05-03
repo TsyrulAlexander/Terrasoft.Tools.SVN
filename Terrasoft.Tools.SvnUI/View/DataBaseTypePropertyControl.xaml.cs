@@ -12,8 +12,7 @@ namespace Terrasoft.Tools.SvnUI.View
                 typeof(DataBaseTypePropertyControl)
             );
 
-        public DataBaseTypePropertyControl()
-        {
+        public DataBaseTypePropertyControl() {
             SetDataBaseTypeCommand = new RelayCommand<DataBaseType>(SetDataBaseType);
             InitializeComponent();
         }
@@ -25,8 +24,7 @@ namespace Terrasoft.Tools.SvnUI.View
             set => SetValue(DataBaseTypeProperty, value);
         }
 
-        private void SetDataBaseType(DataBaseType type)
-        {
+        private void SetDataBaseType(DataBaseType type) {
             Property.Value = type;
         }
     }

@@ -5,8 +5,7 @@
     /// </summary>
     public partial class RestoreMsSqlDatabaseControl
     {
-        public RestoreMsSqlDatabaseControl()
-        {
+        public RestoreMsSqlDatabaseControl() {
             InitializeComponent();
         }
     }

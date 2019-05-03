@@ -5,8 +5,7 @@
     /// </summary>
     public partial class FixSvnFeatureView
     {
-        public FixSvnFeatureView()
-        {
+        public FixSvnFeatureView() {
             InitializeComponent();
         }
     }

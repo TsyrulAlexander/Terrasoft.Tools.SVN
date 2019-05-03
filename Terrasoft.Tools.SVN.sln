@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Tools.Svn", "Terrasoft.Tools.SVN\Terrasoft.Tools.Svn.csproj", "{9E2451FE-D03B-4823-BFCC-9449EB71685B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Tools.SvnConsole", "Terrasoft.Tools.SvnConsole\Terrasoft.Tools.SvnConsole.csproj", "{DCC998E1-9BC7-454F-9CF3-B42802C66D32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Tools.SvnUI", "Terrasoft.Tools.SvnUI\Terrasoft.Tools.SvnUI.csproj", "{C6007A3A-6506-49DD-9138-69170B849EE8}"
@@ -17,16 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Core.Git", "Terra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Core.Version", "Terrasoft.Core.Version\Terrasoft.Core.Version.csproj", "{EDC1DF55-C32F-40AF-A835-A61E364D4F25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrasoft.Core.SVN", "Terrasoft.Core.SVN\Terrasoft.Core.SVN.csproj", "{1D914E84-754F-4093-9C50-640B149BBE72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E2451FE-D03B-4823-BFCC-9449EB71685B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCC998E1-9BC7-454F-9CF3-B42802C66D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCC998E1-9BC7-454F-9CF3-B42802C66D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCC998E1-9BC7-454F-9CF3-B42802C66D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{EDC1DF55-C32F-40AF-A835-A61E364D4F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC1DF55-C32F-40AF-A835-A61E364D4F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDC1DF55-C32F-40AF-A835-A61E364D4F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D914E84-754F-4093-9C50-640B149BBE72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D914E84-754F-4093-9C50-640B149BBE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D914E84-754F-4093-9C50-640B149BBE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D914E84-754F-4093-9C50-640B149BBE72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

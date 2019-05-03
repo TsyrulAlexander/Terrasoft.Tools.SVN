@@ -9,8 +9,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Converter
     public class EnumDescriptionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter,
-            CultureInfo culture)
-        {
+            CultureInfo culture) {
             if (value == null && targetType != null) {
                 return string.Empty;
             }
@@ -19,8 +18,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Converter
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
-            CultureInfo culture)
-        {
+            CultureInfo culture) {
             if (value == null || string.IsNullOrWhiteSpace(value.ToString())) {
                 return null;
             }
@@ -28,8 +26,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Converter
             return Enum.Parse(targetType, value.ToString());
         }
 
-        public static string GetDescription(Enum en)
-        {
+        public static string GetDescription(Enum en) {
             Type type = en.GetType();
             MemberInfo[] memInfo = type.GetMember(en.ToString());
             if (memInfo.Length > 0) {

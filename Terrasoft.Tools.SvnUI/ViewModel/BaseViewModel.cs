@@ -11,8 +11,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
     {
         private bool _inProgress;
 
-        public BaseViewModel()
-        {
+        public BaseViewModel() {
             Messenger.Default.Register<ProgressEventArgs>(this, OnProgressChange);
         }
 
@@ -24,18 +23,15 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        protected virtual void OnProgressChange(ProgressEventArgs progress)
-        {
+        protected virtual void OnProgressChange(ProgressEventArgs progress) {
             DispatcherHelper.CheckBeginInvokeOnUI(() => InProgress = progress.InProgress);
         }
 
-        protected virtual void SetProgressState(bool state)
-        {
+        protected virtual void SetProgressState(bool state) {
             Messenger.Default.Send(new ProgressEventArgs {InProgress = state, Owner = this});
         }
 
-        protected virtual bool ValidateProperties(out string message)
-        {
+        protected virtual bool ValidateProperties(out string message) {
             IEnumerable<BaseProperty> properties = GetProperties();
             foreach (BaseProperty property in properties) {
                 if (!property.IsValid(out message)) {
@@ -47,8 +43,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             return true;
         }
 
-        protected virtual Dictionary<string, string> GetPropertiesToArguments()
-        {
+        protected virtual Dictionary<string, string> GetPropertiesToArguments() {
             var args = new Dictionary<string, string>();
             IEnumerable<BaseProperty> properties = GetProperties();
             foreach (BaseProperty property in properties) {
@@ -59,14 +54,12 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             return args;
         }
 
-        protected virtual (string name, string value) GetPropertyToArgument(BaseProperty property)
-        {
+        protected virtual (string name, string value) GetPropertyToArgument(BaseProperty property) {
             var operationKey = (string) property.Tag;
             return (operationKey.ToLower(), property.ToString());
         }
 
-        protected virtual IEnumerable<BaseProperty> GetProperties()
-        {
+        protected virtual IEnumerable<BaseProperty> GetProperties() {
             return new BaseProperty[0];
         }
     }

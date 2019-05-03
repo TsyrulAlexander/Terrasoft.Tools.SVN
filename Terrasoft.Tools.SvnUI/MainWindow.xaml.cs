@@ -9,19 +9,16 @@ namespace Terrasoft.Tools.SvnUI
     /// </summary>
     public partial class MainWindow
     {
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
         }
 
-        private void CloseLogPanelClick(object sender, RoutedEventArgs e)
-        {
+        private void CloseLogPanelClick(object sender, RoutedEventArgs e) {
             LogListBox.Visibility = Visibility.Collapsed;
             DrawerHost.CloseDrawerCommand.Execute(Dock.Bottom, (IInputElement) sender);
         }
 
-        private void OpenLogPanelClick(object sender, RoutedEventArgs e)
-        {
+        private void OpenLogPanelClick(object sender, RoutedEventArgs e) {
             LogListBox.Visibility = Visibility.Visible;
             DrawerHost.OpenDrawerCommand.Execute(Dock.Bottom, (IInputElement) sender);
         }

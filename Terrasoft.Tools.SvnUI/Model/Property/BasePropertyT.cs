@@ -22,13 +22,11 @@ namespace Terrasoft.Tools.SvnUI.Model.Property
 
         public event Action<PropertyValueChangeEventArgs<T>> PropertyValueChange;
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Value.ToString();
         }
 
-        protected virtual void OnPropertyValueChange(PropertyValueChangeEventArgs<T> eventArgs)
-        {
+        protected virtual void OnPropertyValueChange(PropertyValueChangeEventArgs<T> eventArgs) {
             PropertyValueChange?.Invoke(eventArgs);
         }
     }

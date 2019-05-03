@@ -8,16 +8,14 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 {
     public abstract class BaseDeployViewModel : BaseViewModel
     {
-        public BaseDeployViewModel(IBrowserDialog browserDialog)
-        {
+        public BaseDeployViewModel(IBrowserDialog browserDialog) {
             BrowserDialog = browserDialog;
             Messenger.Default.Register<DeployOperation>(this, OnRunDeployOperation);
         }
 
         public IBrowserDialog BrowserDialog { get; }
 
-        private void OnRunDeployOperation(DeployOperation operation)
-        {
+        private void OnRunDeployOperation(DeployOperation operation) {
             if (operation != GetOperation()) {
                 return;
             }
@@ -30,8 +28,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             StartDoployOperation();
         }
 
-        protected virtual void StartDoployOperation()
-        {
+        protected virtual void StartDoployOperation() {
             Dictionary<string, string> arguments = GetPropertiesToArguments();
             Messenger.Default.Send(new StartDeployOperationEventArgs {Operation = GetOperation(), Args = arguments});
         }

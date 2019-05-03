@@ -11,8 +11,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         private StringProperty _userLogin;
         private StringProperty _userPassword;
 
-        public RestoreMsSqlDatabaseViewModel()
-        {
+        public RestoreMsSqlDatabaseViewModel() {
             ServerName = new StringProperty(Resources.ServerName, true, DeployArgumentNameConstant.ServerName) {
                 Value = AppSetting.DefDbServerName
             };

@@ -10,8 +10,7 @@ namespace Terrasoft.Core.Git
     public class GitRepository
     {
         public static async Task<GitReleaseInfo> GetLatestReleaseInfoAsync(string repoOwner, string repoName,
-            string token = null)
-        {
+            string token = null) {
             using (HttpClient client = GetGithubHttpClient(token)) {
                 HttpResponseMessage response = await client.GetAsync($"repos/{repoOwner}/{repoName}/releases/latest");
                 string bodyString = await response.Content.ReadAsStringAsync();
@@ -24,8 +23,7 @@ namespace Terrasoft.Core.Git
             }
         }
 
-        private static HttpClient GetGithubHttpClient(string token = null)
-        {
+        private static HttpClient GetGithubHttpClient(string token = null) {
             var httpClient = new HttpClient {
                 BaseAddress = new Uri("https://api.github.com"),
                 DefaultRequestHeaders = {{"User-Agent", "Github-API-Test"}}

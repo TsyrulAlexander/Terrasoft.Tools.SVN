@@ -6,8 +6,7 @@ namespace Terrasoft.Core.DeployApp.Database.MsSql
     {
         private const string DefaultDbName = "master";
 
-        public MsSqlExecutor(string serverName, string login, string password)
-        {
+        public MsSqlExecutor(string serverName, string login, string password) {
             ServerName = serverName;
             Login = login;
             Password = password;
@@ -17,8 +16,7 @@ namespace Terrasoft.Core.DeployApp.Database.MsSql
         public string Login { get; }
         public string Password { get; }
 
-        public void RestoreDb(string databaseName, string backupPath)
-        {
+        public void RestoreDb(string databaseName, string backupPath) {
             SqlConnectionStringBuilder connectionStringBuilder = GetConnectionString(DefaultDbName);
             using (var connection = new SqlConnection(connectionStringBuilder.ConnectionString)) {
                 connection.Open();
@@ -32,8 +30,7 @@ namespace Terrasoft.Core.DeployApp.Database.MsSql
             }
         }
 
-        private SqlConnectionStringBuilder GetConnectionString(string dbName)
-        {
+        private SqlConnectionStringBuilder GetConnectionString(string dbName) {
             return new SqlConnectionStringBuilder {
                 DataSource = ServerName,
                 InitialCatalog = dbName,
@@ -44,13 +41,11 @@ namespace Terrasoft.Core.DeployApp.Database.MsSql
             };
         }
 
-        private SqlCommand GetUseCommand(SqlConnection connection, string dataBaseName)
-        {
+        private SqlCommand GetUseCommand(SqlConnection connection, string dataBaseName) {
             return new SqlCommand($"USE [{dataBaseName}]", connection);
         }
 
-        private SqlCommand GetRestoreCommand(SqlConnection connection, string dataBaseName, string backPath)
-        {
+        private SqlCommand GetRestoreCommand(SqlConnection connection, string dataBaseName, string backPath) {
             return new SqlCommand($"RESTORE DATABASE [{dataBaseName}] FROM DISK = '{backPath}' WITH  FILE = 1",
                 connection
             );

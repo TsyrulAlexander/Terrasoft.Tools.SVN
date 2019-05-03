@@ -7,7 +7,7 @@ using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.EventArgs;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
-using Terrasoft.Tools.SvnUI.Properties;
+using Resources = Terrasoft.Tools.SvnUI.Properties.Resources;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
@@ -18,8 +18,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         private StringProperty _svnUser;
         private StringProperty _workingCopyPath;
 
-        public BaseSvnOperationViewModel(IBrowserDialog browserDialog)
-        {
+        public BaseSvnOperationViewModel(IBrowserDialog browserDialog) {
             BrowserDialog = browserDialog;
             SelectWorkingCopyPathCommand = new RelayCommand(SelectWorkingCopyPath);
             Messenger.Default.Register<SvnOperation>(this, OnRunSvnOperation);
@@ -62,8 +61,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
         public RelayCommand SelectWorkingCopyPathCommand { get; set; }
 
-        private void InitPropertyValues()
-        {
+        private void InitPropertyValues() {
             SvnUser = new StringProperty(Resources.SvnUser, true, SvnUtilsBase.SvnUserOptionName) {
                 Description = Resources.SvnUserDescription, Value = AppSetting.DefSvnUser
             };
@@ -86,8 +84,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             SetBranchFeatureUrlFromWorkingCopyPath();
         }
 
-        protected virtual void SetBranchFeatureUrlFromWorkingCopyPath()
-        {
+        protected virtual void SetBranchFeatureUrlFromWorkingCopyPath() {
             if (string.IsNullOrWhiteSpace(WorkingCopyPath?.Value) ||
                 !Directory.Exists(WorkingCopyPath.Value + @"\.svn")) {
                 return;
@@ -100,16 +97,14 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        protected virtual void SelectWorkingCopyPath()
-        {
+        protected virtual void SelectWorkingCopyPath() {
             string path = BrowserDialog.SelectFilder(WorkingCopyPath.Value);
             if (path != null) {
                 WorkingCopyPath.Value = path;
             }
         }
 
-        protected virtual void OnRunSvnOperation(SvnOperation operation)
-        {
+        protected virtual void OnRunSvnOperation(SvnOperation operation) {
             if (operation != GetSvnOperation()) {
                 return;
             }
@@ -123,13 +118,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             StartSvnOperation();
         }
 
-        protected virtual void CreateIfNotExistWorkingCopyDirectory()
-        {
+        protected virtual void CreateIfNotExistWorkingCopyDirectory() {
             Directory.CreateDirectory(WorkingCopyPath.Value);
         }
 
-        protected virtual void StartSvnOperation()
-        {
+        protected virtual void StartSvnOperation() {
             Dictionary<string, string> svnArguments = GetPropertiesToArguments();
             Messenger.Default.Send(new StartSvnOperationEventArgs {
                     SvnOperation = GetSvnOperation(), Arguments = svnArguments
@@ -140,8 +133,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 
         public abstract SvnOperation GetSvnOperation();
 
-        protected override IEnumerable<BaseProperty> GetProperties()
-        {
+        protected override IEnumerable<BaseProperty> GetProperties() {
             return new BaseProperty[] {SvnUser, SvnPassword, WorkingCopyPath, BranchFeatureUrl};
         }
     }

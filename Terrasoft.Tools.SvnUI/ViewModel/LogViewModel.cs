@@ -15,8 +15,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
     {
         private LogInfo _selected;
 
-        public LogViewModel(ILogger logger, IBrowserDialog browserDialog)
-        {
+        public LogViewModel(ILogger logger, IBrowserDialog browserDialog) {
             Logger = logger;
             BrowserDialog = browserDialog;
             ((UiLogger) logger).Execute += OnLogExecute;
@@ -41,8 +40,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        public void SaveLog()
-        {
+        public void SaveLog() {
             string path = BrowserDialog.SaveFile(null, "Text documents (.txt)|*.txt");
             if (string.IsNullOrWhiteSpace(path)) {
                 return;
@@ -51,15 +49,13 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             SaveLog(path);
         }
 
-        private void SaveLog(string path)
-        {
+        private void SaveLog(string path) {
             using (var writer = new StreamWriter(path, false, Encoding.ASCII)) {
                 writer.Write(GetLogCollectionToString());
             }
         }
 
-        private string GetLogCollectionToString()
-        {
+        private string GetLogCollectionToString() {
             var builder = new StringBuilder();
             foreach (LogInfo logInfo in LogInfoCollection) {
                 builder.AppendLine(logInfo.ToString());
@@ -68,18 +64,15 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             return builder.ToString();
         }
 
-        private void OnLogExecute(LogInfo obj)
-        {
+        private void OnLogExecute(LogInfo obj) {
             DispatcherHelper.CheckBeginInvokeOnUI(() => AddLog(obj));
         }
 
-        public void AddLog(LogInfo logInfo)
-        {
+        public void AddLog(LogInfo logInfo) {
             LogInfoCollection.Add(logInfo);
         }
 
-        public void CopyLog()
-        {
+        public void CopyLog() {
             if (Selected == null || string.IsNullOrWhiteSpace(Selected.Message)) {
                 return;
             }
@@ -87,8 +80,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             Clipboard.SetText(Selected.Message);
         }
 
-        public void Clear()
-        {
+        public void Clear() {
             LogInfoCollection.Clear();
         }
     }

@@ -5,8 +5,7 @@
     /// </summary>
     public partial class UpdateSvnFeatureView
     {
-        public UpdateSvnFeatureView()
-        {
+        public UpdateSvnFeatureView() {
             InitializeComponent();
         }
     }

@@ -8,8 +8,7 @@ namespace Terrasoft.Core.Version
         public static string RepositoryName => GetAppSetting("repositoryName");
         public static string RepositoryToken => GetAppSetting("repositoryToken");
 
-        private static string GetAppSetting(string key)
-        {
+        private static string GetAppSetting(string key) {
             string exeConfigPath = typeof(AppSetting).Assembly.Location;
             KeyValueConfigurationElement element =
                 ConfigurationManager.OpenExeConfiguration(exeConfigPath).AppSettings?.Settings[key];

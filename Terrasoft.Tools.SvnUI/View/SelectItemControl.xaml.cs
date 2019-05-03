@@ -12,8 +12,7 @@ namespace Terrasoft.Tools.SvnUI.View
         public static readonly DependencyProperty OpenCommandProperty =
             DependencyProperty.Register("OpenCommand", typeof(ICommand), typeof(SelectItemControl));
 
-        public SelectItemControl()
-        {
+        public SelectItemControl() {
             InitializeComponent();
         }
 

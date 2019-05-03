@@ -8,8 +8,7 @@ namespace Terrasoft.Tools.SvnUI.View
         public static readonly DependencyProperty StringProperty =
             DependencyProperty.Register("Property", typeof(StringProperty), typeof(StringPropertyControl));
 
-        public StringPropertyControl()
-        {
+        public StringPropertyControl() {
             InitializeComponent();
         }
 

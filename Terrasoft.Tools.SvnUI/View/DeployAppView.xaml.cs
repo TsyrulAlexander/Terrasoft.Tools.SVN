@@ -5,8 +5,7 @@
     /// </summary>
     public partial class DeployAppView
     {
-        public DeployAppView()
-        {
+        public DeployAppView() {
             InitializeComponent();
         }
     }

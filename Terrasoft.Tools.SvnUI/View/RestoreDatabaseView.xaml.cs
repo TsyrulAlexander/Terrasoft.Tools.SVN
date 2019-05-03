@@ -5,8 +5,7 @@
     /// </summary>
     public partial class RestoreDatabaseView
     {
-        public RestoreDatabaseView()
-        {
+        public RestoreDatabaseView() {
             InitializeComponent();
         }
     }

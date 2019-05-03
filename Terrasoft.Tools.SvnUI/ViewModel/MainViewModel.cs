@@ -16,8 +16,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         private bool _isActualVersion = true;
         private OperationType _operationType;
 
-        public MainViewModel(IBrowserDialog browserDialog, ILogger logger)
-        {
+        public MainViewModel(IBrowserDialog browserDialog, ILogger logger) {
             BrowserDialog = browserDialog;
             Logger = logger;
             SetOperationTypeCommand = new RelayCommand<OperationType>(SetOperationType);
@@ -49,8 +48,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        private async void SetIsActualVersion()
-        {
+        private async void SetIsActualVersion() {
             try {
                 IsActualVersion = await GetIsCurrentVersionIsActual();
             } catch (Exception ex) {
@@ -58,15 +56,13 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        private void UpdateApp()
-        {
+        private void UpdateApp() {
             if (BrowserDialog.ShowModalYesNo(Resources.UpdateAppText, string.Empty)) {
                 UpdateAppVersion();
             }
         }
 
-        private async void UpdateAppVersion()
-        {
+        private async void UpdateAppVersion() {
             try {
                 if (await GetIsCurrentVersionIsActual()) {
                     BrowserDialog.ShowInformationMessage(Resources.CurrentVersionIsActual);
@@ -80,15 +76,13 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        private async Task<bool> GetIsCurrentVersionIsActual()
-        {
+        private async Task<bool> GetIsCurrentVersionIsActual() {
             long currentVarsion = AppSetting.LatestVersionId;
             long repositoryVersion = await AppVersionUtilities.GetVersionIdAsync();
             return currentVarsion == repositoryVersion;
         }
 
-        private void SetOperationType(OperationType operationType)
-        {
+        private void SetOperationType(OperationType operationType) {
             OperationType = operationType;
         }
     }

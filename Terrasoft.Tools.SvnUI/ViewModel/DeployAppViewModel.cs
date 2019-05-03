@@ -16,8 +16,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         private bool _inProgress;
         private DeployOperation _operation = DeployOperation.RestoreDb;
 
-        public DeployAppViewModel(IBrowserDialog browserDialog)
-        {
+        public DeployAppViewModel(IBrowserDialog browserDialog) {
             BrowserDialog = browserDialog;
             ExecuteCommand = new RelayCommand(Execute);
             SetDeployOperationCommand = new RelayCommand<DeployOperation>(SetDeployOperation);
@@ -45,8 +44,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         public RelayCommand ExecuteCommand { get; set; }
         public RelayCommand<DeployOperation> SetDeployOperationCommand { get; set; }
 
-        private void StartDeployOperation(StartDeployOperationEventArgs args)
-        {
+        private void StartDeployOperation(StartDeployOperationEventArgs args) {
             try {
                 string serverName = args.Args[DeployArgumentNameConstant.ServerName];
                 string userLogin = args.Args[DeployArgumentNameConstant.UserLogin];
@@ -60,13 +58,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        private void SetDeployOperation(DeployOperation operation)
-        {
+        private void SetDeployOperation(DeployOperation operation) {
             Operation = operation;
         }
 
-        private void Execute()
-        {
+        private void Execute() {
             Messenger.Default.Send(Operation);
         }
     }

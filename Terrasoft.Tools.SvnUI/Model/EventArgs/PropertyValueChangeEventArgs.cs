@@ -2,8 +2,7 @@
 {
     public class PropertyValueChangeEventArgs<T> : System.EventArgs
     {
-        public PropertyValueChangeEventArgs(T oldValue, T newValue)
-        {
+        public PropertyValueChangeEventArgs(T oldValue, T newValue) {
             OldValue = oldValue;
             NewValue = newValue;
         }

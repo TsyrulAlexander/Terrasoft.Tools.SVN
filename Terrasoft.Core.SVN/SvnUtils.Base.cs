@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 using SharpSvn;
 using SharpSvn.Security;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace Terrasoft.Core.SVN
 {
@@ -12,111 +16,108 @@ namespace Terrasoft.Core.SVN
     /// </summary>
     public abstract class SvnUtilsBase : SvnClient
     {
-	    public ILogger Logger { get; set; }
+        public const string SvnUserOptionName = "svnuser";
+        public const string WorkingCopyPathOptionName = "workingcopypath";
+        public const string BaseWorkingCopyPathOptionName = "baseworkingcopypath";
+        public const string BranchReleaseUrlOptionName = "branchreleaseurl";
+        public const string FeatureNameOptionName = "featurename";
+        public const string BranchFeatureUrlOptionName = "branchfeatureurl";
+        public const string MaintainerOptionName = "maintainer";
+        public const string CommitIfNoErrorOptionName = "commitifnoerror";
+        public const string SvnPasswordOptionName = "svnpassword";
+        public const string AutoMergeOptionName = "automerge";
 
-		public const string SvnUserOptionName = "svnuser";
-		public const string WorkingCopyPathOptionName = "workingcopypath";
-		public const string BaseWorkingCopyPathOptionName = "baseworkingcopypath";
-		public const string BranchReleaseUrlOptionName = "branchreleaseurl";
-		public const string FeatureNameOptionName = "featurename";
-		public const string BranchFeatureUrlOptionName = "branchfeatureurl";
-		public const string MaintainerOptionName = "maintainer";
-		public const string CommitIfNoErrorOptionName = "commitifnoerror";
-		public const string SvnPasswordOptionName = "svnpassword";
-		public const string AutoMergeOptionName = "automerge";
-
-		/// <inheritdoc />
-		/// <summary>
-		///     Конструктор SVN клиента
-		/// </summary>
-		/// <param name="options">Коллекция параметров</param>
-		/// <param name="logger">Логгер</param>
-		protected SvnUtilsBase(IReadOnlyDictionary<string, string> options, ILogger logger) {
-		    Logger = logger;
-		    foreach (KeyValuePair<string, string> option in options) {
-                switch (option.Key) {
-                    case SvnUserOptionName:
-                        UserName = options[SvnUserOptionName];
-                        break;
-                    case WorkingCopyPathOptionName:
-                        WorkingCopyPath = options[WorkingCopyPathOptionName];
-                        break;
-                    case BaseWorkingCopyPathOptionName:
-                        BaseWorkingCopyPath = options[BaseWorkingCopyPathOptionName];
-                        break;
-                    case BranchReleaseUrlOptionName:
-                        BranchReleaseUrl = options[BranchReleaseUrlOptionName];
-                        break;
-                    case FeatureNameOptionName:
-                        FeatureName = options[FeatureNameOptionName];
-                        break;
-                    case BranchFeatureUrlOptionName:
-                        BranchFeatureUrl = options[BranchFeatureUrlOptionName];
-                        break;
-                    case MaintainerOptionName:
-                        Maintainer = options[MaintainerOptionName];
-                        break;
-                    case CommitIfNoErrorOptionName:
-                        CommitIfNoError = Convert.ToBoolean(options[CommitIfNoErrorOptionName]);
-                        break;
-                    case SvnPasswordOptionName:
-                        Password = options[SvnPasswordOptionName];
-                        break;
-                    case AutoMergeOptionName:
-                        AutoMerge = Convert.ToBoolean(options[AutoMergeOptionName]);
-                        break;
-                    default:
-                        continue;
-                }
-            }
+        /// <inheritdoc />
+        /// <summary>
+        ///     Конструктор SVN клиента
+        /// </summary>
+        /// <param name="options">Коллекция параметров</param>
+        /// <param name="logger"></param>
+        protected SvnUtilsBase(IReadOnlyDictionary<string, string> options, ILogger logger) {
+            Logger = logger;
+            InitializeOptions(options);
 
             Authentication.Clear();
             Authentication.DefaultCredentials = new NetworkCredential(UserName, Password);
+#pragma warning disable CA5359 // Do Not Disable Certificate Validation
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+#pragma warning restore CA5359 // Do Not Disable Certificate Validation
             Authentication.SslServerTrustHandlers += delegate(object o, SvnSslServerTrustEventArgs args) {
                 args.AcceptedFailures = args.Failures;
                 args.Save = true;
             };
         }
 
-        protected bool AutoMerge { get; }
+        public ILogger Logger { get; set; }
 
-        private string UserName { get; }
-        private string Password { get; }
+        [OptionName("SvnUser")] private string UserName { get; set; }
+
+        [OptionName("SvnPassword")] private string Password { get; set; }
 
         /// <summary>
         ///     Название фитчи
         /// </summary>
-        protected string FeatureName { get; }
+        [OptionName("FeatureName")]
+        protected string FeatureName { get; set; }
 
         /// <summary>
         ///     URL Ветки с фитчами
         /// </summary>
-        protected string BranchFeatureUrl { get; }
+        [OptionName("BranchFeatureUrl")]
+        protected string BranchFeatureUrl { get; set; }
 
         /// <summary>
         ///     Издатель
         /// </summary>
-        protected string Maintainer { get; }
+        [OptionName("Maintainer")]
+        protected string Maintainer { get; set; }
 
         /// <summary>
         ///     Базовая ветка, из которой выделяется фитча
         /// </summary>
-        protected string BranchReleaseUrl { get; }
+        [OptionName("BranchReleaseUrl")]
+        protected string BranchReleaseUrl { get; set; }
 
         /// <summary>
         ///     Путь к рабочей копии
         /// </summary>
-        protected string WorkingCopyPath { get; }
+        [OptionName("WorkingCopyPath")]
+        protected string WorkingCopyPath { get; set; }
 
         /// <summary>
         ///     Путь к базовой рабочей копии (родитель)
         /// </summary>
-        protected string BaseWorkingCopyPath { get; }
+        [OptionName("BaseWorkingCopyPath")]
+        protected string BaseWorkingCopyPath { get; set; }
 
         /// <summary>
         ///     Зафиксировать изменения в хранилище в случае отсутствия ошибок
         /// </summary>
+        [OptionName("CommitIfNoError")]
         public bool CommitIfNoError { get; set; }
+
+        private void InitializeOptions(IReadOnlyDictionary<string, string> options) {
+            foreach (KeyValuePair<string, string> option in options) {
+                foreach (PropertyInfo propertyInfo in typeof(SvnUtilsBase).GetProperties(
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                )) {
+                    foreach (OptionName optionName in propertyInfo.GetCustomAttributes<OptionName>()) {
+                        if (optionName.Name.Equals(option.Key, StringComparison.OrdinalIgnoreCase)) {
+                            propertyInfo.SetValue(this, option.Value);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    internal sealed class OptionName : Attribute
+    {
+        public OptionName(string name) {
+            Name = name;
+        }
+
+        public string Name { get; }
     }
 }

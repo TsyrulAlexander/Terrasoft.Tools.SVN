@@ -59,6 +59,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Terrasoft.Core.SVN\Terrasoft.Core.SVN.csproj">
       <Project>{1d914e84-754f-4093-9c50-640b149bbe72}</Project>
       <Name>Terrasoft.Core.SVN</Name>
@@ -67,12 +73,6 @@
       <Project>{F8543735-3733-4E82-BE03-C2A84D2910AC}</Project>
       <Name>Terrasoft.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

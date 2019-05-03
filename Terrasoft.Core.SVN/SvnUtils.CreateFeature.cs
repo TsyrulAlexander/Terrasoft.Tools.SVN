@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using SharpSvn;
-using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
-	public sealed partial class SvnUtils
+    public sealed partial class SvnUtils
     {
         /// <summary>
         ///     Копирование базового ветки в ветку фитчи
@@ -16,15 +16,26 @@ namespace Terrasoft.Core.SVN
         /// <returns>Результат</returns>
         private bool CopyBaseBranch(string featureName, string featureNewUrl, long revision) {
             var svnCopyArgs = new SvnCopyArgs {
-                LogMessage = string.Format(Resources.SvnUtils_CopyBaseBranch_Init_Feature, featureName),
+                LogMessage =
+                    string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString(
+                            "SvnUtils_CopyBaseBranch_Init_Feature", CultureInfo.CurrentCulture
+                        ) ??
+                        throw new
+                            InvalidOperationException(),
+                        featureName
+                    ),
                 Revision = new SvnRevision(revision)
             };
             svnCopyArgs.Notify += SvnCopyArgsOnNotify;
             try {
                 return RemoteCopy(SvnTarget.FromString(BranchReleaseUrl), new Uri(featureNewUrl), svnCopyArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.LogError(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty.");
+                SVN.Logger.Error(argumentNullException.Message, string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString("ParameterIsEmpty", CultureInfo.CurrentCulture) ??
+                        throw new InvalidOperationException(), argumentNullException.ParamName
+                    )
+                );
                 return false;
             } finally {
                 svnCopyArgs.Notify -= SvnCopyArgsOnNotify;
@@ -38,9 +49,9 @@ namespace Terrasoft.Core.SVN
         public bool CreateFeature() {
             long lastBranchRevision = GetBaseBranchHeadRevision(BranchReleaseUrl);
             string featureNewUrl = $"{BranchFeatureUrl}/{Maintainer}_{FeatureName}";
-            return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision)
-                   && ExtractWorkingCopy(WorkingCopyPath, featureNewUrl)
-                   && FixBranch();
+            return CopyBaseBranch(FeatureName, featureNewUrl, lastBranchRevision) &&
+                   ExtractWorkingCopy(WorkingCopyPath, featureNewUrl) &&
+                   FixBranch();
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace Terrasoft.Core.SVN
         /// <param name="url"></param>
         /// <returns>Результат</returns>
         private bool ExtractWorkingCopy(string workingCopyPath, string url) {
-            return Directory.Exists(workingCopyPath)
+            return Directory.Exists(workingCopyPath + "\\.svn")
                 ? UpdateWorkingCopy(workingCopyPath)
                 : CheckoutWorkingCopy(workingCopyPath, url);
         }
@@ -61,14 +72,17 @@ namespace Terrasoft.Core.SVN
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <param name="url"></param>
         /// <returns>Результат</returns>
-		public bool CheckoutWorkingCopy(string workingCopyPath, string url) {
+        public bool CheckoutWorkingCopy(string workingCopyPath, string url) {
             var svnCheckOutArgs = new SvnCheckOutArgs {IgnoreExternals = false};
             svnCheckOutArgs.Notify += SvnCheckOutArgsOnNotify;
             try {
                 return CheckOut(SvnUriTarget.FromString(url), workingCopyPath, svnCheckOutArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.LogError(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty.");
+                SVN.Logger.Error(argumentNullException.Message, string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString("ParameterIsEmpty", CultureInfo.CurrentCulture) ??
+                        throw new InvalidOperationException(), argumentNullException.ParamName
+                    )
+                );
                 return false;
             } finally {
                 svnCheckOutArgs.Notify -= SvnCheckOutArgsOnNotify;
@@ -81,7 +95,7 @@ namespace Terrasoft.Core.SVN
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Результат</returns>
         private bool UpdateWorkingCopy(string workingCopyPath) {
-            Info(SvnTarget.FromString(workingCopyPath), (sender, args) => Logger.LogInfo(args.ToString()));
+            Info(SvnTarget.FromString(workingCopyPath), (sender, args) => Console.WriteLine(args));
             var svnUpdateArgs = new SvnUpdateArgs {IgnoreExternals = false, UpdateParents = true};
             svnUpdateArgs.Notify += SvnUpdateArgsOnNotify;
             svnUpdateArgs.Conflict += SvnUpdateArgsOnConflict;
@@ -89,8 +103,11 @@ namespace Terrasoft.Core.SVN
             try {
                 return Update(workingCopyPath, svnUpdateArgs);
             } catch (ArgumentNullException argumentNullException) {
-                Logger.LogError(argumentNullException.Message,
-                    $"Parameter {argumentNullException.ParamName} is empty.");
+                SVN.Logger.Error(argumentNullException.Message, string.Format(CultureInfo.CurrentCulture,
+                        Resources.ResourceManager.GetString("ParameterIsEmpty", CultureInfo.CurrentCulture) ??
+                        throw new InvalidOperationException(), argumentNullException.ParamName
+                    )
+                );
                 return false;
             } finally {
                 svnUpdateArgs.Notify -= SvnUpdateArgsOnNotify;

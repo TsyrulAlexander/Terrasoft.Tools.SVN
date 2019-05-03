@@ -1,125 +1,332 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using SharpSvn;
-using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
-	public partial class SvnUtils : IDisposable {
-        private void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-	        Logger.LogInfo(e.Path);
-        }
-
-        private void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs args) {
-            Logger.LogInfo(args.Action.ToString(), args.Path);
-        }
-
-        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
-            if (!AutoMerge) {
-                Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
-                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                return;
+#pragma warning disable CA1501 // Avoid excessive inheritance
+    public sealed partial class SvnUtils
+    {
+        /// <summary>
+        ///     Отображение лога при работе с историей
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Элемент истории</param>
+        private static void SvnLogArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            if (svnNotifyEventArgs is null) {
+                throw new ArgumentNullException(nameof(svnNotifyEventArgs));
             }
 
-            AutoResolveConflict(e);
+            SVN.Logger.Info(svnNotifyEventArgs.NodeKind.ToString("G"), svnNotifyEventArgs.Path);
         }
 
-        private void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs e) {
-	        Logger.LogInfo(string.Format(Resources.SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit, e.Items.Count.ToString()));
+        /// <summary>
+        ///     Обработчик слияния
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Аргумент</param>
+        private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            SVN.Logger.Info(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.Path);
         }
 
-        private void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-           Logger.LogInfo(e.Path);
+        /// <summary>
+        ///     Обработчик конфликтов при слиянии
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+            AutoResolveConflict(svnConflictEventArgs);
         }
 
-        private void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs e) {
-	        Logger.LogInfo(string.Format(Resources.SvnUtils_SvnCommitArgsOnCommitted_Commited_revision, e.Revision.ToString()));
+        /// <summary>
+        ///     Обработчик фиксации изменений
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnCommittingEventArgs">Аргумент</param>
+        private static void SvnCommitArgsOnCommitting(object sender, SvnCommittingEventArgs svnCommittingEventArgs) {
+            SVN.Logger.Info(Resources.ResourceManager.GetString(
+                    "SvnUtils_SvnCommitArgsOnCommitting_Items_to_commit", CultureInfo.CurrentCulture
+                ),
+                svnCommittingEventArgs.Items.Count.ToString(CultureInfo.CurrentCulture)
+            );
         }
 
-        private void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs args) {
-            Logger.LogInfo(args.Action.ToString(), args.Path);
+        /// <summary>
+        ///     Обработчик информации при фиксации изменений
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Аргумент</param>
+        private static void SvnCommitArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            SVN.Logger.Info(svnNotifyEventArgs.Action.ToString("G"), svnNotifyEventArgs.Path);
         }
 
-        private void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            if (e.Action == SvnNotifyAction.TreeConflict) {
-                Logger.LogError(e.Action.ToString(), e.FullPath);
+        /// <summary>
+        ///     Обработчик после фиксации изменений
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnCommittedEventArgs">Аргумент</param>
+        private static void SvnCommitArgsOnCommitted(object sender, SvnCommittedEventArgs svnCommittedEventArgs) {
+            SVN.Logger.Info(Resources.ResourceManager.GetString(
+                    "SvnUtils_SvnCommitArgsOnCommitted_Commited_revision", CultureInfo.CurrentCulture
+                ),
+                svnCommittedEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
+            );
+        }
+
+        /// <summary>
+        ///     Обработчик выгрузки изменений в локальную копию
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Аргумент</param>
+        private static void SvnCheckOutArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            SVN.Logger.Info(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.Path);
+        }
+
+        /// <summary>
+        ///     Обработчик информирования об ре интеграции
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Аргумент</param>
+        private static void SvnReintegrationMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            if (svnNotifyEventArgs.Action == SvnNotifyAction.TreeConflict) {
+                SVN.Logger.Error(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.FullPath);
             } else {
-                Logger.LogInfo(e.Action.ToString(), e.FullPath);
+                SVN.Logger.Info(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.FullPath);
             }
         }
 
-        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs e) {
-            if (!AutoMerge) {
-                Logger.LogError($"Найден конфликт, с типом {e.Conflict.NodeKind}: "
-                    , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                return;
-            }
-
-            AutoResolveConflict(e);
+        /// <summary>
+        ///     Обработчик конфликтов при ре интеграции
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+            AutoResolveConflict(svnConflictEventArgs);
         }
 
-        private void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-	        Logger.LogInfo(e.Uri.ToString());
+        /// <summary>
+        ///     Обработчик информации о копировании
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Аргумент</param>
+        private static void SvnCopyArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            SVN.Logger.Info(svnNotifyEventArgs.Uri.ToString());
         }
 
-        private void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs e) {
-            Logger.LogInfo(string.Format(Resources.SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision, e.Path,
-	            e.Revision.ToString()));
+        /// <summary>
+        ///     Обработчик информации об обновлении
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnNotifyEventArgs">Аргумент</param>
+        private static void SvnUpdateArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
+            SVN.Logger.Info(string.Format(CultureInfo.CurrentCulture,
+                    Resources.ResourceManager.GetString("SvnUtils_SvnUpdateArgsOnNotify_Update_to_revision",
+                        CultureInfo.CurrentCulture
+                    ) ??
+                    throw new InvalidOperationException(),
+                    svnNotifyEventArgs.Path,
+                    svnNotifyEventArgs.Revision.ToString(CultureInfo.CurrentCulture)
+                )
+            );
         }
 
-        private void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs e) {
-            Logger.LogError(e.Exception.Message, e.Exception.SvnErrorCategory.ToString());
+        /// <summary>
+        ///     Обработчик ошибок при обновлении
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnErrorEventArgs">Аргумент</param>
+        private static void SvnUpdateArgsOnSvnError(object sender, SvnErrorEventArgs svnErrorEventArgs) {
+            SVN.Logger.Error(svnErrorEventArgs.Exception.Message,
+                svnErrorEventArgs.Exception.SvnErrorCategory.ToString()
+            );
         }
 
-        private void SvnUpdateArgsOnConflict(object sender, SvnConflictEventArgs e) {
-            AutoResolveConflict(e);
+        /// <summary>
+        ///     Обработчик ошибок при обновлении
+        /// </summary>
+        /// <param name="sender">Контекст</param>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        private void SvnUpdateArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+            AutoResolveConflict(svnConflictEventArgs);
         }
 
-        private void AutoResolveConflict(SvnConflictEventArgs e) {
-            switch (e.ConflictAction) {
-                case SvnConflictAction.Add when e.ConflictType == SvnConflictType.Tree &&
-                                                e.NodeKind == SvnNodeKind.Directory &&
-                                                e.ConflictReason == SvnConflictReason.Obstructed &&
-                                                Directory.Exists(e.Conflict.FullPath):
-                    Logger.LogError("Попытка добавить папку, которая уже существует:"
-                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                    Logger.LogError("Производим автоматическое слияние:", "оставляем существующую.");
-                    e.Choice = SvnAccept.Working;
-                    return;
-                case SvnConflictAction.Delete when e.ConflictReason == SvnConflictReason.Missing &&
-                                                   e.NodeKind == SvnNodeKind.Directory &&
-                                                   !Directory.Exists(e.Conflict.FullPath):
-                    Logger.LogError("Попытка удалить папку, которая уже удалена:"
-                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                    Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
-                    e.Choice = SvnAccept.Working;
-                    return;
-                case SvnConflictAction.Add when e.ConflictType == SvnConflictType.Tree &&
-                                                e.NodeKind == SvnNodeKind.File &&
-                                                e.ConflictReason == SvnConflictReason.Obstructed &&
-                                                File.Exists(e.Conflict.FullPath):
-                    Logger.LogError("Попытка добавить файл который уже существует:"
-                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                    Logger.LogError("Не возможно произвести автоматическое слияние:",
-                        "требуется провести слияние в ручном режиме.");
-                    e.Choice = SvnAccept.Postpone;
-                    CommitIfNoError = false;
-                    return;
-                case SvnConflictAction.Delete when e.ConflictReason == SvnConflictReason.Missing &&
-                                                   e.NodeKind == SvnNodeKind.None &&
-                                                   !Directory.Exists(e.Conflict.FullPath):
-                    Logger.LogError("Попытка удалить ветку, которая уже удалена:"
-                        , $"\nАдрес бранчи\t{e.Conflict.RightSource.Target}\nАдрес релиза\t{e.Conflict.LeftSource.Target}");
-                    Logger.LogError("Производим автоматическое слияние:", "принимаем удаление.");
-                    e.Choice = SvnAccept.Working;
-                    return;
-                default:
-                    e.Choice = SvnAccept.Postpone;
-                    Logger.LogError("Не возможно произвести автоматическое слияние:", "не найдено подходящее правило.");
+        /// <summary>
+        ///     Обработчик конфликтов по типу
+        /// </summary>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
+        private void ResolveConflictByType(SvnConflictEventArgs svnConflictEventArgs) {
+            switch (svnConflictEventArgs.ConflictType) {
+                case SvnConflictType.Tree:
+                    ResolveConflictByTreeReason(svnConflictEventArgs);
+                    break;
+                case SvnConflictType.Content:
+                    svnConflictEventArgs.Choice = SvnAccept.Theirs;
+                    break;
+                case SvnConflictType.Property:
+                    svnConflictEventArgs.Choice = SvnAccept.Theirs;
                     break;
             }
-
-            CommitIfNoError = false;
         }
-	}
+
+        /// <summary>
+        ///     Обработка конфликта по причине
+        /// </summary>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
+        private void ResolveConflictByTreeReason(SvnConflictEventArgs svnConflictEventArgs) {
+            switch (svnConflictEventArgs.ConflictReason) {
+                case SvnConflictReason.Added:
+                    ResolveConflictByTreeAddedAction(svnConflictEventArgs);
+                    break;
+                case SvnConflictReason.Edited:
+                    break;
+                case SvnConflictReason.MovedHere:
+                    break;
+                case SvnConflictReason.MovedAway:
+                    break;
+                case SvnConflictReason.Replaced:
+                    break;
+                case SvnConflictReason.NotVersioned:
+                    break;
+                case SvnConflictReason.Missing:
+                    break;
+                case SvnConflictReason.Deleted:
+                    break;
+                case SvnConflictReason.Obstructed:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs));
+            }
+        }
+
+        /// <summary>
+        ///     Обработка конфликт существующей папки
+        /// </summary>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        private static void AddToExistsFolderConflict(SvnConflictEventArgs svnConflictEventArgs) {
+            if (!Directory.Exists(svnConflictEventArgs.Conflict.FullPath)) {
+                return;
+            }
+
+            string targetPath = svnConflictEventArgs.Conflict.RightSource.RepositoryRoot.ToString();
+            string conflictRelativePath =
+                svnConflictEventArgs.Conflict.RightSource.RepositoryPath.ToString();
+            if (conflictRelativePath.EndsWith("/", StringComparison.Ordinal)) {
+                conflictRelativePath =
+                    $"/{conflictRelativePath.Remove(conflictRelativePath.Length - 1, 1)}";
+            }
+
+            if (FindOwnerInLog(targetPath, conflictRelativePath)) {
+                string destinationFolder = svnConflictEventArgs.Conflict.FullPath.Clone().ToString();
+                BackupExistsFolder(destinationFolder);
+                svnConflictEventArgs.Choice = ExtractContentInMergedFolder(
+                    svnConflictEventArgs.Conflict.RightSource.Uri.ToString(),
+                    destinationFolder
+                )
+                    ? SvnAccept.Working
+                    : SvnAccept.Postpone;
+            } else {
+                svnConflictEventArgs.Choice = SvnAccept.Postpone;
+            }
+        }
+
+
+        /// <summary>
+        ///     Обработчик конфликта по действию
+        /// </summary>
+        /// <param name="svnConflictEventArgs">Аргумент</param>
+        /// <exception cref="ArgumentOutOfRangeException">Возможная ошибка</exception>
+        private void ResolveConflictByTreeAddedAction(SvnConflictEventArgs svnConflictEventArgs) {
+            switch (svnConflictEventArgs.ConflictAction) {
+                case SvnConflictAction.Replace:
+                    break;
+                case SvnConflictAction.Delete:
+                    break;
+                case SvnConflictAction.Edit:
+                    break;
+                case SvnConflictAction.Add:
+                    ResolveConflictByTreeAddedAddNode(svnConflictEventArgs);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs));
+            }
+        }
+
+        /// <summary>
+        ///     Обработчик ошибок по типу узла
+        /// </summary>
+        /// <param name="svnConflictEventArgs"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        private void ResolveConflictByTreeAddedAddNode(SvnConflictEventArgs svnConflictEventArgs) {
+            if (svnConflictEventArgs.NodeKind == SvnNodeKind.Directory &&
+                svnConflictEventArgs.ConflictAction == SvnConflictAction.Add) {
+                AddToExistsFolderConflict(svnConflictEventArgs);
+                return;
+            }
+
+            if (svnConflictEventArgs.NodeKind == SvnNodeKind.File &&
+                svnConflictEventArgs.ConflictAction == SvnConflictAction.Add) {
+                NeedResolveList.Add(svnConflictEventArgs.Conflict.FullPath.Clone().ToString());
+                svnConflictEventArgs.Choice = SvnAccept.Postpone;
+            }
+        }
+
+
+        /// <summary>
+        ///     Обработчик ошибки
+        /// </summary>
+        /// <param name="e">Аргумент</param>
+        private void AutoResolveConflict(SvnConflictEventArgs e) {
+            ResolveConflictByType(e);
+            if (e.Choice == SvnAccept.Postpone) {
+                BugReporter.SendBugReport(e, e.GetType());
+            }
+
+            /*switch (svnNotifyEventArgs.ConflictAction) {
+                case SvnConflictAction.Add when svnNotifyEventArgs.ConflictType == SvnConflictType.Tree &&
+                                                svnNotifyEventArgs.NodeKind == SvnNodeKind.Directory &&
+                                                svnNotifyEventArgs.ConflictReason == SvnConflictReason.Obstructed &&
+                                                Directory.Exists(svnNotifyEventArgs.Conflict.FullPath):
+                    Logger.Error("Попытка добавить папку, которая уже существует:"
+                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
+                    Logger.Error("Производим автоматическое слияние:", "оставляем существующую.");
+                    svnNotifyEventArgs.Choice = SvnAccept.Working;
+                    return;
+                case SvnConflictAction.Delete when svnNotifyEventArgs.ConflictReason == SvnConflictReason.Missing &&
+                                                   svnNotifyEventArgs.NodeKind == SvnNodeKind.Directory &&
+                                                   !Directory.Exists(svnNotifyEventArgs.Conflict.FullPath):
+                    Logger.Error("Попытка удалить папку, которая уже удалена:"
+                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
+                    Logger.Error("Производим автоматическое слияние:", "принимаем удаление.");
+                    svnNotifyEventArgs.Choice = SvnAccept.Working;
+                    return;
+                case SvnConflictAction.Add when svnNotifyEventArgs.ConflictType == SvnConflictType.Tree &&
+                                                svnNotifyEventArgs.NodeKind == SvnNodeKind.File &&
+                                                svnNotifyEventArgs.ConflictReason == SvnConflictReason.Obstructed &&
+                                                File.Exists(svnNotifyEventArgs.Conflict.FullPath):
+                    Logger.Error("Попытка добавить файл который уже существует:"
+                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
+                    Logger.Error("Не возможно произвести автоматическое слияние:",
+                        "требуется провести слияние в ручном режиме.");
+                    svnNotifyEventArgs.Choice = SvnAccept.Postpone;
+                    CommitIfNoError = false;
+                    return;
+                case SvnConflictAction.Delete when svnNotifyEventArgs.ConflictReason == SvnConflictReason.Missing &&
+                                                   svnNotifyEventArgs.NodeKind == SvnNodeKind.None &&
+                                                   !Directory.Exists(svnNotifyEventArgs.Conflict.FullPath):
+                    Logger.Error("Попытка удалить ветку, которая уже удалена:"
+                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
+                    Logger.Error("Производим автоматическое слияние:", "принимаем удаление.");
+                    svnNotifyEventArgs.Choice = SvnAccept.Working;
+                    return;
+                default:
+                    svnNotifyEventArgs.Choice = SvnAccept.Postpone;
+                    Logger.Error("Не возможно произвести автоматическое слияние:", "не найдено подходящее правило.");
+                    break;
+            }*/
+        }
+#pragma warning restore CA1501 // Avoid excessive inheritance
+    }
 }

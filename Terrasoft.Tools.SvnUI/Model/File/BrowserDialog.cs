@@ -5,8 +5,7 @@ namespace Terrasoft.Tools.SvnUI.Model.File
 {
     public class BrowserDialog : IBrowserDialog
     {
-        public string SelectFilder(string path)
-        {
+        public string SelectFilder(string path) {
             using (var dialog = new FolderBrowserDialog()) {
                 dialog.SelectedPath = path;
                 DialogResult result = dialog.ShowDialog();
@@ -18,24 +17,20 @@ namespace Terrasoft.Tools.SvnUI.Model.File
             return null;
         }
 
-        public void ShowInformationMessage(string message, string caption = "")
-        {
+        public void ShowInformationMessage(string message, string caption = "") {
             MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public void ShowErrorMessage(string message, string caption = "")
-        {
+        public void ShowErrorMessage(string message, string caption = "") {
             MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public bool ShowModalYesNo(string message, string caption = "")
-        {
+        public bool ShowModalYesNo(string message, string caption = "") {
             return MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Information) ==
                    DialogResult.Yes;
         }
 
-        public string SaveFile(string directory = "", string filter = "")
-        {
+        public string SaveFile(string directory = "", string filter = "") {
             using (var dialog = new SaveFileDialog()) {
                 if (string.IsNullOrWhiteSpace(directory)) {
                     directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -51,8 +46,7 @@ namespace Terrasoft.Tools.SvnUI.Model.File
             }
         }
 
-        public string SelectFile(string filter = "")
-        {
+        public string SelectFile(string filter = "") {
             using (var dialog = new OpenFileDialog()) {
                 dialog.Filter = filter;
                 if (dialog.ShowDialog() == DialogResult.OK) {

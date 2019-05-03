@@ -7,8 +7,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
     {
         public FixFeatureSvnViewModel(IBrowserDialog browserDialog) : base(browserDialog) { }
 
-        public override SvnOperation GetSvnOperation()
-        {
+        public override SvnOperation GetSvnOperation() {
             return SvnOperation.FixFeature;
         }
     }

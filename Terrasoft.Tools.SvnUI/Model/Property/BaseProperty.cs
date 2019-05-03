@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Terrasoft.Tools.SvnUI.Annotations;
+using Terrasoft.Tools.SvnUI.Properties;
 
 namespace Terrasoft.Tools.SvnUI.Model.Property
 {
@@ -10,8 +10,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Property
         private string _description;
         private bool _isRequired;
 
-        public BaseProperty(string caption, bool isRequired = false, object tag = null)
-        {
+        public BaseProperty(string caption, bool isRequired = false, object tag = null) {
             Caption = caption;
             IsRequired = isRequired;
             Tag = tag;
@@ -46,13 +45,11 @@ namespace Terrasoft.Tools.SvnUI.Model.Property
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public virtual bool IsValid(out string message)
-        {
+        public virtual bool IsValid(out string message) {
             message = string.Empty;
             return true;
         }

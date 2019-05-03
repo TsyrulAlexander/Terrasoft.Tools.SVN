@@ -11,8 +11,7 @@ namespace Terrasoft.Tools.SvnUI.View
                 new PropertyMetadata(PropertyChangedCallback)
             );
 
-        public PasswordPropertyControl()
-        {
+        public PasswordPropertyControl() {
             InitializeComponent();
         }
 
@@ -21,8 +20,7 @@ namespace Terrasoft.Tools.SvnUI.View
             set => SetValue(StringProperty, value);
         }
 
-        private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (e.NewValue != null && e.NewValue is StringProperty property) {
                 ((PasswordPropertyControl) d).psw.Password = property.Value;
             }
@@ -37,8 +35,7 @@ namespace Terrasoft.Tools.SvnUI.View
         }
 */
 
-        private void OnPasswordChanged(object sender, RoutedEventArgs e)
-        {
+        private void OnPasswordChanged(object sender, RoutedEventArgs e) {
             Property.Value = ((PasswordBox) sender).Password;
         }
     }

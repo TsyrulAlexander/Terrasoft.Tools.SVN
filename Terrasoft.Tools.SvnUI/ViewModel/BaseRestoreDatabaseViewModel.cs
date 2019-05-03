@@ -14,8 +14,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         private StringProperty _ftpPassword;
         private StringProperty _ftpTempFile;
 
-        public BaseRestoreDatabaseViewModel()
-        {
+        public BaseRestoreDatabaseViewModel() {
             BackupFilePathType =
                 new EnumProperty<FilePathType>(Resources.BackupFilePathType, true,
                     DeployArgumentNameConstant.BackupPathType

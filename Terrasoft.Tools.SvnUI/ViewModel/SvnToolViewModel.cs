@@ -8,7 +8,7 @@ using Terrasoft.Core.SVN;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.EventArgs;
 using Terrasoft.Tools.SvnUI.Model.File;
-using Terrasoft.Tools.SvnUI.Properties;
+using Resources = Terrasoft.Tools.SvnUI.Properties.Resources;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
@@ -16,8 +16,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
     {
         private SvnOperation _svnOperation = SvnOperation.CreateFeature;
 
-        public SvnToolViewModel(ILogger logger, IBrowserDialog browserDialog)
-        {
+        public SvnToolViewModel(ILogger logger, IBrowserDialog browserDialog) {
             Logger = logger;
             BrowserDialog = browserDialog;
             RunCommand = new RelayCommand(Run, CanRun);
@@ -39,18 +38,15 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         public RelayCommand RunCommand { get; set; }
         public RelayCommand<SvnOperation> SetSvnOperationCommand { get; set; }
 
-        private void SetSvnOperation(SvnOperation operation)
-        {
+        private void SetSvnOperation(SvnOperation operation) {
             SvnOperation = operation;
         }
 
-        public async void StartSvnOperation(StartSvnOperationEventArgs eventArgs)
-        {
+        public async void StartSvnOperation(StartSvnOperationEventArgs eventArgs) {
             await Task.Run(() => StartSvnOperationAsync(eventArgs));
         }
 
-        private void StartSvnOperationAsync(StartSvnOperationEventArgs eventArgs)
-        {
+        private void StartSvnOperationAsync(StartSvnOperationEventArgs eventArgs) {
             try {
                 SetProgressState(true);
                 using (var svnUtils = new SvnUtils(eventArgs.Arguments, Logger)) {
@@ -91,8 +87,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs)
-        {
+        protected virtual void CheckoutWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs) {
             string workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
             string repositoryPath = eventArgs.Arguments[SvnUtilsBase.BranchFeatureUrlOptionName];
             if (Directory.Exists(workingCopyPath) &&
@@ -105,13 +100,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
         }
 
-        private bool CanRun()
-        {
+        private bool CanRun() {
             return SvnOperation != SvnOperation.NaN && InProgress == false;
         }
 
-        public void Run()
-        {
+        public void Run() {
             Messenger.Default.Send(SvnOperation);
         }
     }

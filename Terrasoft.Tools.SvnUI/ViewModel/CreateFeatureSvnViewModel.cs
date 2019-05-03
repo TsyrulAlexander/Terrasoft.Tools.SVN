@@ -7,7 +7,7 @@ using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.EventArgs;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Property;
-using Terrasoft.Tools.SvnUI.Properties;
+using Resources = Terrasoft.Tools.SvnUI.Properties.Resources;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
@@ -17,8 +17,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         private StringProperty _featureName;
         private StringProperty _maintainer;
 
-        public CreateFeatureSvnViewModel(IBrowserDialog browserDialog) : base(browserDialog)
-        {
+        public CreateFeatureSvnViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
             BranchFeatureUrl.Caption = Resources.BranchesFeatureUrl;
             BranchFeatureUrl.Description = Resources.BranchesFeatureUrlDescription;
             BranchReleaseUrl =
@@ -59,13 +58,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             }
         }
 
-        private void FeatureNameOnPropertyValueChange(PropertyValueChangeEventArgs<string> eventArgs)
-        {
+        private void FeatureNameOnPropertyValueChange(PropertyValueChangeEventArgs<string> eventArgs) {
             SetFeatureFolder(eventArgs.OldValue, eventArgs.NewValue);
         }
 
-        protected virtual void SetFeatureFolder(string featureOldValue, string featureNewValue)
-        {
+        protected virtual void SetFeatureFolder(string featureOldValue, string featureNewValue) {
             int lastFolderIndex = WorkingCopyPath.Value.LastIndexOf("\\", StringComparison.Ordinal);
             string lastFolderName = WorkingCopyPath.Value.Substring(lastFolderIndex + 1);
             if (lastFolderName == featureOldValue) {
@@ -75,13 +72,11 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
             WorkingCopyPath.Value = Path.Combine(WorkingCopyPath.Value, featureNewValue);
         }
 
-        protected override IEnumerable<BaseProperty> GetProperties()
-        {
+        protected override IEnumerable<BaseProperty> GetProperties() {
             return base.GetProperties().Concat(new[] {BranchReleaseUrl, Maintainer, FeatureName});
         }
 
-        public override SvnOperation GetSvnOperation()
-        {
+        public override SvnOperation GetSvnOperation() {
             return SvnOperation.CreateFeature;
         }
     }

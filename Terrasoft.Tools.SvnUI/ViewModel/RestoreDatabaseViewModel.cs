@@ -10,8 +10,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
     {
         private EnumProperty<DataBaseType> _dataBaseType;
 
-        public RestoreDatabaseViewModel(IBrowserDialog browserDialog) : base(browserDialog)
-        {
+        public RestoreDatabaseViewModel(IBrowserDialog browserDialog) : base(browserDialog) {
             DataBaseType =
                 new EnumProperty<DataBaseType>(Resources.DataBase, true, DeployArgumentNameConstant.DataBaseType);
         }
@@ -32,8 +31,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
         //	BackupPath.Value = backPath;
         //}
 
-        protected override DeployOperation GetOperation()
-        {
+        protected override DeployOperation GetOperation() {
             return DeployOperation.RestoreDb;
         }
     }

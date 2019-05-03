@@ -1,30 +1,29 @@
-﻿using System;
-using Terrasoft.Core;
+using System;
 
-namespace Terrasoft.Tools.SvnConsole
+namespace Terrasoft.Core.SVN
 {
-    internal class ConsoleLogger : ILogger
+    internal static class Logger
     {
-        public void LogError(string warnMessage, string message = "") {
+        internal static void Error(string errorMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($@"{warnMessage} ");
+            Console.Write($@"{errorMessage}	");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
 
-        public void LogInfo(string infoMessage, string message = "") {
+        internal static void Info(string infoMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write($@"{infoMessage} ");
+            Console.Write($@"{infoMessage}	");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }
 
-        public void LogWarning(string infoMessage, string message = "") {
+        internal static void Warning(string infoMessage, string message = "") {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write($@"{infoMessage} ");
+            Console.Write($@"{infoMessage}	");
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(message);
         }

@@ -8,8 +8,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Property
             tag
         ) { }
 
-        public override bool IsValid(out string message)
-        {
+        public override bool IsValid(out string message) {
             if (IsRequired && string.IsNullOrWhiteSpace(Value)) {
                 message = string.Format(Resources.IsEmpryPropertyValueMessage, Caption);
                 return false;

@@ -30,7 +30,7 @@ using System;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace Terrasoft.Tools.SvnUI.Annotations
+namespace Terrasoft.Tools.SvnUI.Properties
 {
     /// <summary>
     ///     Indicates that the value of the marked element could be <c>null</c> sometimes,
@@ -136,8 +136,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
         /// <param name="formatParameterName">
         ///     Specifies which parameter of an annotated method should be treated as format-string
         /// </param>
-        public StringFormatMethodAttribute([NotNull] string formatParameterName)
-        {
+        public StringFormatMethodAttribute([NotNull] string formatParameterName) {
             FormatParameterName = formatParameterName;
         }
 
@@ -154,8 +153,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class ValueProviderAttribute : Attribute
     {
-        public ValueProviderAttribute([NotNull] string name)
-        {
+        public ValueProviderAttribute([NotNull] string name) {
             Name = name;
         }
 
@@ -240,8 +238,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public NotifyPropertyChangedInvocatorAttribute() { }
 
-        public NotifyPropertyChangedInvocatorAttribute([NotNull] string parameterName)
-        {
+        public NotifyPropertyChangedInvocatorAttribute([NotNull] string parameterName) {
             ParameterName = parameterName;
         }
 
@@ -310,8 +307,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
         public ContractAnnotationAttribute([NotNull] string contract)
             : this(contract, false) { }
 
-        public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
-        {
+        public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates) {
             Contract = contract;
             ForceFullStates = forceFullStates;
         }
@@ -337,8 +333,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public LocalizationRequiredAttribute() : this(true) { }
 
-        public LocalizationRequiredAttribute(bool required)
-        {
+        public LocalizationRequiredAttribute(bool required) {
             Required = required;
         }
 
@@ -387,8 +382,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [BaseTypeRequired(typeof(Attribute))]
     public sealed class BaseTypeRequiredAttribute : Attribute
     {
-        public BaseTypeRequiredAttribute([NotNull] Type baseType)
-        {
+        public BaseTypeRequiredAttribute([NotNull] Type baseType) {
             BaseType = baseType;
         }
 
@@ -411,8 +405,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
         public UsedImplicitlyAttribute(ImplicitUseTargetFlags targetFlags)
             : this(ImplicitUseKindFlags.Default, targetFlags) { }
 
-        public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
-        {
+        public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags) {
             UseKindFlags = useKindFlags;
             TargetFlags = targetFlags;
         }
@@ -438,15 +431,14 @@ namespace Terrasoft.Tools.SvnUI.Annotations
         public MeansImplicitUseAttribute(ImplicitUseTargetFlags targetFlags)
             : this(ImplicitUseKindFlags.Default, targetFlags) { }
 
-        public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
-        {
+        public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags) {
             UseKindFlags = useKindFlags;
             TargetFlags = targetFlags;
         }
 
-        [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; }
 
-        [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     [Flags]
@@ -496,8 +488,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public PublicAPIAttribute() { }
 
-        public PublicAPIAttribute([NotNull] string comment)
-        {
+        public PublicAPIAttribute([NotNull] string comment) {
             Comment = comment;
         }
 
@@ -536,8 +527,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public MustUseReturnValueAttribute() { }
 
-        public MustUseReturnValueAttribute([NotNull] string justification)
-        {
+        public MustUseReturnValueAttribute([NotNull] string justification) {
             Justification = justification;
         }
 
@@ -582,8 +572,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public PathReferenceAttribute() { }
 
-        public PathReferenceAttribute([NotNull] [PathReference] string basePath)
-        {
+        public PathReferenceAttribute([NotNull] [PathReference] string basePath) {
             BasePath = basePath;
         }
 
@@ -677,8 +666,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class AspMvcAreaMasterLocationFormatAttribute : Attribute
     {
-        public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format)
-        {
+        public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format) {
             Format = format;
         }
 
@@ -689,8 +677,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class AspMvcAreaPartialViewLocationFormatAttribute : Attribute
     {
-        public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format)
-        {
+        public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format) {
             Format = format;
         }
 
@@ -701,8 +688,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class AspMvcAreaViewLocationFormatAttribute : Attribute
     {
-        public AspMvcAreaViewLocationFormatAttribute([NotNull] string format)
-        {
+        public AspMvcAreaViewLocationFormatAttribute([NotNull] string format) {
             Format = format;
         }
 
@@ -713,8 +699,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class AspMvcMasterLocationFormatAttribute : Attribute
     {
-        public AspMvcMasterLocationFormatAttribute([NotNull] string format)
-        {
+        public AspMvcMasterLocationFormatAttribute([NotNull] string format) {
             Format = format;
         }
 
@@ -725,8 +710,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class AspMvcPartialViewLocationFormatAttribute : Attribute
     {
-        public AspMvcPartialViewLocationFormatAttribute([NotNull] string format)
-        {
+        public AspMvcPartialViewLocationFormatAttribute([NotNull] string format) {
             Format = format;
         }
 
@@ -737,8 +721,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     )]
     public sealed class AspMvcViewLocationFormatAttribute : Attribute
     {
-        public AspMvcViewLocationFormatAttribute([NotNull] string format)
-        {
+        public AspMvcViewLocationFormatAttribute([NotNull] string format) {
             Format = format;
         }
 
@@ -756,8 +739,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public AspMvcActionAttribute() { }
 
-        public AspMvcActionAttribute([NotNull] string anonymousProperty)
-        {
+        public AspMvcActionAttribute([NotNull] string anonymousProperty) {
             AnonymousProperty = anonymousProperty;
         }
 
@@ -774,8 +756,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public AspMvcAreaAttribute() { }
 
-        public AspMvcAreaAttribute([NotNull] string anonymousProperty)
-        {
+        public AspMvcAreaAttribute([NotNull] string anonymousProperty) {
             AnonymousProperty = anonymousProperty;
         }
 
@@ -793,8 +774,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public AspMvcControllerAttribute() { }
 
-        public AspMvcControllerAttribute([NotNull] string anonymousProperty)
-        {
+        public AspMvcControllerAttribute([NotNull] string anonymousProperty) {
             AnonymousProperty = anonymousProperty;
         }
 
@@ -898,8 +878,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     {
         public HtmlElementAttributesAttribute() { }
 
-        public HtmlElementAttributesAttribute([NotNull] string name)
-        {
+        public HtmlElementAttributesAttribute([NotNull] string name) {
             Name = name;
         }
 
@@ -909,8 +888,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class HtmlAttributeValueAttribute : Attribute
     {
-        public HtmlAttributeValueAttribute([NotNull] string name)
-        {
+        public HtmlAttributeValueAttribute([NotNull] string name) {
             Name = name;
         }
 
@@ -932,8 +910,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
     public sealed class CollectionAccessAttribute : Attribute
     {
-        public CollectionAccessAttribute(CollectionAccessType collectionAccessType)
-        {
+        public CollectionAccessAttribute(CollectionAccessType collectionAccessType) {
             CollectionAccessType = collectionAccessType;
         }
 
@@ -972,8 +949,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AssertionConditionAttribute : Attribute
     {
-        public AssertionConditionAttribute(AssertionConditionType conditionType)
-        {
+        public AssertionConditionAttribute(AssertionConditionType conditionType) {
             ConditionType = conditionType;
         }
 
@@ -1060,8 +1036,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class AspChildControlTypeAttribute : Attribute
     {
-        public AspChildControlTypeAttribute([NotNull] string tagName, [NotNull] Type controlType)
-        {
+        public AspChildControlTypeAttribute([NotNull] string tagName, [NotNull] Type controlType) {
             TagName = tagName;
             ControlType = controlType;
         }
@@ -1083,8 +1058,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class AspRequiredAttributeAttribute : Attribute
     {
-        public AspRequiredAttributeAttribute([NotNull] string attribute)
-        {
+        public AspRequiredAttributeAttribute([NotNull] string attribute) {
             Attribute = attribute;
         }
 
@@ -1094,8 +1068,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class AspTypePropertyAttribute : Attribute
     {
-        public AspTypePropertyAttribute(bool createConstructorReferences)
-        {
+        public AspTypePropertyAttribute(bool createConstructorReferences) {
             CreateConstructorReferences = createConstructorReferences;
         }
 
@@ -1105,8 +1078,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public sealed class RazorImportNamespaceAttribute : Attribute
     {
-        public RazorImportNamespaceAttribute([NotNull] string name)
-        {
+        public RazorImportNamespaceAttribute([NotNull] string name) {
             Name = name;
         }
 
@@ -1116,8 +1088,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public sealed class RazorInjectionAttribute : Attribute
     {
-        public RazorInjectionAttribute([NotNull] string type, [NotNull] string fieldName)
-        {
+        public RazorInjectionAttribute([NotNull] string type, [NotNull] string fieldName) {
             Type = type;
             FieldName = fieldName;
         }
@@ -1130,8 +1101,7 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public sealed class RazorDirectiveAttribute : Attribute
     {
-        public RazorDirectiveAttribute([NotNull] string directive)
-        {
+        public RazorDirectiveAttribute([NotNull] string directive) {
             Directive = directive;
         }
 
@@ -1141,13 +1111,11 @@ namespace Terrasoft.Tools.SvnUI.Annotations
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public sealed class RazorPageBaseTypeAttribute : Attribute
     {
-        public RazorPageBaseTypeAttribute([NotNull] string baseType)
-        {
+        public RazorPageBaseTypeAttribute([NotNull] string baseType) {
             BaseType = baseType;
         }
 
-        public RazorPageBaseTypeAttribute([NotNull] string baseType, string pageName)
-        {
+        public RazorPageBaseTypeAttribute([NotNull] string baseType, string pageName) {
             BaseType = baseType;
             PageName = pageName;
         }

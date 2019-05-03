@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using SharpSvn;
-using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
@@ -18,21 +18,25 @@ namespace Terrasoft.Core.SVN
         ///     Конструктор SVN клиента
         /// </summary>
         /// <param name="programOptions">Словарь с параметрами</param>
-        public SvnUtils(IReadOnlyDictionary<string, string> programOptions, ILogger logger) : base(programOptions, logger) { }
+        /// <param name="logger"></param>
+        public SvnUtils(IReadOnlyDictionary<string, string> programOptions, ILogger logger) : base(programOptions,
+            logger
+        ) { }
 
-		public static string GetRepositoryPathWithFolder(string folderPath) {
-			try {
-				using (var svnClient = new SvnClient()) {
-					svnClient.GetInfo(SvnTarget.FromString(folderPath), out var args);
-					return args?.Uri?.AbsoluteUri;
-				}
-			} catch (SvnInvalidNodeKindException nodeKindException) {
-				if (nodeKindException.SvnErrorCode == SvnErrorCode.SVN_ERR_WC_NOT_DIRECTORY) {
-					return string.Empty;
-				}
-				throw;
-			}
-		}
+        public static string GetRepositoryPathWithFolder(string folderPath) {
+            try {
+                using (var svnClient = new SvnClient()) {
+                    svnClient.GetInfo(SvnTarget.FromString(folderPath), out SvnInfoEventArgs args);
+                    return args?.Uri?.AbsoluteUri;
+                }
+            } catch (SvnInvalidNodeKindException nodeKindException) {
+                if (nodeKindException.SvnErrorCode == SvnErrorCode.SVN_ERR_WC_NOT_DIRECTORY) {
+                    return string.Empty;
+                }
+
+                throw;
+            }
+        }
 
         /// <summary>
         ///     Получить URL ветки из которой была выделена фитча
@@ -44,9 +48,10 @@ namespace Terrasoft.Core.SVN
             string basePath = string.Empty;
             var svnInfoArgs = new SvnInfoArgs {Revision = new SvnRevision(revision)};
             Info(SvnTarget.FromString(workingCopyPath), svnInfoArgs, (sender, args) => {
-                basePath = args.Uri.ToString();
-               Logger.LogInfo(args.Uri.ToString());
-            });
+                    basePath = args.Uri.ToString();
+                    Console.WriteLine(args.Uri.ToString());
+                }
+            );
             return basePath;
         }
 
@@ -58,10 +63,11 @@ namespace Terrasoft.Core.SVN
         private bool CheckWorkingCopyForError(string workingCopyPath) {
             var result = true;
             Status(workingCopyPath, (sender, args) => {
-                if (result && args.Conflicted) {
-                    result = !args.Conflicted;
+                    if (result && args.Conflicted) {
+                        result = !args.Conflicted;
+                    }
                 }
-            });
+            );
             return result;
         }
 
@@ -72,21 +78,33 @@ namespace Terrasoft.Core.SVN
         /// <returns>Номер ревизии</returns>
         private long GetFeatureFirstRevisionNumber(string workingCopyPath) {
             long revision = 0;
-            var svnLogArgs = new SvnLogArgs {StrictNodeHistory = true};
+            var svnLogArgs = new SvnLogArgs {StrictNodeHistory = false};
             svnLogArgs.Notify += SvnLogArgsOnNotify;
-            Log(workingCopyPath, svnLogArgs, (sender, args) => {
-                if (args.ChangedPaths.Count <= 0) {
-                    return;
+            string branchLocalPath = string.Empty;
+            Info(SvnTarget.FromString(workingCopyPath),
+                (sender, args) => {
+                    branchLocalPath = args.Uri.LocalPath.Remove(0, args.RepositoryRoot.LocalPath.Length - 1);
+                    branchLocalPath = branchLocalPath.Remove(branchLocalPath.Length - 1);
                 }
-
-                foreach (SvnChangeItem changeItem in args.ChangedPaths) {
-                    if (string.IsNullOrEmpty(changeItem.CopyFromPath)) {
-                        continue;
+            );
+            Log(workingCopyPath, svnLogArgs, (sender, args) => {
+                    if (args.ChangedPaths.Count != 1) {
+                        return;
                     }
 
-                    revision = changeItem.CopyFromRevision;
+                    foreach (SvnChangeItem changeItem in args.ChangedPaths) {
+                        if (string.IsNullOrEmpty(changeItem.CopyFromPath)) {
+                            continue;
+                        }
+
+                        if (changeItem.Action == SvnChangeAction.Add) {
+                            if (changeItem.CopyFromPath != branchLocalPath && changeItem.Path == branchLocalPath) {
+                                revision = changeItem.CopyFromRevision;
+                            }
+                        }
+                    }
                 }
-            });
+            );
             return revision;
         }
 
@@ -118,14 +136,18 @@ namespace Terrasoft.Core.SVN
         /// <returns>Результат фиксации изменений в хранилище</returns>
         public bool CommitChanges(bool checkError = false, string logMessage = "") {
             if (checkError && !CheckWorkingCopyForError(WorkingCopyPath)) {
-                Logger.LogError(Resources.SvnUtils_CommitChanges_Sources_not_resolved);
+                SVN.Logger.Error(Resources.ResourceManager.GetString("SvnUtils_CommitChanges_Sources_not_resolved",
+                        CultureInfo.CurrentCulture
+                    )
+                );
                 return false;
             }
 
             var svnCommitArgs = new SvnCommitArgs {
                 LogMessage = string.IsNullOrEmpty(logMessage)
-                    ? Resources
-                        .SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature
+                    ? Resources.ResourceManager.GetString(
+                        "SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature", CultureInfo.CurrentCulture
+                    )
                     : logMessage
             };
 
@@ -140,6 +162,11 @@ namespace Terrasoft.Core.SVN
             }
         }
 
+        /// <summary>
+        ///     Установка технических свойств рабочей копии
+        /// </summary>
+        /// <param name="workingCopyPath">Путь к рабочей копии</param>
+        /// <returns></returns>
         private bool SetPackageProperty(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
@@ -147,15 +174,20 @@ namespace Terrasoft.Core.SVN
             IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packageRootDir in from packagePath in branchPackages
-                where !string.IsNullOrEmpty(packagePath)
-                let slashPosition = packagePath.LastIndexOf('\\')
-                select packagePath.Substring(0, slashPosition)) {
+                                              where !string.IsNullOrEmpty(packagePath)
+                                              let slashPosition = packagePath.LastIndexOf('\\')
+                                              select packagePath.Substring(0, slashPosition)) {
                 SetProperty(packageRootDir, "PackageUpdateDate", DateTime.UtcNow.ToLongDateString());
             }
 
             return true;
         }
 
+        /// <summary>
+        ///     Удаление технических свойств
+        /// </summary>
+        /// <param name="workingCopyPath">Путь к рабочей копии</param>
+        /// <returns></returns>
         private bool RemovePackageProperty(string workingCopyPath = "") {
             string localWorkingCopyPath = string.IsNullOrEmpty(workingCopyPath)
                 ? WorkingCopyPath
@@ -163,30 +195,135 @@ namespace Terrasoft.Core.SVN
             IEnumerable<string> branchPackages =
                 Directory.EnumerateDirectories(localWorkingCopyPath, "Schemas", SearchOption.AllDirectories);
             foreach (string packageRootDir in from packagePath in branchPackages
-                where !string.IsNullOrEmpty(packagePath)
-                let slashPosition = packagePath.LastIndexOf('\\')
-                select packagePath.Substring(0, slashPosition)) {
+                                              where !string.IsNullOrEmpty(packagePath)
+                                              let slashPosition = packagePath.LastIndexOf('\\')
+                                              select packagePath.Substring(0, slashPosition)) {
                 DeleteProperty(packageRootDir, "PackageUpdateDate");
             }
 
             return true;
         }
 
+        /// <summary>
+        ///     Фиксация технических свойств
+        /// </summary>
+        /// <param name="logMessage">Комментарий</param>
+        /// <returns>Результат выполнения</returns>
         private bool MakePropertiesCommit(string logMessage = "") {
             return Commit(WorkingCopyPath,
                 new SvnCommitArgs {
                     LogMessage = !string.IsNullOrEmpty(logMessage)
                         ? logMessage
                         : "#0\nУстановка даты обновления пакетов из релиза."
-                });
+                }
+            );
         }
 
+        /// <summary>
+        ///     Исправление ветки путём добавления и удаления технического свойства
+        /// </summary>
+        /// <returns></returns>
         public bool FixBranch() {
-            return SetPackageProperty(WorkingCopyPath)
-                   && MakePropertiesCommit()
-                   && RemovePackageProperty(WorkingCopyPath)
-                   && MakePropertiesCommit(
-                       "#0\nУдаление технического свойства: дата обновления пакетов из релиза.");
+            return SetPackageProperty(WorkingCopyPath) &&
+                   MakePropertiesCommit() &&
+                   RemovePackageProperty(WorkingCopyPath) &&
+                   MakePropertiesCommit(
+                       "#0\nУдаление технического свойства: дата обновления пакетов из релиза."
+                   );
+        }
+
+        /// <summary>
+        ///     Поиск автора входящих изменений в истории
+        /// </summary>
+        /// <param name="targetPath">URL репозитория.</param>
+        /// <param name="conflictRelativePath">Относительный путь конфликтного контента.</param>
+        /// <returns>Результат</returns>
+        internal static bool FindOwnerInLog(string targetPath, string conflictRelativePath) {
+            var fended = false;
+            using (var svnClient = new SvnClient()) {
+                void LogHandler(object sender, SvnLogEventArgs args) {
+                    if (args?.ChangedPaths is null) {
+                        return;
+                    }
+
+                    foreach (SvnChangeItem changeItem in args.ChangedPaths) {
+                        if (changeItem.Action != SvnChangeAction.Add) {
+                            continue;
+                        }
+
+                        if (!changeItem.Path.StartsWith(conflictRelativePath, StringComparison.Ordinal)) {
+                            continue;
+                        }
+
+                        SVN.Logger.Warning(changeItem.Path == conflictRelativePath
+                                ? Resources.ResourceManager.GetString("FolderExistAndWouldBackuped",
+                                    CultureInfo.CurrentCulture
+                                )
+                                : Resources.ResourceManager.GetString("RemoveFolderContainFiles",
+                                    CultureInfo.CurrentCulture
+                                ),
+                            string.Format(CultureInfo.CurrentCulture,
+                                Resources.ResourceManager.GetString("FolderAddedInRevision", CultureInfo.CurrentCulture
+                                ) ??
+                                throw new InvalidOperationException(), args.Author, args.Revision
+                            )
+                        );
+                        fended = true;
+                    }
+                }
+
+                svnClient.Log(new Uri(targetPath),
+                    new SvnLogArgs {RetrieveChangedPaths = true, RetrieveMergedRevisions = false},
+                    LogHandler
+                );
+                return fended;
+            }
+        }
+
+        /// <summary>
+        ///     Выгрузка источника в указанную папку
+        /// </summary>
+        /// <param name="sourceRepository">URL источник</param>
+        /// <param name="destinationFolder">Папка получатель</param>
+        /// <returns>Результат</returns>
+        internal static bool ExtractContentInMergedFolder(string sourceRepository, string destinationFolder) {
+            using (var client = new SvnClient()) {
+                var svnExportArgs = new SvnExportArgs {Overwrite = true};
+
+                void OnSvnExportArgsOnNotify(object sender, SvnNotifyEventArgs args) {
+                    SVN.Logger.Info(args.Action.ToString("G"), args.FullPath);
+                }
+
+                svnExportArgs.Notify += OnSvnExportArgsOnNotify;
+                svnExportArgs.SvnError += (sender, args) => SVN.Logger.Error(args.Exception.Message);
+                bool exportResult = client.Export(SvnTarget.FromString(sourceRepository), destinationFolder,
+                    svnExportArgs
+                );
+                return exportResult;
+            }
+        }
+
+        /// <summary>
+        ///     Создание резервной копии указанной папки
+        /// </summary>
+        /// <param name="src"></param>
+        internal static void BackupExistsFolder(string src) {
+            string[] files = Directory.GetFiles(src);
+            string targetPath = src + ".tmp";
+            if (!Directory.Exists(targetPath)) {
+                Directory.CreateDirectory(targetPath);
+            }
+
+            string[] directories = Directory.GetDirectories(src);
+            foreach (string directory in directories.Where(directory => !Directory.Exists(targetPath))) {
+                Directory.CreateDirectory(Path.Combine(targetPath, directory));
+            }
+
+            foreach (string file in files) {
+                string fileName = Path.GetFileName(file);
+                string destFile = Path.Combine(targetPath, fileName);
+                File.Copy(file, destFile, true);
+            }
         }
     }
 }

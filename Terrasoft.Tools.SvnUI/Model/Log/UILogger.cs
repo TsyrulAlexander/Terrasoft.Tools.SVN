@@ -6,25 +6,21 @@ namespace Terrasoft.Tools.SvnUI.Model.Log
 {
     public sealed class UiLogger : ILogger
     {
-        public void LogError(string warnMessage, string message = "")
-        {
+        public void LogError(string warnMessage, string message = "") {
             OnExecute(new LogInfo {Message = $"{warnMessage} {message}", Level = LogLevel.Error});
         }
 
-        public void LogInfo(string infoMessage, string message = "")
-        {
+        public void LogInfo(string infoMessage, string message = "") {
             OnExecute(new LogInfo {Message = $"{infoMessage} {message}", Level = LogLevel.Information});
         }
 
-        public void LogWarning(string infoMessage, string message = "")
-        {
+        public void LogWarning(string infoMessage, string message = "") {
             OnExecute(new LogInfo {Message = $"{infoMessage} {message}", Level = LogLevel.Warning});
         }
 
         public event Action<LogInfo> Execute;
 
-        private void OnExecute(LogInfo obj)
-        {
+        private void OnExecute(LogInfo obj) {
             Execute?.Invoke(obj);
         }
     }

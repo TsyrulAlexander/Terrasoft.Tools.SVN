@@ -29,8 +29,7 @@ namespace Terrasoft.Tools.SvnUI
         public static string DefFtpPassword => GetSettingValue("defFtpPassword");
         public static string DefFtpTempFile => GetSettingValue("defFtpTempFile");
 
-        private static T GetEnumValue<T>(string key) where T : struct
-        {
+        private static T GetEnumValue<T>(string key) where T : struct {
             string value = GetSettingValue(key);
             if (Enum.TryParse(value, out T enumValue)) {
                 return enumValue;
@@ -39,8 +38,7 @@ namespace Terrasoft.Tools.SvnUI
             return default;
         }
 
-        private static string GetSettingValue(string key)
-        {
+        private static string GetSettingValue(string key) {
             return ConfigurationManager.AppSettings.Get(key);
         }
     }

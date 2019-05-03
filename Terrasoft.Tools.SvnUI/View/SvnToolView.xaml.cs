@@ -2,8 +2,7 @@
 {
     public partial class SvnToolView
     {
-        public SvnToolView()
-        {
+        public SvnToolView() {
             InitializeComponent();
         }
     }

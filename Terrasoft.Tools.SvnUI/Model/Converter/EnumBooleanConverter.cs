@@ -8,8 +8,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Converter
     public class EnumBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter,
-            CultureInfo culture)
-        {
+            CultureInfo culture) {
             if (!(parameter is string parameterString)) {
                 return DependencyProperty.UnsetValue;
             }
@@ -23,8 +22,7 @@ namespace Terrasoft.Tools.SvnUI.Model.Converter
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
-            CultureInfo culture)
-        {
+            CultureInfo culture) {
             if (!(parameter is string parameterString)) {
                 return DependencyProperty.UnsetValue;
             }

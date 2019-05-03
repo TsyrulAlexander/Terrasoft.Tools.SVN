@@ -6,8 +6,7 @@ namespace Terrasoft.Tools.SvnUI
 {
     public partial class App
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
+        protected override void OnStartup(StartupEventArgs e) {
             IocKernel.Initialize(new IocConfiguration());
             DispatcherHelper.Initialize();
             base.OnStartup(e);

@@ -28,8 +28,7 @@ namespace Terrasoft.Tools.SvnUI.View
         public static readonly DependencyProperty FtpTempFileProperty =
             DependencyProperty.Register("FtpTempFile", typeof(StringProperty), typeof(SelectFilePathFromTypeControl));
 
-        public SelectFilePathFromTypeControl()
-        {
+        public SelectFilePathFromTypeControl() {
             SetFilePathTypeCommand = new RelayCommand<FilePathType>(SetFilePathType);
             InitializeComponent();
         }
@@ -66,8 +65,7 @@ namespace Terrasoft.Tools.SvnUI.View
 
         public RelayCommand<FilePathType> SetFilePathTypeCommand { get; set; }
 
-        private void SetFilePathType(FilePathType type)
-        {
+        private void SetFilePathType(FilePathType type) {
             FilePathType.Value = type;
         }
     }

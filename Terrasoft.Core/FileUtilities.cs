@@ -5,8 +5,7 @@ namespace Terrasoft.Core
 {
     public static class FileUtilities
     {
-        public static void UnZip(byte[] file, string directory)
-        {
+        public static void UnZip(byte[] file, string directory) {
             using (var zippedStream = new MemoryStream(file)) {
                 using (var archive = new ZipArchive(zippedStream)) {
                     foreach (ZipArchiveEntry zipArchiveEntry in archive.Entries) {
@@ -18,8 +17,7 @@ namespace Terrasoft.Core
             }
         }
 
-        private static byte[] GetArchiveEntryToFile(ZipArchiveEntry archiveEntry)
-        {
+        private static byte[] GetArchiveEntryToFile(ZipArchiveEntry archiveEntry) {
             using (Stream unzippedEntryStream = archiveEntry.Open()) {
                 using (var ms = new MemoryStream()) {
                     unzippedEntryStream.CopyTo(ms);
@@ -29,8 +27,7 @@ namespace Terrasoft.Core
             }
         }
 
-        public static void Save(byte[] file, string path)
-        {
+        public static void Save(byte[] file, string path) {
             File.WriteAllBytes(path, file);
         }
     }

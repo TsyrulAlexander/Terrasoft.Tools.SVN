@@ -6,8 +6,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 {
     public class ViewModelLocator
     {
-        public ViewModelLocator()
-        {
+        public ViewModelLocator() {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
         }
 

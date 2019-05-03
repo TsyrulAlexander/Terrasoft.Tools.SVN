@@ -8,8 +8,7 @@ namespace Terrasoft.Tools.SvnUI.View
         public static readonly DependencyProperty BooleanProperty =
             DependencyProperty.Register("Property", typeof(BooleanProperty), typeof(BooleanPropertyControl));
 
-        public BooleanPropertyControl()
-        {
+        public BooleanPropertyControl() {
             InitializeComponent();
         }
 
