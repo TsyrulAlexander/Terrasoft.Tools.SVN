@@ -108,12 +108,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 				BrowserDialog.ShowInformationMessage(message);
 				return;
 			}
-			CreateIfNotExistWorkingCopyDirectory();
 			StartSvnOperation();
-		}
-
-		protected virtual void CreateIfNotExistWorkingCopyDirectory() {
-			Directory.CreateDirectory(WorkingCopyPath.Value);
 		}
 
 		protected virtual void StartSvnOperation() {
