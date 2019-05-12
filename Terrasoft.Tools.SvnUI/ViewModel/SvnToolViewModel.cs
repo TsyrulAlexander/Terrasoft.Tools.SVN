@@ -88,10 +88,16 @@ namespace Terrasoft.Tools.SvnUI.ViewModel {
 			var repositoryPath = eventArgs.Arguments[SvnUtilsBase.BranchFeatureUrlOptionName];
 			if ((Directory.Exists(workingCopyPath) && !string.IsNullOrWhiteSpace(SvnUtils.GetRepositoryPathWithFolder(workingCopyPath)))
 				|| string.IsNullOrWhiteSpace(repositoryPath)) {
-				return;
+				UpdateWorkingCopy(svnUtils, eventArgs);
+			} else {
+				Directory.CreateDirectory(workingCopyPath);
+				svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
 			}
-			Directory.CreateDirectory(workingCopyPath);
-			svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
+		}
+
+		protected virtual void UpdateWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs) {
+			var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
+			svnUtils.UpdateWorkingCopy(workingCopyPath);
 		}
 
 		private bool CanRun() {
