@@ -47,13 +47,13 @@ namespace Terrasoft.Tools.SvnConsole
             Parallel.ForEach(argsEnumerable, FillParamDelegate);
             if (!_programOptions.ContainsKey(@"operation")) {
                 Usage();
-                Console.ReadLine();
+                //Console.ReadLine();
                 return 0;
             }
 
             string programOption = _programOptions[@"operation"].ToLowerInvariant();
             int result = StartOperation(programOption);
-            Console.ReadLine();
+            //Console.ReadLine();
             return result;
         }
 

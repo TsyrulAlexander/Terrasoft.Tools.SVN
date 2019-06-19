@@ -103,7 +103,11 @@ namespace Terrasoft.Core.SVN
                 )) {
                     foreach (OptionName optionName in propertyInfo.GetCustomAttributes<OptionName>()) {
                         if (optionName.Name.Equals(option.Key, StringComparison.OrdinalIgnoreCase)) {
-                            propertyInfo.SetValue(this, option.Value);
+                            if (propertyInfo.PropertyType == typeof(bool)) {
+                                propertyInfo.SetValue(this, Convert.ToBoolean(option.Value));
+                            } else {
+                                propertyInfo.SetValue(this, option.Value);
+                            }
                         }
                     }
                 }

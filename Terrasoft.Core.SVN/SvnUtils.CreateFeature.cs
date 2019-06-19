@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using SharpSvn;
+using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
@@ -98,7 +99,7 @@ namespace Terrasoft.Core.SVN
             Info(SvnTarget.FromString(workingCopyPath), (sender, args) => Console.WriteLine(args));
             var svnUpdateArgs = new SvnUpdateArgs {IgnoreExternals = false, UpdateParents = true};
             svnUpdateArgs.Notify += SvnUpdateArgsOnNotify;
-            svnUpdateArgs.Conflict += SvnUpdateArgsOnConflict;
+            svnUpdateArgs.Conflict += OnSvnConflict;
             svnUpdateArgs.SvnError += SvnUpdateArgsOnSvnError;
             try {
                 return Update(workingCopyPath, svnUpdateArgs);
@@ -111,7 +112,7 @@ namespace Terrasoft.Core.SVN
                 return false;
             } finally {
                 svnUpdateArgs.Notify -= SvnUpdateArgsOnNotify;
-                svnUpdateArgs.Conflict -= SvnUpdateArgsOnConflict;
+                svnUpdateArgs.Conflict -= OnSvnConflict;
                 svnUpdateArgs.SvnError -= SvnUpdateArgsOnSvnError;
             }
         }

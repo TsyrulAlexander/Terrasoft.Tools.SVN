@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using SharpSvn;
+using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
@@ -27,7 +28,14 @@ namespace Terrasoft.Core.SVN
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
         private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
-            SVN.Logger.Info(svnNotifyEventArgs.Action.ToString(), svnNotifyEventArgs.Path);
+            string notifyAction = string.Empty;
+            if (svnNotifyEventArgs.Action.ToString().Contains("Update") &&
+                !svnNotifyEventArgs.Action.ToString().Equals("Update", StringComparison.InvariantCultureIgnoreCase)) {
+                notifyAction = svnNotifyEventArgs.Action.ToString().Substring(6);
+            } else {
+                notifyAction = svnNotifyEventArgs.Action.ToString();
+            }
+            SVN.Logger.Info(notifyAction, svnNotifyEventArgs.Path);
         }
 
         /// <summary>
@@ -35,7 +43,7 @@ namespace Terrasoft.Core.SVN
         /// </summary>
         /// <param name="sender">Контекст</param>
         /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void OnSvnMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
+        private void OnSvnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
             AutoResolveConflict(svnConflictEventArgs);
         }
 
@@ -97,15 +105,6 @@ namespace Terrasoft.Core.SVN
         }
 
         /// <summary>
-        ///     Обработчик конфликтов при ре интеграции
-        /// </summary>
-        /// <param name="sender">Контекст</param>
-        /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void SvnReintegrationMergeArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
-            AutoResolveConflict(svnConflictEventArgs);
-        }
-
-        /// <summary>
         ///     Обработчик информации о копировании
         /// </summary>
         /// <param name="sender">Контекст</param>
@@ -143,15 +142,6 @@ namespace Terrasoft.Core.SVN
         }
 
         /// <summary>
-        ///     Обработчик ошибок при обновлении
-        /// </summary>
-        /// <param name="sender">Контекст</param>
-        /// <param name="svnConflictEventArgs">Аргумент</param>
-        private void SvnUpdateArgsOnConflict(object sender, SvnConflictEventArgs svnConflictEventArgs) {
-            AutoResolveConflict(svnConflictEventArgs);
-        }
-
-        /// <summary>
         ///     Обработчик конфликтов по типу
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
@@ -159,7 +149,7 @@ namespace Terrasoft.Core.SVN
         private void ResolveConflictByType(SvnConflictEventArgs svnConflictEventArgs) {
             switch (svnConflictEventArgs.ConflictType) {
                 case SvnConflictType.Tree:
-                    ResolveConflictByTreeReason(svnConflictEventArgs);
+                    ResolveConflictByTree(svnConflictEventArgs);
                     break;
                 case SvnConflictType.Content:
                     svnConflictEventArgs.Choice = SvnAccept.Theirs;
@@ -175,7 +165,7 @@ namespace Terrasoft.Core.SVN
         /// </summary>
         /// <param name="svnConflictEventArgs">Аргумент</param>
         /// <exception cref="ArgumentOutOfRangeException">Возможные ошибки</exception>
-        private void ResolveConflictByTreeReason(SvnConflictEventArgs svnConflictEventArgs) {
+        private void ResolveConflictByTree(SvnConflictEventArgs svnConflictEventArgs) {
             switch (svnConflictEventArgs.ConflictReason) {
                 case SvnConflictReason.Added:
                     ResolveConflictByTreeAddedAction(svnConflictEventArgs);
@@ -191,14 +181,59 @@ namespace Terrasoft.Core.SVN
                 case SvnConflictReason.NotVersioned:
                     break;
                 case SvnConflictReason.Missing:
+                    if (svnConflictEventArgs.ConflictAction == SvnConflictAction.Delete) {
+                        svnConflictEventArgs.Choice = SvnAccept.Working;
+                    }
+
                     break;
                 case SvnConflictReason.Deleted:
                     break;
                 case SvnConflictReason.Obstructed:
+                    ResolveObstructed(svnConflictEventArgs);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(svnConflictEventArgs));
             }
+        }
+
+        private void ResolveObstructed(SvnConflictEventArgs svnConflictEventArgs) {
+            SvnUriTarget svnUrl = GetOriginalUrl(svnConflictEventArgs);
+            if (IsSameTarget(svnConflictEventArgs.Conflict.LeftSource, svnUrl)) {
+                return;
+            }
+
+            if (IsEqualWithBase(svnConflictEventArgs, svnUrl)) {
+                svnConflictEventArgs.Choice = svnConflictEventArgs.NodeKind == SvnNodeKind.Directory
+                    ? SvnAccept.Merged
+                    : svnConflictEventArgs.NodeKind == SvnNodeKind.File
+                        ? SvnAccept.Merged
+                        : SvnAccept.Postpone;
+            }
+        }
+
+        private bool IsEqualWithBase(SvnConflictEventArgs svnConflictEventArgs,
+            SvnUriTarget originalLeftTarget = null) {
+            using (var diffClient = new SvnClient()) {
+                SvnUriTarget leftSourceTarget =
+                    originalLeftTarget ?? svnConflictEventArgs.Conflict.LeftSource.Target;
+
+                Stream resultStream = new MemoryStream();
+                SvnDiffArgs svnDiffArgs = new SvnDiffArgs();
+                diffClient.Diff(
+                    leftSourceTarget,
+                    svnConflictEventArgs.Conflict.RightSource.Target, svnDiffArgs, resultStream
+                );
+                using (var reader = new StreamReader(resultStream)) {
+                    if (reader.ReadToEnd().Length == 0)
+                        return true;
+                }
+
+                if (svnDiffArgs.ChangeLists.Count == 0) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -268,7 +303,9 @@ namespace Terrasoft.Core.SVN
 
             if (svnConflictEventArgs.NodeKind == SvnNodeKind.File &&
                 svnConflictEventArgs.ConflictAction == SvnConflictAction.Add) {
-                NeedResolveList.Add(svnConflictEventArgs.Conflict.FullPath.Clone().ToString());
+                NeedResolveList.Add(svnConflictEventArgs.Conflict.FullPath.Clone().ToString(),
+                    svnConflictEventArgs.ConflictAction
+                );
                 svnConflictEventArgs.Choice = SvnAccept.Postpone;
             }
         }
@@ -281,51 +318,8 @@ namespace Terrasoft.Core.SVN
         private void AutoResolveConflict(SvnConflictEventArgs e) {
             ResolveConflictByType(e);
             if (e.Choice == SvnAccept.Postpone) {
-                BugReporter.SendBugReport(e, e.GetType());
+                ConflictList.Add(BugReporter.SerializeObjectToJsonString(e));
             }
-
-            /*switch (svnNotifyEventArgs.ConflictAction) {
-                case SvnConflictAction.Add when svnNotifyEventArgs.ConflictType == SvnConflictType.Tree &&
-                                                svnNotifyEventArgs.NodeKind == SvnNodeKind.Directory &&
-                                                svnNotifyEventArgs.ConflictReason == SvnConflictReason.Obstructed &&
-                                                Directory.Exists(svnNotifyEventArgs.Conflict.FullPath):
-                    Logger.Error("Попытка добавить папку, которая уже существует:"
-                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
-                    Logger.Error("Производим автоматическое слияние:", "оставляем существующую.");
-                    svnNotifyEventArgs.Choice = SvnAccept.Working;
-                    return;
-                case SvnConflictAction.Delete when svnNotifyEventArgs.ConflictReason == SvnConflictReason.Missing &&
-                                                   svnNotifyEventArgs.NodeKind == SvnNodeKind.Directory &&
-                                                   !Directory.Exists(svnNotifyEventArgs.Conflict.FullPath):
-                    Logger.Error("Попытка удалить папку, которая уже удалена:"
-                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
-                    Logger.Error("Производим автоматическое слияние:", "принимаем удаление.");
-                    svnNotifyEventArgs.Choice = SvnAccept.Working;
-                    return;
-                case SvnConflictAction.Add when svnNotifyEventArgs.ConflictType == SvnConflictType.Tree &&
-                                                svnNotifyEventArgs.NodeKind == SvnNodeKind.File &&
-                                                svnNotifyEventArgs.ConflictReason == SvnConflictReason.Obstructed &&
-                                                File.Exists(svnNotifyEventArgs.Conflict.FullPath):
-                    Logger.Error("Попытка добавить файл который уже существует:"
-                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
-                    Logger.Error("Не возможно произвести автоматическое слияние:",
-                        "требуется провести слияние в ручном режиме.");
-                    svnNotifyEventArgs.Choice = SvnAccept.Postpone;
-                    CommitIfNoError = false;
-                    return;
-                case SvnConflictAction.Delete when svnNotifyEventArgs.ConflictReason == SvnConflictReason.Missing &&
-                                                   svnNotifyEventArgs.NodeKind == SvnNodeKind.None &&
-                                                   !Directory.Exists(svnNotifyEventArgs.Conflict.FullPath):
-                    Logger.Error("Попытка удалить ветку, которая уже удалена:"
-                        , $"\nАдрес бранчи\t{svnNotifyEventArgs.Conflict.RightSource.Target}\nАдрес релиза\t{svnNotifyEventArgs.Conflict.LeftSource.Target}");
-                    Logger.Error("Производим автоматическое слияние:", "принимаем удаление.");
-                    svnNotifyEventArgs.Choice = SvnAccept.Working;
-                    return;
-                default:
-                    svnNotifyEventArgs.Choice = SvnAccept.Postpone;
-                    Logger.Error("Не возможно произвести автоматическое слияние:", "не найдено подходящее правило.");
-                    break;
-            }*/
         }
 #pragma warning restore CA1501 // Avoid excessive inheritance
     }

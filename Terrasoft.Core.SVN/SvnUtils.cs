@@ -9,12 +9,23 @@ namespace Terrasoft.Core.SVN
         /// <summary>
         ///     Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
         /// </summary>
-        private List<string> _needResolveList;
+        private Dictionary<string, SvnConflictAction> _needResolveList;
 
         /// <summary>
         ///     Коллекция с перечнем путей которые нуждаются в разрешении конфликтов
         /// </summary>
-        private List<string> NeedResolveList => _needResolveList ?? (_needResolveList = new List<string>());
+        private Dictionary<string, SvnConflictAction> NeedResolveList {
+            get {
+                if (_needResolveList == null) {
+                    _needResolveList = new Dictionary<string, SvnConflictAction>();
+                }
+
+                return _needResolveList;
+            }
+            set => _needResolveList = value;
+        }
+
+        public List<string> ConflictList = new List<string>();
 
         /// <summary>
         ///     Реинтеграция фитчи в родительскую ветку
@@ -39,7 +50,7 @@ namespace Terrasoft.Core.SVN
 
             var svnReintegrationMergeArgs = new SvnReintegrationMergeArgs();
             svnReintegrationMergeArgs.Notify += SvnReintegrationMergeArgsOnNotify;
-            svnReintegrationMergeArgs.Conflict += SvnReintegrationMergeArgsOnConflict;
+            svnReintegrationMergeArgs.Conflict += OnSvnConflict;
 
             try {
                 string workingCopyUrl = string.Empty;
@@ -54,7 +65,7 @@ namespace Terrasoft.Core.SVN
                 SVN.Logger.Error(e.Message, e.Targets.ToString());
             } finally {
                 svnReintegrationMergeArgs.Notify -= SvnReintegrationMergeArgsOnNotify;
-                svnReintegrationMergeArgs.Conflict -= SvnReintegrationMergeArgsOnConflict;
+                svnReintegrationMergeArgs.Conflict -= OnSvnConflict;
             }
 
             RemovePackageProperty(baseWorkingCopyPath);
@@ -82,16 +93,35 @@ namespace Terrasoft.Core.SVN
 
                 switch (i) {
                     case 1:
-                        CleanUp(WorkingCopyPath);
-                        Revert(WorkingCopyPath);
+                        CleanupFull();
+                        RevertRecursively();
                         break;
                     case 2:
-                        Revert(WorkingCopyPath);
+                        RevertRecursively();
                         break;
                 }
             }
 
             return false;
+        }
+
+        private void RevertRecursively() {
+            var svnRevertArgs =
+                new SvnRevertArgs {Depth = SvnDepth.Infinity};
+
+            Revert(WorkingCopyPath, svnRevertArgs);
+        }
+
+        private void CleanupFull() {
+            var svnCleanUpArgs =
+                new SvnCleanUpArgs {
+                    BreakLocks = true,
+                    ClearDavCache = true,
+                    FixTimestamps = true,
+                    IncludeExternals = true,
+                    VacuumPristines = true
+                };
+            CleanUp(WorkingCopyPath, svnCleanUpArgs);
         }
     }
 }

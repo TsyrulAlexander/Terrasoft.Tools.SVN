@@ -132,7 +132,7 @@
 		SvnUser         :	Имя пользователя SVN
 		SvnPassword     :	Пароль пользователя SVN
 		WorkingCopyPath :	Путь к локальной рабочей копии
-		CommitIfNoError :	Автоматически фиксировать изменения, в случае отсутсвия ошибок
+		CommitIfNoError :	Автоматически фиксировать изменения, в случае отсутствия ошибок
 		BranchFeatureUrl:	Url в которой базируются все фитчи
 		BranchReleaseUrl:	Url в которой базируется релиз
 		Maintainer      :	Издатель, фигурирует в названии ветки
@@ -155,7 +155,7 @@
     <value>Файл {0} обновлен до ревизии №{1}</value>
   </data>
   <data name="SvnUtils_CommitChanges_Sources_not_resolved" xml:space="preserve">
-    <value>Автоматическая фиксация невозможна, так присутсвуют не решенные конфликты.</value>
+    <value>Автоматическая фиксация невозможна, так присутствуют не решенные конфликты.</value>
   </data>
   <data name="SvnUtils_CommitChanges_Reintegrate_base_branch_to_feature" xml:space="preserve">
     <value>Реинтеграция базовой ветки в ветку фитчи</value>
@@ -168,7 +168,7 @@
     <value>NodeKind invalid.</value>
   </data>
   <data name="SMTPCRD" xml:space="preserve">
-    <value>VGVycmFzb2Z0Kw==</value>
+    <value>MXRSKE1jdGhYMg==</value>
   </data>
   <data name="FolderAddedInRevision" xml:space="preserve">
     <value>Folder was added by {0} in revision {1}</value>

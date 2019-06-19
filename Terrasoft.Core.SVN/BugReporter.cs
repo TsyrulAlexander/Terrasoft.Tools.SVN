@@ -9,6 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
@@ -19,11 +20,11 @@ namespace Terrasoft.Core.SVN
                 return;
             }
 
-            using (var smtpClient = new SmtpClient("smtp.tscrm.com", 25)) {
+            using (var smtpClient = new SmtpClient("smtp.bpmonline.com", 25)) {
                 using (var password = new SecureString()) {
                     GetSecurePassword(password);
                     const string domain = "TSCRM";
-                    const string userName = "BPMonlineBuild";
+                    const string userName = "Project-Admin";
                     ICredentialsByHost credentials = new NetworkCredential(userName, password, domain);
                     smtpClient.Credentials = credentials;
                     using (var message = new MailMessage()) {
@@ -31,19 +32,19 @@ namespace Terrasoft.Core.SVN
                         const string displayName = "Eugene Androsov";
                         var toMailAddress = new MailAddress(toAddress, displayName);
                         message.To.Add(toMailAddress);
-                        const string fromAddress = "bpmonlinebuild@bpmonline.com";
+                        const string fromAddress = "Project-Admin@bpmonline.com";
                         const string subject = "Terrasoft.Tools.Svn";
                         var fromMailAddress = new MailAddress(fromAddress, subject);
-
-                        using (MemoryStream stream = GetJsonStream(value)) {
+                        MemoryStream stream = GetJsonStream(value);
+                        try {
                             var attachment = new Attachment(stream, type.FullName + ".json");
                             message.Attachments.Add(attachment);
                             message.From = fromMailAddress;
-                            try {
-                                smtpClient.Send(message);
-                            } catch (SmtpException smtpException) {
-                                Logger.Error(smtpException.Message, smtpException.StackTrace);
-                            }
+                            smtpClient.Send(message);
+                        } catch (SmtpException smtpException) {
+                            Logger.Error(smtpException.Message, smtpException.StackTrace);
+                        } finally {
+                            stream.Close();
                         }
                     }
                 }
@@ -61,7 +62,6 @@ namespace Terrasoft.Core.SVN
 
             byte[] passBytes = Convert.FromBase64String(encodedHash);
             char[] hash = Encoding.UTF8.GetChars(passBytes);
-            //var securePassword = new SecureString();
             foreach (char c in hash) {
                 securePassword.AppendChar(c);
             }
@@ -69,7 +69,7 @@ namespace Terrasoft.Core.SVN
 
         private static MemoryStream GetJsonStream(object value) {
             var stream = new MemoryStream();
-            using (var streamWriter = new StreamWriter(stream)) {
+            using (var streamWriter = new StreamWriter(stream,Encoding.UTF8,512,true)) {
                 string jsonObject = SerializeObjectToJsonString(value);
                 streamWriter.Write(jsonObject);
                 streamWriter.Flush();
@@ -84,15 +84,11 @@ namespace Terrasoft.Core.SVN
         /// </summary>
         /// <param name="value">Объект сериализации</param>
         /// <returns></returns>
-        private static string SerializeObjectToJsonString(object value) {
+        public static string SerializeObjectToJsonString(object value) {
             var converters = new JsonSerializerSettings();
             JsonConverter converter = new StringEnumConverter(new DefaultNamingStrategy(), false);
             converters.Converters.Add(converter);
             return JsonConvert.SerializeObject(value, Formatting.Indented, converters);
-            /*
-            var javaScriptSerializer = new JavaScriptSerializer();
-            string jsonObject = javaScriptSerializer.Serialize(value);
-            return jsonObject;*/
         }
     }
 }

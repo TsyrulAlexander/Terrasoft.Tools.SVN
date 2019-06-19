@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using SharpSvn;
+using Terrasoft.Core.SVN.Properties;
 
 namespace Terrasoft.Core.SVN
 {
@@ -324,6 +325,42 @@ namespace Terrasoft.Core.SVN
                 string destFile = Path.Combine(targetPath, fileName);
                 File.Copy(file, destFile, true);
             }
+        }
+
+        private static bool IsSameTarget(SvnConflictSource leftSource, SvnUriTarget originalLeftTarget) {
+            return originalLeftTarget.Uri.LocalPath.EndsWith(leftSource.RepositoryPath.ToString(),
+                StringComparison.InvariantCultureIgnoreCase
+            );
+        }
+
+        private static SvnUriTarget GetOriginalUrl(SvnConflictEventArgs svnConflictEventArgs) {
+            SvnUriTarget uri = null;
+            using (var client = new SvnClient()) {
+                void InfoHandler(object sender, SvnInfoEventArgs args) {
+                    uri = SvnUriTarget.FromUri(args.Uri);
+                }
+
+                client.Info(SvnTarget.FromString(svnConflictEventArgs.Conflict.FullPath), InfoHandler);
+
+                void LogHandler(object sender, SvnLogEventArgs args) {
+                    foreach (SvnChangeItem changeItem in args.ChangedPaths) {
+                        string repositoryPath = changeItem.Path;
+                        if (!uri.Uri.LocalPath.EndsWith(repositoryPath, StringComparison.OrdinalIgnoreCase)) {
+                            continue;
+                        }
+
+                        uri = new SvnUriTarget(uri.Uri, args.Revision);
+                        return;
+                    }
+                }
+
+                var svnLogArgs = new SvnLogArgs();
+                svnLogArgs.End = svnConflictEventArgs.Conflict.LeftSource.Revision;
+                svnLogArgs.StrictNodeHistory = false;
+                client.Log(uri.Uri, svnLogArgs, LogHandler);
+            }
+
+            return uri;
         }
     }
 }
