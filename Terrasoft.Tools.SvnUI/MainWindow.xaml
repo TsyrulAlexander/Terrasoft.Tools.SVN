@@ -47,7 +47,7 @@
                 </Button>
                 <ListBox x:Name="LogListBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding LogInfoCollection, Mode=OneWay}" VirtualizingStackPanel.IsVirtualizing="True"
                          VirtualizingStackPanel.VirtualizationMode="Recycling" ScrollViewer.IsDeferredScrollingEnabled="True" VirtualizingStackPanel.ScrollUnit="Pixel"
-                         SelectedItem="{Binding Selected}" Background="Transparent" DataContext="{Binding Log, Source={StaticResource Locator}}">
+                         SelectedItem="{Binding Selected}" Background="Transparent" DataContext="{Binding Log, Source={StaticResource Locator}}" Visibility="Hidden">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static resx:Resources.Copy}" Command="{Binding CopyCommand}"/>

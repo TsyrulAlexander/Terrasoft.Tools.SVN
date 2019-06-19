@@ -63,6 +63,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
                             break;
                         case SvnOperation.FinishFeature:
                             CheckoutWorkingCopy(svnUtils, eventArgs);
+							UpdateWorkingCopy(svnUtils, eventArgs);
                             svnUtils.ReintegrationMergeToBaseBranch();
                             break;
                         case SvnOperation.CloseFeature:
@@ -71,6 +72,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
                             break;
                         case SvnOperation.FixFeature:
                             CheckoutWorkingCopy(svnUtils, eventArgs);
+							UpdateWorkingCopy(svnUtils, eventArgs);
                             svnUtils.FixBranch();
                             break;
                         default:
@@ -94,11 +96,16 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
                 !string.IsNullOrWhiteSpace(SvnUtils.GetRepositoryPathWithFolder(workingCopyPath)) ||
                 string.IsNullOrWhiteSpace(repositoryPath)) {
                 return;
-            }
+			} 
 
             Directory.CreateDirectory(workingCopyPath);
             svnUtils.CheckoutWorkingCopy(workingCopyPath, repositoryPath);
         }
+
+		protected virtual void UpdateWorkingCopy(SvnUtils svnUtils, StartSvnOperationEventArgs eventArgs) {
+			var workingCopyPath = eventArgs.Arguments[SvnUtilsBase.WorkingCopyPathOptionName];
+			svnUtils.UpdateWorkingCopy(workingCopyPath);
+		}
 
         private bool CanRun() {
             return SvnOperation != SvnOperation.NaN && InProgress == false;

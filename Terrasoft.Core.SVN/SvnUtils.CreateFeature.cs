@@ -95,7 +95,7 @@ namespace Terrasoft.Core.SVN
         /// </summary>
         /// <param name="workingCopyPath">Путь к рабочей копии</param>
         /// <returns>Результат</returns>
-        private bool UpdateWorkingCopy(string workingCopyPath) {
+		public bool UpdateWorkingCopy(string workingCopyPath) {
             Info(SvnTarget.FromString(workingCopyPath), (sender, args) => Console.WriteLine(args));
             var svnUpdateArgs = new SvnUpdateArgs {IgnoreExternals = false, UpdateParents = true};
             svnUpdateArgs.Notify += SvnUpdateArgsOnNotify;

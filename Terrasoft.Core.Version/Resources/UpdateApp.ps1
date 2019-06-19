@@ -6,21 +6,22 @@
 )
 
 function WaitingCloseProcess {
-	write-host "Please close app."
+	write-host "Please close app.";
 	$sec =0;
     while(Get-Process $ProcessName -ErrorAction SilentlyContinue) {		
         Start-Sleep -Milliseconds 1000;
-		write-host "Waiting $sec sec."
+		write-host "Waiting $sec sec.";
 		$sec=$sec+1;
     }
 }
 
 function MoveDirectory {
-    Copy-Item -Path $TempAppFolder -Filter "*" -Destination $AppFolder -Force -Recurse -Container 
+    $TempPathContent = Join-Path $TempAppFolder "*";
+	Copy-Item -Path $TempPathContent -Filter "*" -Destination $AppFolder -Force -Recurse -Container;
 }
 
 function ClearAppFolder {
-    Remove-Item -LiteralPath $AppFolder -Force -Recurse -ErrorAction SilentlyContinue
+    Get-ChildItem $AppFolder -Recurse | Remove-Item -Force -Recurse;
 }
 
 function UpdateAppSetting($configPath, $settingKey, $settingValue) {
