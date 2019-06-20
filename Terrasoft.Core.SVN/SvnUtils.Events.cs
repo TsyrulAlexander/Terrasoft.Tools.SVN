@@ -28,7 +28,7 @@ namespace Terrasoft.Core.SVN
         /// <param name="sender">Контекст</param>
         /// <param name="svnNotifyEventArgs">Аргумент</param>
         private static void OnSvnMergeArgsOnNotify(object sender, SvnNotifyEventArgs svnNotifyEventArgs) {
-            string notifyAction = string.Empty;
+            string notifyAction;
             if (svnNotifyEventArgs.Action.ToString().Contains("Update") &&
                 !svnNotifyEventArgs.Action.ToString().Equals("Update", StringComparison.InvariantCultureIgnoreCase)) {
                 notifyAction = svnNotifyEventArgs.Action.ToString().Substring(6);

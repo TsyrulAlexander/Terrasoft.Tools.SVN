@@ -22,7 +22,6 @@ namespace Terrasoft.Core.SVN
 
                 return _needResolveList;
             }
-            set => _needResolveList = value;
         }
 
         public List<string> ConflictList = new List<string>();
