@@ -40,6 +40,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel.Configuration
 				}
 			);
 			await changeConfigurationRepository.RunAsync();
+			SetProgressState(false);
 			BrowserDialog.ShowInformationMessage(Resources.OperationComplite);
 		}
 	}

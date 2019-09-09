@@ -17,7 +17,7 @@ namespace Terrasoft.Configuration {
 			Parameter = parameter;
 		}
 		public Task RunAsync() {
-			return Task.Run(Run);
+			return Task.Run((Action)Run);
 		}
 		public void Run() {
 			var svnParams = new Dictionary<string, string> {
