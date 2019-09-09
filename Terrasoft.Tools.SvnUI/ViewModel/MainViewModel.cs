@@ -1,13 +1,10 @@
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Views;
 using Terrasoft.Core;
 using Terrasoft.Core.Version;
-using Terrasoft.Tools.SvnUI.Model;
 using Terrasoft.Tools.SvnUI.Model.Enums;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Properties;
@@ -15,8 +12,8 @@ using Terrasoft.Tools.SvnUI.Properties;
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
 	public class MainViewModel : ViewModelBase {
-		public IBrowserDialog BrowserDialog { get; }
-		public ILogger Logger { get; }
+		private IBrowserDialog BrowserDialog { get; }
+		private ILogger Logger { get; }
 		private OperationType _operationType;
 		private bool _isActualVersion = true;
 		public OperationType OperationType {
@@ -73,10 +70,10 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 			}
 		}
 
-		private async Task<bool> GetIsCurrentVersionIsActual() {
-			var currentVarsion = AppSetting.LatestVersionId;
+		private static async Task<bool> GetIsCurrentVersionIsActual() {
+			var currentVersion = AppSetting.LatestVersionId;
 			var repositoryVersion = await AppVersionUtilities.GetVersionIdAsync();
-			return currentVarsion == repositoryVersion;
+			return currentVersion == repositoryVersion;
 		}
 
 		private void SetOperationType(OperationType operationType) {

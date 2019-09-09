@@ -8,8 +8,8 @@
     </ResourceDictionary.MergedDictionaries>
     <Style x:Key="HeaderTextBoxStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTitleTextBlock}"/>
     <Color x:Key="BorderColor">Red</Color>
-    <Color x:Key="BackgrountColor">Transparent</Color>
-    <SolidColorBrush x:Key="BackgrountBrush" Color="{StaticResource BackgrountColor}"></SolidColorBrush>
+    <Color x:Key="BackgroundColor">Transparent</Color>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"></SolidColorBrush>
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"></SolidColorBrush>
     <Style x:Key="SelectFolderButton" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -17,7 +17,7 @@
         <Setter Property="Padding" Value="4"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
     </Style>
-    <Style x:Key="RunBotton" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
+    <Style x:Key="RunButton" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
         <Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush Opacity="0.7"/>

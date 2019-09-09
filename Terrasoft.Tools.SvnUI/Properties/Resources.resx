@@ -202,7 +202,7 @@ SUCCESS</value>
   <data name="Error" xml:space="preserve">
     <value>Ошибка</value>
   </data>
-  <data name="SvnOperationComplite" xml:space="preserve">
+  <data name="OperationComplite" xml:space="preserve">
     <value>Операция завершена</value>
   </data>
   <data name="CloseFeature" xml:space="preserve">
@@ -286,5 +286,17 @@ SUCCESS</value>
   </data>
   <data name="FtpTempFile" xml:space="preserve">
     <value>Путь для выгрузки бэкапа</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Конфигурация</value>
+  </data>
+  <data name="ChangeRepository" xml:space="preserve">
+    <value>Смена репозитория</value>
+  </data>
+  <data name="PkgPath" xml:space="preserve">
+    <value>Путь к папке PKG</value>
+  </data>
+  <data name="UrlPath" xml:space="preserve">
+    <value>Путь к репоситорию</value>
   </data>
 </root>

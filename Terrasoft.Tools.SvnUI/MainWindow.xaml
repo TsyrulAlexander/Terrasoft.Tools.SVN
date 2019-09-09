@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Terrasoft.Tools.SvnUI.Properties"
-        xmlns:view="clr-namespace:Terrasoft.Tools.SvnUI.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:enums="clr-namespace:Terrasoft.Tools.SvnUI.Model.Enums"
+        xmlns:svn="clr-namespace:Terrasoft.Tools.SvnUI.View.Svn"
+        xmlns:deploy="clr-namespace:Terrasoft.Tools.SvnUI.View.Deploy"
+        xmlns:configuration="clr-namespace:Terrasoft.Tools.SvnUI.View.Configuration"
         mc:Ignorable="d"
         x:Name="MainWindowControl"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -28,10 +30,17 @@
                     Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static enums:OperationType.DeployApp}" Height="Auto" IsEnabled="False">
                     <TextBlock Text="{x:Static resx:Resources.DeployApp}"></TextBlock>
                 </RadioButton>
+                <RadioButton
+                    Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="{Binding Path=OperationType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Configuration, UpdateSourceTrigger=PropertyChanged}" 
+                    Command="{Binding SetOperationTypeCommand}" CommandParameter="{x:Static enums:OperationType.Configuration}" Height="Auto">
+                    <TextBlock Text="{x:Static resx:Resources.Configuration}"></TextBlock>
+                </RadioButton>
             </StackPanel>
         </materialDesign:DrawerHost.LeftDrawerContent>
         <materialDesign:DrawerHost.BottomDrawerContent>
-            <Grid Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}">
+            <Grid x:Name="LogGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -41,7 +50,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="4" VerticalAlignment="Center" Text="{x:Static resx:Resources.Log}" Style="{DynamicResource HeaderTextBoxStyle}"/>
-                <Button Grid.Row="0" Grid.Column="1"  DockPanel.Dock="Right" Click="CloseLogPanelClick" Style="{DynamicResource RunBotton}"
+                <Button Grid.Row="0" Grid.Column="1"  DockPanel.Dock="Right" Click="CloseLogPanelClick" Style="{DynamicResource RunButton}"
                         Margin="4" VerticalAlignment="Top">
                     <materialDesign:PackIcon Kind="ArrowDown"  />
                 </Button>
@@ -83,19 +92,19 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Background="#FF534D4D">
-                <Button Margin="1" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" Style="{DynamicResource RunBotton}"
+                <Button Margin="1" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" Style="{DynamicResource RunButton}"
                         CommandParameter="{x:Static Dock.Left}"
                         Height="Auto" Background="Transparent">
                     <materialDesign:PackIcon Kind="HamburgerMenu" Width="35" Height="Auto"/>
                 </Button>
-                <Button Margin="1" Click="OpenLogPanelClick" Style="{DynamicResource RunBotton}"
+                <Button Margin="1" Click="OpenLogPanelClick" Style="{DynamicResource RunButton}"
                          Height="Auto" Background="Transparent">
                     <materialDesign:PackIcon Kind="CommentTextOutline" Width="35" Height="Auto"/>
                 </Button>
                 <Button Margin="1" Command="{Binding UpdateAppCommand}"
                             Height="Auto" Background="Transparent">
                     <Button.Style>
-                        <Style BasedOn="{StaticResource RunBotton}" TargetType="Button">
+                        <Style BasedOn="{StaticResource RunButton}" TargetType="Button">
                            <Style.Triggers>
                                <DataTrigger Binding="{Binding IsActualVersion}" Value="False">
                                     <DataTrigger.EnterActions>
@@ -116,8 +125,9 @@
                     <materialDesign:PackIcon Kind="Update" Width="35" Height="Auto"/>
                 </Button>
             </StackPanel>
-            <view:SvnToolView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}"></view:SvnToolView>
-            <view:DeployAppView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='DeployApp'}"></view:DeployAppView>
+            <svn:SvnToolView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='SvnBranches'}"></svn:SvnToolView>
+            <deploy:DeployAppView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='DeployApp'}"></deploy:DeployAppView>
+            <configuration:ConfigurationView Grid.Row="0" Grid.Column="1" Visibility="{Binding OperationType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Configuration'}"></configuration:ConfigurationView>
         </Grid>
     </materialDesign:DrawerHost>
 </Window>

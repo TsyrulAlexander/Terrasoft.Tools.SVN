@@ -19,7 +19,7 @@ namespace Terrasoft.Tools.SvnUI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -152,6 +152,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Смена репозитория.
+        /// </summary>
+        public static string ChangeRepository {
+            get {
+                return ResourceManager.GetString("ChangeRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Очистить.
         /// </summary>
         public static string ClearAll {
@@ -184,6 +193,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string CommitIfNoErrorDescription {
             get {
                 return ResourceManager.GetString("CommitIfNoErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Конфигурация.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
             }
         }
         
@@ -423,11 +441,29 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Операция завершена.
+        /// </summary>
+        public static string OperationComplite {
+            get {
+                return ResourceManager.GetString("OperationComplite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oracle.
         /// </summary>
         public static string Oracle {
             get {
                 return ResourceManager.GetString("Oracle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Путь к папке PKG.
+        /// </summary>
+        public static string PkgPath {
+            get {
+                return ResourceManager.GetString("PkgPath", resourceCulture);
             }
         }
         
@@ -464,15 +500,6 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string SvnBranches {
             get {
                 return ResourceManager.GetString("SvnBranches", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Операция завершена.
-        /// </summary>
-        public static string SvnOperationComplite {
-            get {
-                return ResourceManager.GetString("SvnOperationComplite", resourceCulture);
             }
         }
         
@@ -527,6 +554,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string UpdateFeature {
             get {
                 return ResourceManager.GetString("UpdateFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Путь к репоситорию.
+        /// </summary>
+        public static string UrlPath {
+            get {
+                return ResourceManager.GetString("UrlPath", resourceCulture);
             }
         }
         

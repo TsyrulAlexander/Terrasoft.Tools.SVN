@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Terrasoft.Tools.SvnUI.Model.File {
+﻿namespace Terrasoft.Tools.SvnUI.Model.File {
 	public interface IBrowserDialog {
 		string SelectFilder(string path);
 		void ShowInformationMessage(string message, string caption = "");

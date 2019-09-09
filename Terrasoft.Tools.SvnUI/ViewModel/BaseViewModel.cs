@@ -20,7 +20,6 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public BaseViewModel() {
 			Messenger.Default.Register<ProgressEventArgs>(this, OnProgressChange);
 		}
-
 		protected virtual void OnProgressChange(ProgressEventArgs progress) {
 			DispatcherHelper.CheckBeginInvokeOnUI(() => InProgress = progress.InProgress);
 		}

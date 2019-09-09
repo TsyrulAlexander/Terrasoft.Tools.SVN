@@ -6,6 +6,8 @@ using Terrasoft.Core.DeployApp.Database.Oracle;
 using Terrasoft.Tools.SvnUI.Model.File;
 using Terrasoft.Tools.SvnUI.Model.Log;
 using Terrasoft.Tools.SvnUI.ViewModel;
+using Terrasoft.Tools.SvnUI.ViewModel.Deploy;
+using Terrasoft.Tools.SvnUI.ViewModel.Svn;
 
 namespace Terrasoft.Tools.SvnUI.Ioc {
 	class IocConfiguration : NinjectModule {

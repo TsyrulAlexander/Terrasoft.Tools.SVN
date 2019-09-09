@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight.Views;
 
 namespace Terrasoft.Tools.SvnUI.Model.File {
 	public class BrowserDialog : IBrowserDialog {

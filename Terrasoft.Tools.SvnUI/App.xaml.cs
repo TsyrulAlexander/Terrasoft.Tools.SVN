@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using GalaSoft.MvvmLight.Threading;
-using Terrasoft.Core.Version;
 using Terrasoft.Tools.SvnUI.Ioc;
 
 namespace Terrasoft.Tools.SvnUI

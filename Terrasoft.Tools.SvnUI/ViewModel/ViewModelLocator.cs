@@ -1,6 +1,9 @@
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using Terrasoft.Tools.SvnUI.Ioc;
+using Terrasoft.Tools.SvnUI.ViewModel.Configuration;
+using Terrasoft.Tools.SvnUI.ViewModel.Deploy;
+using Terrasoft.Tools.SvnUI.ViewModel.Svn;
 
 namespace Terrasoft.Tools.SvnUI.ViewModel
 {
@@ -20,6 +23,8 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public RestoreDatabaseViewModel RestoreDatabase => IocKernel.Get<RestoreDatabaseViewModel>();
 		public RestoreMsSqlDatabaseViewModel RestoreMsSqlDatabase => IocKernel.Get<RestoreMsSqlDatabaseViewModel>();
 		public RestoreOracleDatabaseViewModel RestoreOracleDatabase => IocKernel.Get<RestoreOracleDatabaseViewModel>();
+		public ConfigurationViewModel Configuration => IocKernel.Get<ConfigurationViewModel>();
+		public ChangeRepositoryViewModel ChangeRepository => IocKernel.Get<ChangeRepositoryViewModel>();
 		public LogViewModel Log => IocKernel.Get<LogViewModel>();
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Terrasoft.Tools.SvnUI.Annotations;
+using Terrasoft.Tools.SvnUI.Properties;
 
 namespace Terrasoft.Tools.SvnUI.Model.Property {
 	public abstract class BaseProperty : INotifyPropertyChanged {

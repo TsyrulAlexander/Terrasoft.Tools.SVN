@@ -117,16 +117,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppSetting.cs" />
+    <Compile Include="Model\Constant\ConfigurationArgumentNameConstant.cs" />
     <Compile Include="Model\Constant\DeployArgumentNameConstant.cs" />
     <Compile Include="Ioc\IocConfiguration.cs" />
     <Compile Include="Ioc\IocKernel.cs" />
     <Compile Include="Model\Converter\EnumBooleanConverter.cs" />
     <Compile Include="Model\Converter\InverseBooleanConverter.cs" />
+    <Compile Include="Model\Enums\ConfigurationOperation.cs" />
     <Compile Include="Model\Enums\DataBaseType.cs" />
     <Compile Include="Model\Enums\DeployOperation.cs" />
     <Compile Include="Model\Enums\FilePathType.cs" />
     <Compile Include="Model\EventArgs\ProgressEventArgs.cs" />
     <Compile Include="Model\EventArgs\PropertyValueChangeEventArgs.cs" />
+    <Compile Include="Model\EventArgs\StartConfigurationOperationEventArgs.cs" />
     <Compile Include="Model\EventArgs\StartDeployOperationEventArgs.cs" />
     <Compile Include="Model\Enums\OperationType.cs" />
     <Compile Include="Model\Property\BaseProperty.cs" />
@@ -144,66 +147,75 @@
     <Compile Include="Model\EventArgs\StartSvnOperationEventArgs.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Model\Log\UILogger.cs" />
-    <Compile Include="ViewModel\BaseDeployViewModel.cs" />
-    <Compile Include="ViewModel\BaseRestoreDatabaseViewModel.cs" />
-    <Compile Include="ViewModel\BaseSvnOperationViewModel.cs" />
+    <Compile Include="ViewModel\Configuration\BaseConfigurationViewModel.cs" />
+    <Compile Include="ViewModel\Configuration\ChangeRepositoryViewModel.cs" />
+    <Compile Include="ViewModel\Deploy\BaseDeployViewModel.cs" />
+    <Compile Include="ViewModel\Deploy\BaseRestoreDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\Svn\BaseSvnOperationViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\CloseFeatureSvnViewModel.cs" />
-    <Compile Include="ViewModel\CreateFeatureSvnViewModel.cs" />
-    <Compile Include="ViewModel\DeployAppViewModel.cs" />
-    <Compile Include="ViewModel\FinishFeatureSvnViewModel.cs" />
-    <Compile Include="ViewModel\FixFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\Svn\CloseFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\Configuration\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModel\Svn\CreateFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\Deploy\DeployAppViewModel.cs" />
+    <Compile Include="ViewModel\Svn\FinishFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\Svn\FixFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\RestoreDatabaseViewModel.cs" />
-    <Compile Include="ViewModel\RestoreMsSqlDatabaseViewModel.cs" />
-    <Compile Include="ViewModel\RestoreOracleDatabaseViewModel.cs" />
-    <Compile Include="ViewModel\SvnToolViewModel.cs" />
-    <Compile Include="ViewModel\UpdateFeatureSvnViewModel.cs" />
+    <Compile Include="ViewModel\Deploy\RestoreDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\Deploy\RestoreMsSqlDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\Deploy\RestoreOracleDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\Svn\SvnToolViewModel.cs" />
+    <Compile Include="ViewModel\Svn\UpdateFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\BooleanPropertyControl.xaml.cs">
+    <Compile Include="View\Property\BooleanPropertyControl.xaml.cs">
       <DependentUpon>BooleanPropertyControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CloseSvnFeatureView.xaml.cs">
+    <Compile Include="View\Configuration\ChangeRepositoryView.xaml.cs">
+      <DependentUpon>ChangeRepositoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Svn\CloseSvnFeatureView.xaml.cs">
       <DependentUpon>CloseSvnFeatureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CreateSvnFeatureView.xaml.cs">
+    <Compile Include="View\Configuration\ConfigurationView.xaml.cs">
+      <DependentUpon>ConfigurationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Svn\CreateSvnFeatureView.xaml.cs">
       <DependentUpon>CreateSvnFeatureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DataBaseTypePropertyControl.xaml.cs">
+    <Compile Include="View\Property\DataBaseTypePropertyControl.xaml.cs">
       <DependentUpon>DataBaseTypePropertyControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DeployAppView.xaml.cs">
+    <Compile Include="View\Deploy\DeployAppView.xaml.cs">
       <DependentUpon>DeployAppView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\FinishSvnFeatureView.xaml.cs">
+    <Compile Include="View\Svn\FinishSvnFeatureView.xaml.cs">
       <DependentUpon>FinishSvnFeatureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\FixSvnFeatureView.xaml.cs">
+    <Compile Include="View\Svn\FixSvnFeatureView.xaml.cs">
       <DependentUpon>FixSvnFeatureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PasswordPropertyControl.xaml.cs">
+    <Compile Include="View\Property\PasswordPropertyControl.xaml.cs">
       <DependentUpon>PasswordPropertyControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RestoreDatabaseView.xaml.cs">
+    <Compile Include="View\Deploy\RestoreDatabaseView.xaml.cs">
       <DependentUpon>RestoreDatabaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RestoreMsSqlDatabaseControl.xaml.cs">
+    <Compile Include="View\Deploy\RestoreMsSqlDatabaseControl.xaml.cs">
       <DependentUpon>RestoreMsSqlDatabaseControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SelectFilePathFromTypeControl.xaml.cs">
+    <Compile Include="View\Property\SelectFilePathFromTypeControl.xaml.cs">
       <DependentUpon>SelectFilePathFromTypeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SelectItemControl.xaml.cs">
+    <Compile Include="View\Property\SelectItemControl.xaml.cs">
       <DependentUpon>SelectItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StringPropertyControl.xaml.cs">
+    <Compile Include="View\Property\StringPropertyControl.xaml.cs">
       <DependentUpon>StringPropertyControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SvnToolView.xaml.cs">
+    <Compile Include="View\Svn\SvnToolView.xaml.cs">
       <DependentUpon>SvnToolView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UpdateSvnFeatureView.xaml.cs">
+    <Compile Include="View\Svn\UpdateSvnFeatureView.xaml.cs">
       <DependentUpon>UpdateSvnFeatureView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -222,63 +234,71 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BooleanPropertyControl.xaml">
+    <Page Include="View\Property\BooleanPropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CloseSvnFeatureView.xaml">
+    <Page Include="View\Configuration\ChangeRepositoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CreateSvnFeatureView.xaml">
+    <Page Include="View\Svn\CloseSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DataBaseTypePropertyControl.xaml">
+    <Page Include="View\Configuration\ConfigurationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DeployAppView.xaml">
+    <Page Include="View\Svn\CreateSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\FinishSvnFeatureView.xaml">
+    <Page Include="View\Property\DataBaseTypePropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\FixSvnFeatureView.xaml">
+    <Page Include="View\Deploy\DeployAppView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PasswordPropertyControl.xaml">
+    <Page Include="View\Svn\FinishSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RestoreDatabaseView.xaml">
+    <Page Include="View\Svn\FixSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RestoreMsSqlDatabaseControl.xaml">
+    <Page Include="View\Property\PasswordPropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SelectFilePathFromTypeControl.xaml">
+    <Page Include="View\Deploy\RestoreDatabaseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SelectItemControl.xaml">
+    <Page Include="View\Deploy\RestoreMsSqlDatabaseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StringPropertyControl.xaml">
+    <Page Include="View\Property\SelectFilePathFromTypeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SvnToolView.xaml">
+    <Page Include="View\Property\SelectItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UpdateSvnFeatureView.xaml">
+    <Page Include="View\Property\StringPropertyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Svn\SvnToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Svn\UpdateSvnFeatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -300,6 +320,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -314,6 +335,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Terrasoft.Configuration\Terrasoft.Configuration.csproj">
+      <Project>{8514e02e-1c80-4bb9-b136-dfb9f94d71c0}</Project>
+      <Name>Terrasoft.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terrasoft.Core.DeployApp\Terrasoft.Core.DeployApp.csproj">
       <Project>{57b3d7eb-c4fa-4e3a-a239-38855e8c1dc2}</Project>
       <Name>Terrasoft.Core.DeployApp</Name>
@@ -346,5 +371,6 @@
   <ItemGroup>
     <Resource Include="iconfinder_f-branch_256_282472.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
