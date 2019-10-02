@@ -25,6 +25,7 @@ namespace Terrasoft.Tools.SvnUI {
 		public static string DefFtpPassword => GetSettingValue("defFtpPassword");
 		public static string DefFtpTempFile => GetSettingValue("defFtpTempFile");
 		public static string DefPkgPath => GetSettingValue("defPkgPath");
+		public static string DefSaveTempDirectory => GetSettingValue("defSaveTempDirectory");
 
 		private static T GetEnumValue<T>(string key) where T : struct {
 			var value = GetSettingValue(key);

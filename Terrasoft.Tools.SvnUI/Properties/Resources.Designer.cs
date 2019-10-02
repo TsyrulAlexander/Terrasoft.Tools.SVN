@@ -459,6 +459,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Архивация пакетов.
+        /// </summary>
+        public static string PackageCompression {
+            get {
+                return ResourceManager.GetString("PackageCompression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Путь к папке PKG.
         /// </summary>
         public static string PkgPath {
@@ -482,6 +491,15 @@ namespace Terrasoft.Tools.SvnUI.Properties {
         public static string SaveLog {
             get {
                 return ResourceManager.GetString("SaveLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить в.
+        /// </summary>
+        public static string SavePath {
+            get {
+                return ResourceManager.GetString("SavePath", resourceCulture);
             }
         }
         

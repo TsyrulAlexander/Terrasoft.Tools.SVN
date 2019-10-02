@@ -11,6 +11,8 @@ namespace Terrasoft.Tools.SvnUI
 	{
 		public MainWindow() {
 			InitializeComponent();
+			LogListBox.Visibility = Visibility.Visible;
+			LogListBox.Visibility = Visibility.Collapsed;
 		}
 
 		private void CloseLogPanelClick(object sender, RoutedEventArgs e) {

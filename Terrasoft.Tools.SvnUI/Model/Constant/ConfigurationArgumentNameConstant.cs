@@ -4,5 +4,6 @@
 		public const string UrlPath = "svnurlpath";
 		public const string UserLogin = "userlogin";
 		public const string UserPassword = "userpassword";
+		public const string SavePath = "savepath";
 	}
 }

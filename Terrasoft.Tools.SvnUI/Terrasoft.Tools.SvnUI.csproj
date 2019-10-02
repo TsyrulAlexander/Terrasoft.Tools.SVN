@@ -149,6 +149,7 @@
     <Compile Include="Model\Log\UILogger.cs" />
     <Compile Include="ViewModel\Configuration\BaseConfigurationViewModel.cs" />
     <Compile Include="ViewModel\Configuration\ChangeRepositoryViewModel.cs" />
+    <Compile Include="ViewModel\Configuration\PackageCompressionViewModel.cs" />
     <Compile Include="ViewModel\Deploy\BaseDeployViewModel.cs" />
     <Compile Include="ViewModel\Deploy\BaseRestoreDatabaseViewModel.cs" />
     <Compile Include="ViewModel\Svn\BaseSvnOperationViewModel.cs" />
@@ -167,6 +168,9 @@
     <Compile Include="ViewModel\Svn\SvnToolViewModel.cs" />
     <Compile Include="ViewModel\Svn\UpdateFeatureSvnViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Configuration\PackageCompressionView.xaml.cs">
+      <DependentUpon>PackageCompressionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Property\BooleanPropertyControl.xaml.cs">
       <DependentUpon>BooleanPropertyControl.xaml</DependentUpon>
     </Compile>
@@ -231,6 +235,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Style\MainStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuration\PackageCompressionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

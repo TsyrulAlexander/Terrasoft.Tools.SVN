@@ -25,6 +25,7 @@ namespace Terrasoft.Tools.SvnUI.ViewModel
 		public RestoreOracleDatabaseViewModel RestoreOracleDatabase => IocKernel.Get<RestoreOracleDatabaseViewModel>();
 		public ConfigurationViewModel Configuration => IocKernel.Get<ConfigurationViewModel>();
 		public ChangeRepositoryViewModel ChangeRepository => IocKernel.Get<ChangeRepositoryViewModel>();
+		public PackageCompressionViewModel PackageCompression => IocKernel.Get<PackageCompressionViewModel>();
 		public LogViewModel Log => IocKernel.Get<LogViewModel>();
 	}
 }

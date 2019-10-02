@@ -299,4 +299,10 @@ SUCCESS</value>
   <data name="UrlPath" xml:space="preserve">
     <value>Путь к репоситорию</value>
   </data>
+  <data name="SavePath" xml:space="preserve">
+    <value>Сохранить в</value>
+  </data>
+  <data name="PackageCompression" xml:space="preserve">
+    <value>Архивация пакетов</value>
+  </data>
 </root>
